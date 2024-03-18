@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Category;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,15 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
+    // $cateGory = new Category();
+    // $cateGory->name = '牛仔褲';
+    // $cateGory->save();
+
+    // $cateGory = Category::find(11);
+    // $cateGory->update([
+    //     'name' => '卡其褲',
+    // ]);
+    // $cateGory->save();
     return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 

@@ -1,11 +1,15 @@
 <x-app-layout>
-    <div class="bg-orange-500 pt-4 pb-4 flex">
-        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-lg">
-            {{ __('上衣') }}
-        </x-nav-link>
-        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-lg">
-            {{ __('褲子') }}
-        </x-nav-link>
+    <div class="bg-orange-500 pt-4 pb-4 flex justify-between">
+        <div class="flex">
+            @foreach (\App\Models\Category::paginate(10) as $category)
+                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-lg">
+                    {{ $category->name }}
+                </x-nav-link>
+            @endforeach
+        </div>
+        <div class="flex">
+            {{ \App\Models\Category::paginate(10)->links() }}
+        </div>
     </div>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
