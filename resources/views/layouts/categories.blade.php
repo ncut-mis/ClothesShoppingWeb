@@ -2,7 +2,7 @@
     <div class="bg-orange-500 pt-4 pb-4 flex justify-between">
         <div class="flex">
             <x-nav-link :href="route('/home')" class="text-lg">
-                首頁
+                所有商品
             </x-nav-link>
             @foreach (\App\Models\Category::paginate(10) as $category)
                 <x-nav-link :href="route('Categorys.show' , ['category' => $category])"  class="text-lg">

@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
+    Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
     Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
 });
 
