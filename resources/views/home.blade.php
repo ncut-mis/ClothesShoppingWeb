@@ -13,8 +13,30 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
     </head>
     <body class="font-sans antialiased">        
         @include('layouts.categories')
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+            const categoryLinks = document.querySelectorAll('.category-link');
+
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const categoryId = this.getAttribute('data-category-id');
+
+                    // 发起 AJAX 请求到指定的端点
+                    fetch(`/categories/${categoryId}`)
+                        .then(response => response.text())
+                        .then(html => {
+                            // 将响应的 HTML 更新到页面中
+                            document.getElementById('category-items-display').innerHTML = html;
+                        });
+                });
+            });
+        });
+        </script>
     </body>
 </html>

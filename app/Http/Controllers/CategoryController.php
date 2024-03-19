@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
@@ -37,7 +38,10 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $products = Product::Where('category_id', '=', $category->id)->paginate(8);
+
+        // 返回一个视图，只包含服装数据列表
+        return view('home', compact('products'));
     }
 
     /**

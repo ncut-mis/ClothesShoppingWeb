@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Product;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 
@@ -25,6 +27,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
+
+    $products = Product::paginate(8); // 示例中随机取5件服装
+    return view('home', compact('products'));
     // $cateGory = new Category();
     // $cateGory->name = '牛仔褲';
     // $cateGory->save();
@@ -34,8 +39,7 @@ Route::get('/home', function () {
     //     'name' => '卡其褲',
     // ]);
     // $cateGory->save();
-    return view('home');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('/home');
 
 
 
@@ -44,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
+    Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
 });
 
 require __DIR__ . '/auth.php';
