@@ -32,6 +32,10 @@
                             {{ __('會員中心') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('trackeditem.index')">
+                            {{ __('追蹤清單') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

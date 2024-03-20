@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Tracked_item extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'product_id',       
+    ];
 }

@@ -19,8 +19,7 @@
         
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-            @include('product.layouts.productShow')
-            @include('product.layouts.partials.description')
+            @include('TrackedItem.layouts.TrackItemlist')
 
         </div>
     </body>

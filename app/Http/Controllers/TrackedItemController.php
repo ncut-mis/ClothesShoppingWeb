@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tracked_item;
 use App\Http\Requests\StoreTracked_itemRequest;
 use App\Http\Requests\UpdateTracked_itemRequest;
+use Illuminate\Http\Request;
 
 class TrackedItemController extends Controller
 {
@@ -13,7 +14,7 @@ class TrackedItemController extends Controller
      */
     public function index()
     {
-        //
+        return view('TrackedItem.index');
     }
 
     /**
@@ -27,9 +28,25 @@ class TrackedItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTracked_itemRequest $request)
+    public function store(Request $request)
     {
-        //
+        $ProductID = $request['ProductID'];
+        if(Tracked_item::Where('product_id','=','$ProductID')->exists()){
+            session()->flash('message', '追蹤失敗，該商品已被追蹤');
+            return redirect(route('Products.show', ['product' => $ProductID]));
+        }
+        else{           
+            $TrackedItem = new Tracked_item();
+            $TrackedItem->user_id = Auth()->user()->id;
+            $TrackedItem->product_id = $ProductID;
+    
+    
+            $TrackedItem->save();
+            session()->flash('message', '追蹤成功');
+            return redirect(route('Products.show', ['product' => $ProductID]));
+        }
+        
+
     }
 
     /**

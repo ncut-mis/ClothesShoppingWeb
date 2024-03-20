@@ -4,6 +4,7 @@ use App\Models\Product;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TrackedItemController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 
@@ -51,6 +52,12 @@ Route::middleware('auth')->group(function () {
     Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
     Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
     Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
+    
 });
+Route::middleware('auth')->group(function () {
+    Route::post('TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');  
+    Route::get('TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');  
+});
+
 
 require __DIR__ . '/auth.php';
