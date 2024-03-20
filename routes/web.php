@@ -27,12 +27,13 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
+    // $cateGory = new Category();
+    // $cateGory->name = '外套';
+    // $cateGory->save();
 
     $products = Product::paginate(8); // 示例中随机取5件服装
     return view('home', compact('products'));
-    // $cateGory = new Category();
-    // $cateGory->name = '牛仔褲';
-    // $cateGory->save();
+    
 
     // $cateGory = Category::find(11);
     // $cateGory->update([
