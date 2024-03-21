@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TrackedItemController;
+use App\Http\Controllers\CartItemController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 
@@ -57,6 +58,11 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');  
     Route::get('TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');  
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('CartItem', [CartItemController::class, 'store'])->name('cartitem.store');  
+    Route::get('CartItem', [CartItemController::class, 'index'])->name('cartitem.index');  
 });
 
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCartItemRequest;
 use App\Http\Requests\UpdateCartItemRequest;
 
@@ -27,9 +28,17 @@ class CartItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCartItemRequest $request)
+    public function store(Request $request)
     {
-        //
+        $cartitem = new CartItem();
+        $cartitem->user_id = Auth()->user()->id;
+        $cartitem->product_id = $request['ProductID'];
+        $cartitem->quantity = $request['quantity'];
+        $cartitem->save();
+
+        session()->flash('message', '加入購物車成功');
+        return redirect(route('Products.show', ['product' => $cartitem->product_id]));
+
     }
 
     /**

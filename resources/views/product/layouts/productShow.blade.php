@@ -20,15 +20,32 @@
         <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
             @csrf
             <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-            <x-primary-button>{{ __('追蹤') }}</x-primary-button>
+            <x-primary-button >{{ __('追蹤') }}</x-primary-button>
         </form>
-        <form method="POST" action="" class = "pb-4">
-            @csrf 
-            <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-            <x-primary-button>{{ __('加入購物車') }}</x-primary-button>
-        </form>
+        <button id="add" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">加入購物車</button>
     </div>
 </div>
+
+<div id="popup" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
+    <span class="absolute top-0 right-0 cursor-pointer" onclick="closePopup()">&times;</span>
+    <p>請選擇數量</p>
+    <form method="POST" action="{{route('cartitem.store')}}">
+        @csrf  
+        <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
+        <input type = "number" name = "quantity" min = "1" max = "50">
+        <x-primary-button >{{ __('加入購物車') }}</x-primary-button>
+    </form>
+</div>
+
+<script>
+  function closePopup() {
+    document.getElementById('popup').classList.add('hidden');
+  }
+
+  document.getElementById('add').addEventListener('click', function() {
+    document.getElementById('popup').classList.remove('hidden');
+  });
+</script>
 
 
 
