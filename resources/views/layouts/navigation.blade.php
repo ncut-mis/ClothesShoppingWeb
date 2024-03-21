@@ -36,6 +36,10 @@
                             {{ __('追蹤清單') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('cartitem.index')">
+                            {{ __('購物車') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

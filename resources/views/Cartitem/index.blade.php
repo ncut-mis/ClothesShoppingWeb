@@ -19,10 +19,8 @@
         
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
-            @include('TrackedItem.layouts.TrackItemlist')
+            @include('Cartitem.layouts.CartItemlist')
 
         </div>
     </body>
 </html>
-
-
