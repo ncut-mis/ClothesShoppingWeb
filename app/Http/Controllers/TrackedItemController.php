@@ -76,8 +76,14 @@ class TrackedItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tracked_item $tracked_item)
+    public function destroy(Request $request)
     {
-        //
+        $track_id = $request['Track_ID'];
+        $track = Tracked_item::find($track_id);
+        $track->delete();
+
+        session()->flash('message', '解除追蹤成功');
+        return redirect(route('trackeditem.index'));
+
     }
 }

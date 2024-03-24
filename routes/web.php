@@ -56,13 +56,16 @@ Route::middleware('auth')->group(function () {
 
 });
 Route::middleware('auth')->group(function () {
-    Route::post('TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');
-    Route::get('TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');
+    Route::post('/TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');
+    Route::get('/TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');
+    Route::delete('/TrackedItem', [TrackedItemController::class, 'destroy'])->name('trackeditem.destroy');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('CartItem', [CartItemController::class, 'store'])->name('cartitem.store');
-    Route::get('CartItem', [CartItemController::class, 'index'])->name('cartitem.index');
+    Route::post('/CartItem', [CartItemController::class, 'store'])->name('cartitem.store');
+    Route::get('/CartItem', [CartItemController::class, 'index'])->name('cartitem.index');
+    Route::patch('/CartItem', [CartItemController::class, 'update'])->name('cartitem.update');
+    Route::delete('/CartItem', [CartItemController::class, 'destroy'])->name('cartitem.destroy');
 });
 
 

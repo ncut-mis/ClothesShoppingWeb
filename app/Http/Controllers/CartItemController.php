@@ -14,7 +14,9 @@ class CartItemController extends Controller
      */
     public function index()
     {
-        return view('Cartitem.index');
+        $user_id = Auth()->user()->id;
+        $items = CartItem::where('user_id', '=', $user_id)->paginate(10);
+        return view('Cartitem.index', ['items' => $items]);
     }
 
     /**
@@ -60,16 +62,29 @@ class CartItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCartItemRequest $request, CartItem $cartItem)
+    public function update(Request $request)
     {
-        //
+         $cart_id = $request['CartID'];
+         $quantity = $request['quantity'];
+         $cart = CartItem::find($cart_id);
+         $cart->update([
+             'quantity' => $quantity,
+         ]);
+         $cart->save();
+         
+         session()->flash('message', '修改數量成功');
+         return redirect(route('cartitem.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CartItem $cartItem)
+    public function destroy(Request $request)
     {
-        //
+        $cart_id = $request['CartID'];
+        $cart = CartItem::find($cart_id);
+        $cart->delete();
+        session()->flash('message', '移出購物車成功');
+        return redirect(route('cartitem.index'));
     }
 }
