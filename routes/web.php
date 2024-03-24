@@ -21,7 +21,7 @@ use App\Models\Category;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('GuestHome');
 });
 
 Route::get('/dashboard', function () {
@@ -35,7 +35,7 @@ Route::get('/home', function () {
 
     $products = Product::paginate(8); // 示例中随机取5件服装
     return view('home', compact('products'));
-    
+
 
     // $cateGory = Category::find(11);
     // $cateGory->update([
@@ -53,16 +53,16 @@ Route::middleware('auth')->group(function () {
     Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
     Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
     Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
-    
+
 });
 Route::middleware('auth')->group(function () {
-    Route::post('TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');  
-    Route::get('TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');  
+    Route::post('TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');
+    Route::get('TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('CartItem', [CartItemController::class, 'store'])->name('cartitem.store');  
-    Route::get('CartItem', [CartItemController::class, 'index'])->name('cartitem.index');  
+    Route::post('CartItem', [CartItemController::class, 'store'])->name('cartitem.store');
+    Route::get('CartItem', [CartItemController::class, 'index'])->name('cartitem.index');
 });
 
 
