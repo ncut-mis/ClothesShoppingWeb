@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductPhoto;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
@@ -93,5 +94,19 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function search(Request $request)
+    {
+        $exists = Product::Where('name', '=', $request['keyword'])->exists();
+        $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
+        if ($exists) {
+            return view('home', compact('products'));
+        } else {
+            session()->flash('message', '查無商品');
+            return view('home', compact('products'));
+        }
+
+
     }
 }

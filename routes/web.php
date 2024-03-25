@@ -21,7 +21,9 @@ use App\Models\Category;
 */
 
 Route::get('/', function () {
-    return view('GuestHome');
+    $products = Product::paginate(8); // 示例中随机取5件服装
+
+    return view('GuestHome', compact('products'));
 });
 
 Route::get('/dashboard', function () {
@@ -50,11 +52,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
-    Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
     Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
 
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('ProductSearch', [ProductController::class, 'search'])->name('Products.search');
+    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
+    Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
+});
+
 Route::middleware('auth')->group(function () {
     Route::post('/TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');
     Route::get('/TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');
