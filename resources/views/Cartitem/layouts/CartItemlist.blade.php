@@ -13,6 +13,7 @@
                         <p class = "basis-1/3">數量</p>
                         <div class = "basis-1/3">操作</div>
                     </div>      
+                    @csrf
                     @foreach($items as $item)
                         @php
                             $itemID = $item->id;
@@ -48,6 +49,7 @@
                         </div>
                         <br>
                     @endforeach
+                    <button onclick="window.location='{{ route('order.create') }}'" class = "bg-blue-500 text-white w-20 h-10 rounded-lg">結帳</button>
                     {{$items->links()}}
             </div>
         </div>

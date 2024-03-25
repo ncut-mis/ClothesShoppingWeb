@@ -40,6 +40,10 @@
                             {{ __('購物車') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('order.index')">
+                            {{ __('查看訂單') }}
+                        </x-dropdown-link>
+
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

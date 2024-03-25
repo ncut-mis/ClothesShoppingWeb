@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TrackedItemController;
 use App\Http\Controllers\CartItemController;
+use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 
@@ -73,6 +74,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/CartItem', [CartItemController::class, 'index'])->name('cartitem.index');
     Route::patch('/CartItem', [CartItemController::class, 'update'])->name('cartitem.update');
     Route::delete('/CartItem', [CartItemController::class, 'destroy'])->name('cartitem.destroy');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/Order', [OrderController::class, 'index'])->name('order.index'); 
+    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create'); 
+    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');   
 });
 
 
