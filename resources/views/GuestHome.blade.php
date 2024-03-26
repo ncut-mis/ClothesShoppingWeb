@@ -18,7 +18,7 @@
     </head>
     <body class="font-sans antialiased">        
         @include('layouts.GuestNavigation')
-        
+        @include('layouts.GuestCategories')
         <script>
             document.addEventListener('DOMContentLoaded', function () {
             const categoryLinks = document.querySelectorAll('.category-link');

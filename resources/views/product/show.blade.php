@@ -17,8 +17,13 @@
     <body class="font-sans antialiased">
     
         
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+        <div class="min-h-screen bg-gray-100">           
+            @if(Auth::check())
+                @include('layouts.navigation')
+            @else
+                @include('layouts.GuestNavigation')
+            @endif
+            
             @include('product.layouts.productShow')
             @include('product.layouts.partials.description')
 
