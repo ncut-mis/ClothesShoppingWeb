@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('combinations', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('staff_id');
+            $table->foreign('staff_id')->references('id')->on('staff');
+            $table->string('name');
+            $table->integer('price');
+            $table->unsignedBigInteger('product_id');
+            $table->foreign('product_id')->references('id')->on('product');
             $table->timestamps();
+
         });
     }
 

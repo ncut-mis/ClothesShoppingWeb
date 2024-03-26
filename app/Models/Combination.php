@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Combination extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'product_id',
+        'staff_id',
+        'price'
+    ];
 }
