@@ -97,4 +97,15 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function cancel(Request $request)
+    {
+        $orderID = $request['OrderID'];
+        $order = Order::find($orderID);
+        $order->status = 6;
+
+        $order->save();
+        session()->flash('message', '取消成功');
+        return redirect(route('order.index'));     
+    }
 }

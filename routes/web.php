@@ -9,6 +9,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
+use App\Models\Order;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,7 @@ Route::get('/home', function () {
     //     'name' => '卡其褲',
     // ]);
     // $cateGory->save();
+    
 })->middleware(['auth', 'verified'])->name('/home');
 
 
@@ -80,6 +82,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/Order', [OrderController::class, 'index'])->name('order.index'); 
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create'); 
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');   
+    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');  
 });
 
 

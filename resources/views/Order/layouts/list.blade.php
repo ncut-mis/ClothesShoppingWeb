@@ -41,11 +41,11 @@
                                 </div>
                             </div>
                             <hr>
-                    @endforeach
-                    <div class = "flex">
-                        <h1 class = "text-xl text-red-500 mt-4 mr-4 mb-4 ml-auto">總價：{{$order->amount}}元</h1>
-                    </div>                   
-                    <hr>
+                        @endforeach
+                        <div class = "flex">
+                            <h1 class = "text-xl text-red-500 mt-4 mr-4 mb-4 ml-auto">總價：{{$order->amount}}元</h1>
+                        </div>                   
+                        <hr>
                     </div>
 
                     @php
@@ -84,9 +84,6 @@
                                 $status = "已完成";
                                 break;
                             case 6:
-                                $status = "取消審核中";
-                                break;
-                            case 7:
                                 $status = "已取消";
                                 break;
                         }
@@ -101,8 +98,16 @@
                         <div class = "mt-4">訂單狀態：{{$status}}</div>
                         <div class = "mt-4 mb-4">付款狀態：{{$remit}}</div>
                     </div>
-                @endforeach
-                <hr>
+                    <div class = "flex">
+                        <form method = "POST" action = "{{route('order.cancel')}}" class = "ml-auto mb-4">
+                            @csrf
+                            @method('patch')
+                            <input type = "hidden" name = "OrderID" value = "{{$order->id}}">
+                            <input type = "submit" value = "申請取消訂單" class = "bg-red-500 w-30 h-10 text-white font-bold rounded">
+                        </form>
+                    </div>
+                    <hr>
+                @endforeach              
             </div>
         </div>
     </div>
