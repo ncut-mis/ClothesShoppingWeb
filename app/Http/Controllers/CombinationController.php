@@ -21,7 +21,7 @@ class CombinationController extends Controller
      */
     public function create()
     {
-        //
+        return view('combinations.create');
     }
 
     /**

@@ -3,9 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>搭配組合</title>
+    <title>新增搭配組合</title>
 </head>
-<h1>所有的搭配組合</h1>
-<div>目前無搭配組合</div>
+<h1>新增搭配組合</h1>
+<form method="post" action="">
+    <label></label>
+    <input type="name" name="name" >
+</form>
 
 </html>

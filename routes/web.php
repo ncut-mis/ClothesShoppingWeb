@@ -85,7 +85,7 @@ Route::middleware('auth')->group(function () {
 //搭配組合
 Route::middleware('auth')->group(function (){
     Route::get('/staff/combination',[CombinationController::class,'index'])->name('combination.index');
-
+    Route::get('/staff/combination/create',[CombinationController::class,'create'])->name('combination.create');
 
 
 
