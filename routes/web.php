@@ -82,7 +82,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
 });
 
+//搭配組合
+Route::middleware('auth')->group(function (){
+    Route::get('/staff/combination',[CombinationController::class,'index'])->name('combination.index');
 
+
+
+
+});
 
 
 

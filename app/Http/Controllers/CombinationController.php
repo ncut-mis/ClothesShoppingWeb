@@ -13,7 +13,7 @@ class CombinationController extends Controller
      */
     public function index()
     {
-        //
+        return view('combinations.index');
     }
 
     /**
