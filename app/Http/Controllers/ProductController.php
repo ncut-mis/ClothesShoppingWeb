@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPhoto;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
@@ -101,10 +102,20 @@ class ProductController extends Controller
         $exists = Product::Where('name', '=', $request['keyword'])->exists();
         $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
         if ($exists) {
-            return view('home', compact('products'));
+            if (Auth::check()){
+                return view('home', compact('products'));
+            }
+            else{
+                return view('GuestHome', compact('products'));
+            }
         } else {
             session()->flash('message', '查無商品');
-            return view('home', compact('products'));
+            if (Auth::check()){
+                return view('home', compact('products'));
+            }
+            else{
+                return view('GuestHome', compact('products'));
+            }
         }
 
 

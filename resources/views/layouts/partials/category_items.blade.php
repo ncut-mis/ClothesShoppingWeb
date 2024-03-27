@@ -24,6 +24,6 @@
     @endforeach        
 </div>
 
-<div class = "inset-x-0 bottom-0">
-        {{ $products->links() }}
+<div class = "flex">
+       <div class = "mx-auto">{{ $products->links() }}</div> 
 </div>  

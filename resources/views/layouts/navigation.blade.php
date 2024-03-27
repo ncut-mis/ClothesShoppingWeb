@@ -28,6 +28,10 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('/home')">
+                            {{ __('首頁') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('會員中心') }}
                         </x-dropdown-link>

@@ -9,7 +9,12 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
+
 use App\Http\Controllers\CombinationController;
+
+use App\Models\Order;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,7 +30,7 @@ Route::get('/', function () {
     $products = Product::paginate(8); // 示例中随机取5件服装
 
     return view('GuestHome', compact('products'));
-});
+})->name('/');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -45,22 +50,23 @@ Route::get('/home', function () {
     //     'name' => '卡其褲',
     // ]);
     // $cateGory->save();
+
 })->middleware(['auth', 'verified'])->name('/home');
 
 
+Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
-
 });
 
+Route::get('ProductSearch', [ProductController::class, 'search'])->name('Products.search');
+Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
+
 Route::middleware('auth')->group(function () {
-    Route::get('ProductSearch', [ProductController::class, 'search'])->name('Products.search');
     Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
-    Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
 });
 
 Route::middleware('auth')->group(function () {
@@ -77,6 +83,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
     Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
@@ -88,6 +95,12 @@ Route::middleware('auth')->group(function (){
     Route::get('/staff/combination/create',[CombinationController::class,'create'])->name('combination.create');
 
 
+
+
+    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
+    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
+    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
 
 });
 

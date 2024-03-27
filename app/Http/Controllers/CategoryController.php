@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 
@@ -41,7 +42,13 @@ class CategoryController extends Controller
         $products = Product::Where('category_id', '=', $category->id)->paginate(8);
 
         // 返回一个视图，只包含服装数据列表
-        return view('home', compact('products'));
+        if (Auth::check()) {
+            return view('home', compact('products'));
+        }
+        else{
+            return view('GuestHome', compact('products'));
+        }
+        
     }
 
     /**

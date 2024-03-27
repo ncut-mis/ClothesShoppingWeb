@@ -29,7 +29,13 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if (Auth::user()->is_admin) {
+            // 管理員的登入頁面，暫定為一般用戶頁面
+            return redirect()->intended(RouteServiceProvider::HOME);
+        } else {
+            // 重定向到普通用户页面
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
     }
 
     /**
