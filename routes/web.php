@@ -23,9 +23,10 @@ use App\Models\Order;
 */
 
 Route::get('/', function () {
+    $categories = Category::paginate(10);
     $products = Product::paginate(8); // 示例中随机取5件服装
 
-    return view('GuestHome', compact('products'));
+    return view('GuestHome', compact('products','categories'));
 })->name('/');
 
 Route::get('/dashboard', function () {
@@ -36,9 +37,10 @@ Route::get('/home', function () {
     // $cateGory = new Category();
     // $cateGory->name = '外套';
     // $cateGory->save();
-
-    $products = Product::paginate(8); // 示例中随机取5件服装
-    return view('home', compact('products'));
+    $categories = Category::paginate(10, ['*'], 'categoryPage')
+                          ->withQueryString();
+    $products = Product::with('firstPhoto')->paginate(8);
+    return view('home', compact('products','categories'));
 
 
     // $cateGory = Category::find(11);

@@ -11,9 +11,6 @@
                 <h1 class = "text-4xl mb-4">訂單一覽</h1>
                 <hr>                
                 @foreach($orders as $order)
-                    @php
-                        $order_detial = \App\Models\order_detial::Where('order_id','=',$order->id)->get();
-                    @endphp
                     
                     <h1 class = "text-xl font-semibold mt-4 mb-4">訂單編號：{{$order->id}}</h1>
 
@@ -28,16 +25,13 @@
                         </div>
                         <hr>
 
-                        @foreach($order_detial as $item)
-                            @php 
-                                $product =  \App\Models\Product::find($item->product_id);
-                            @endphp
+                        @foreach($order->order_detials as $detial)
                             <div class = "flex flex-row pb-4 mt-4 ml-4">
                                 <div class = "basis-1/2">
-                                    <h1>{{$product->name}}</h1>
+                                    <h1>{{$detial->product->name}}</h1>
                                 </div>
                                 <div class = "basis-1/2">
-                                    <h1>{{$item->quantity}}</h1>
+                                    <h1>{{$detial->quantity}}</h1>
                                 </div>
                             </div>
                             <hr>

@@ -14,7 +14,9 @@ class TrackedItemController extends Controller
      */
     public function index()
     {
-        return view('TrackedItem.index');
+        $user_id = Auth()->user()->id;
+        $items = Tracked_item::where('user_id', '=', $user_id)->paginate(10);
+        return view('TrackedItem.index',compact('items'));
     }
 
     /**

@@ -1,7 +1,3 @@
-@php            
-    $image = \App\Models\ProductPhoto::Where('product_id', '=', $product->id)->first();
-@endphp
-
 <script>
     @if(session('message'))    
         alert("{{ session('message') }}");
@@ -16,20 +12,16 @@
         </div>
         <h1 class = "text-3xl text-red-500 pt-4 bottom-0 right-0">NT {{ $product->price }}</h1>
     </div>
-    <div class = "opration grid grid-cols-3 gap-3 pl-8 pt-8">
+    <div class = "opration grid grid-cols-2 gap-2 pl-8 pt-8">
         <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
             @csrf
             <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
             <input type = "submit" value = "追蹤" class = "bg-pink-500 w-20 h-10 text-white rounded-lg font-bold">
         </form>
 
-        <form method="POST" action="" class = "pb-4">
-            @csrf
-            <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-            <input type = "submit" value = "加入試搭" class = "bg-violet-500 w-20 h-10 text-white rounded-lg font-bold">
-        </form>
-
-        <button id="add" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">加入購物車</button>
+        <div class = "flex">
+            <button id="add" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
+        </div>
     </div>
 </div>
 

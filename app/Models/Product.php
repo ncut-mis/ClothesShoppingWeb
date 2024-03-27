@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
+use App\Models\CartItem;
+use App\Models\order_detial;
 
 class Product extends Model
 {
@@ -22,5 +24,25 @@ class Product extends Model
     public function Category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public function cartItems()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function ProductPhoto()
+    {
+        return $this->hasMany(ProductPhoto::class);
+    }
+
+    public function firstPhoto()
+    {
+    return $this->hasOne(ProductPhoto::class)->oldestOfMany();
+    }
+
+    public function order_detial()
+    {
+        return $this->hasMany(order_detial::class);
     }
 }
