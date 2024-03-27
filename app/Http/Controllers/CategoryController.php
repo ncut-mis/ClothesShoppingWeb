@@ -41,12 +41,15 @@ class CategoryController extends Controller
     {
         $products = Product::Where('category_id', '=', $category->id)->paginate(8);
 
+        $categories = Category::paginate(10, ['*'], 'categoryPage')
+                          ->withQueryString();
+
         // 返回一个视图，只包含服装数据列表
         if (Auth::check()) {
-            return view('home', compact('products'));
+            return view('home', compact('categories','products'));
         }
         else{
-            return view('GuestHome', compact('products'));
+            return view('GuestHome', compact('categories','products'));
         }
         
     }

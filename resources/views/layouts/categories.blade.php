@@ -4,7 +4,7 @@
             <x-nav-link :href="route('/home')" class="text-lg">
                 所有商品
             </x-nav-link>
-            @foreach (\App\Models\Category::paginate(10) as $category)
+            @foreach ($categories as $category)
                 <x-nav-link :href="route('Categorys.show' , ['category' => $category])"  class="text-lg">
                     {{ $category->name }}
                 </x-nav-link>
@@ -19,7 +19,7 @@
             </form>
         </div>
         <div class="flex">
-            {{ \App\Models\Category::paginate(10)->links('pagination::tailwind') }}
+            {{ $categories->links('vendor.pagination.simple-tailwind') }}
         </div>
     </div>
 

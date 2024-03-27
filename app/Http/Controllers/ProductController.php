@@ -70,7 +70,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('product.show', ['product' => $product]);
+        //image可修改成取亂數隨機顯示商品圖片，也可取出所有圖片，也可在Model去定義圖片顯示方法
+        $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
+        return view('product.show', ['product' => $product , 'image' => $image ]);
     }
 
     /**
