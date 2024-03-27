@@ -23,7 +23,8 @@ use App\Models\Order;
 */
 
 Route::get('/', function () {
-    $categories = Category::paginate(10);
+    $categories = Category::paginate(10, ['*'], 'categoryPage')
+                          ->withQueryString();
     $products = Product::paginate(8); // 示例中随机取5件服装
 
     return view('GuestHome', compact('products','categories'));

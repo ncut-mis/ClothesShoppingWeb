@@ -2,11 +2,11 @@
     <div class="bg-orange-500 pt-4 pb-4 flex justify-between">
         <div class="flex">
             <x-nav-link :href="route('/')" class="text-lg">
-                所有商品
+                <a class = "pb-4">所有商品</a>
             </x-nav-link>
-            @foreach ($categories::paginate(10) as $category)
+            @foreach ($categories as $category)
                 <x-nav-link :href="route('Categorys.show' , ['category' => $category])"  class="text-lg">
-                    {{ $category->name }}
+                    <a class = "pb-4"> {{$category->name }}</a>
                 </x-nav-link>
             @endforeach
         </div>
@@ -19,7 +19,7 @@
             </form>
         </div>
         <div class="flex">
-            {{ $categories->links('pagination::tailwind') }}
+            {{ $categories->links('vendor.pagination.simple-tailwind') }}
         </div>
     </div>
 

@@ -23,5 +23,5 @@
 </div>
 
 <div class = "flex">
-       <div class = "mx-auto">{{ $products->links() }}</div> 
+       <div class = "mx-auto">{{ $products->links('vendor.pagination.simple-tailwind') }}</div> 
 </div>  
