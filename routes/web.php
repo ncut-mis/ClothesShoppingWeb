@@ -26,6 +26,7 @@ Route::get('/', function () {
     $products = Product::paginate(8); // 示例中随机取5件服装
 
     return view('GuestHome', compact('products'));
+
 })->name('/');
 
 Route::get('/dashboard', function () {
@@ -46,7 +47,7 @@ Route::get('/home', function () {
     //     'name' => '卡其褲',
     // ]);
     // $cateGory->save();
-    
+
 })->middleware(['auth', 'verified'])->name('/home');
 
 
@@ -61,8 +62,8 @@ Route::middleware('auth')->group(function () {
 Route::get('ProductSearch', [ProductController::class, 'search'])->name('Products.search');
 Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
 
-Route::middleware('auth')->group(function () {   
-    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');    
+Route::middleware('auth')->group(function () {
+    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -79,11 +80,14 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/Order', [OrderController::class, 'index'])->name('order.index'); 
-    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create'); 
-    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');   
-    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');  
+    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
+    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
+    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
 });
 
+
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
 
 require __DIR__ . '/auth.php';
