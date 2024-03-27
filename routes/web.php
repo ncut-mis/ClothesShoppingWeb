@@ -9,7 +9,11 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
+
+use App\Http\Controllers\CombinationController;
+
 use App\Models\Order;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +53,7 @@ Route::get('/home', function () {
     //     'name' => '卡其褲',
     // ]);
     // $cateGory->save();
-    
+
 })->middleware(['auth', 'verified'])->name('/home');
 
 
@@ -64,8 +68,8 @@ Route::middleware('auth')->group(function () {
 Route::get('ProductSearch', [ProductController::class, 'search'])->name('Products.search');
 Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
 
-Route::middleware('auth')->group(function () {   
-    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');    
+Route::middleware('auth')->group(function () {
+    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
 });
 
 Route::middleware('auth')->group(function () {
@@ -82,11 +86,27 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/Order', [OrderController::class, 'index'])->name('order.index'); 
-    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create'); 
-    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');   
-    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');  
+
+    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
+    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
 });
+
+//搭配組合
+Route::middleware('auth')->group(function (){
+    Route::get('/staff/combination',[CombinationController::class,'index'])->name('combination.index');
+    Route::get('/staff/combination/create',[CombinationController::class,'create'])->name('combination.create');
+
+
+
+
+    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
+    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
+    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
+
+});
+
 
 
 require __DIR__ . '/auth.php';
