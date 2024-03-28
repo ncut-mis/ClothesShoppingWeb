@@ -18,11 +18,9 @@
                     @foreach($items as $item)
                         @php
                             $itemID = $item->id;
-                            $product = \App\Models\Product::find($item->product_id);
-                            $productName = $product->name;
                         @endphp
                         <div class = "flex flex-row mt-4">
-                            <div class = "basis-1/3 flex items-center pb-4">{{$productName}}</div >
+                            <div class = "basis-1/3 flex items-center pb-4">{{$item->product->name}}</div >
                             <div  class = "basis-1/3 flex items-center pb-4">{{$item->quantity}}</div >
                             <div class = "basis-1/3 flex flex-row">
                                 <div class = "basis-1/2 mb-4">

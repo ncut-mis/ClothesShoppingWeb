@@ -15,10 +15,7 @@
                         <div class = "basis-1/3 font-semibold">操作</div>
                     </div>
                     <hr>
-                    @php 
-                        $user_id = Auth()->user()->id;
-                        $items = \App\Models\Tracked_item::where('user_id', '=', $user_id)->paginate(10);
-                    @endphp       
+                          
                     @foreach($items as $item)
                         @php
                             $product = \App\Models\Product::find($item->product_id);

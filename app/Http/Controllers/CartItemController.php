@@ -15,7 +15,10 @@ class CartItemController extends Controller
     public function index()
     {
         $user_id = Auth()->user()->id;
-        $items = CartItem::where('user_id', '=', $user_id)->paginate(10);
+        $items = CartItem::with('product') 
+                 ->where('user_id', $user_id)
+                 ->paginate(10);
+                 
         return view('Cartitem.index', ['items' => $items]);
     }
 

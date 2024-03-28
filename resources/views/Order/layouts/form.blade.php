@@ -26,14 +26,11 @@
 
                 @foreach($CartItems as $item)
                     @php
-                        $itemID = $item->id;
-                        $product = \App\Models\Product::find($item->product_id);
-                        $productName = $product->name;
-                        $amount += ($item->quantity)*($product->price);
+                        $amount += ($item->quantity)*($item->product->price);
                     @endphp
                     <div class = "flex flex-row pb-4 ml-8 mt-4">
                         <div class = "basis-1/2">
-                            <h1>{{$productName}}</h1>
+                            <h1>{{$item->product->name}}</h1>
                         </div>
                         <div class = "basis-1/2">
                             <h1>{{$item->quantity}}</h1>
