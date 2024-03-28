@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Combination;
 use App\Http\Requests\StoreCombinationRequest;
 use App\Http\Requests\UpdateCombinationRequest;
+use App\Models\Product;
 
 class CombinationController extends Controller
 {
@@ -13,7 +14,9 @@ class CombinationController extends Controller
      */
     public function index()
     {
-        return view('combinations.index');
+        $products=Product::all();
+
+        return view('combinations.index',compact('products'));
     }
 
     /**

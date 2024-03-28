@@ -87,6 +87,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
+    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
 });
 
 //搭配組合
@@ -94,13 +95,6 @@ Route::middleware('auth')->group(function (){
     Route::get('/staff/combination',[CombinationController::class,'index'])->name('combination.index');
     Route::get('/staff/combination/create',[CombinationController::class,'create'])->name('combination.create');
 
-
-
-
-    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
-    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
-    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
-    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
 
 });
 
