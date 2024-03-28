@@ -9,14 +9,25 @@
 </head>
 <body>
     <h1>商品新增</h1>
-    <form method="post" action="">
+    <div>
+        @if($errors->any())
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{$error)}}</li>
+                @endforeach
+            </ul>
+        @endif
+    </div>
+    <form method="post" action="{{route('product.store')}}">
+        @csrf
+        @method('post')
         <div>
             <label>商品名稱</label>
             <input type="text" name="name" placeholder="Name" />
         </div>
         <div>
-            <label>商品數量</label>
-            <input type="text" name="quantity" placeholder="Quantity" />
+            <label>商品庫存</label>
+            <input type="text" name="stock" placeholder="Stock" />
         </div>
         <div>
             <label>商品價格</label>

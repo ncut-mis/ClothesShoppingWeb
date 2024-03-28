@@ -16,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('product.index');
+        $product = Product::all();
+        return view('product.index', ['products' =>$product]);
     }
 
     /**
@@ -27,11 +28,13 @@ class ProductController extends Controller
         return view('product.create');
     }
 
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreProductRequest $request)
     {
+        global $data;
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
@@ -40,7 +43,8 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-
+        $newProduct = Product::create($data);
+        return redirect(route('product.index'));
 
         $product = new Product();
         $product->name = $validated['name'];
