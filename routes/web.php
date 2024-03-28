@@ -95,8 +95,11 @@ Route::middleware('auth')->group(function () {
 
 //搭配組合
 Route::middleware('auth')->group(function (){
-    Route::get('/staff/combination',[CombinationController::class,'index'])->name('combination.index');
-    Route::get('/staff/combination/create',[CombinationController::class,'create'])->name('combination.create');
+    Route::get('/staff/combinations',[CombinationController::class,'index'])->name('combinations.index');
+    Route::get('/staff/combinations/create',[CombinationController::class,'create'])->name('combinations.create');
+    Route::post('/staff/combinations/store',[CombinationController::class,'store'])->name('combinations.store');
+    Route::delete('/staff/combinations/destroy',[CombinationController::class,'destroy'])->name('combinations.destroy');
+
 });
 
 
