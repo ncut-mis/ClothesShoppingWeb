@@ -90,21 +90,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
+    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
 });
 
 //搭配組合
 Route::middleware('auth')->group(function (){
-    Route::get('/staff/combination',[CombinationController::class,'index'])->name('combination.index');
-    Route::get('/staff/combination/create',[CombinationController::class,'create'])->name('combination.create');
-
-
-
-
-
-    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
-    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
-    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
-    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
+    Route::get('/staff/combinations',[CombinationController::class,'index'])->name('combinations.index');
+    Route::get('/staff/combinations/create',[CombinationController::class,'create'])->name('combinations.create');
+    Route::post('/staff/combinations/store',[CombinationController::class,'store'])->name('combinations.store');
+    Route::delete('/staff/combinations/destroy',[CombinationController::class,'destroy'])->name('combinations.destroy');
 
 });
 
