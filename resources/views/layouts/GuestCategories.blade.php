@@ -19,7 +19,7 @@
             </form>
         </div>
         <div class="flex">
-            {{ $categories->links('vendor.pagination.simple-tailwind') }}
+            {{ $categories->links('vendor.pagination.simple-tailwind2') }}
         </div>
     </div>
 

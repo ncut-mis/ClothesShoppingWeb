@@ -40,9 +40,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
-    // $cateGory = new Category();
-    // $cateGory->name = '外套';
-    // $cateGory->save();
+    //  $cateGory = new Category();
+    //  $cateGory->name = '運動褲';
+    //  $cateGory->save();
     $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
     $products = Product::with('firstPhoto')->paginate(8);

@@ -26,14 +26,54 @@
 </div>
 
 <div id="popup" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-    <span class="absolute top-0 right-0 cursor-pointer" onclick="closePopup()">&times;</span>
-    <p>請選擇數量</p>
-    <form method="POST" action="{{route('cartitem.store')}}">
-        @csrf  
-        <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-        <input type = "number" name = "quantity" min = "1" max = "50">
-        <x-primary-button >{{ __('加入購物車') }}</x-primary-button>
-    </form>
+    <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup()">&times;</span>
+    
+    <div class = "flex flex-row">
+        <div class = "basis-1/2">
+            <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
+            <div class = "photo">
+                <img src="{{ asset('images/' . $image->file_address) }}" class = "max-w-sm max-h-sm">  
+            </div>
+        </div>
+
+        <div class = "basis-1/2 ml-8">
+            <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "mt-8">
+                @csrf  
+                <div>
+                    <label for = "quantity">請選擇數量</label>
+                    <input type = "number" name = "quantity" min = "1" max = "50">
+                </div>        
+                <br>
+
+                <div class = "mt-4">
+                    <label for = "size">請選擇尺寸</label>
+                    <select id = "size" name = "size">
+                        <option value = "XS">XS</option>
+                        <option value = "S">S</option>
+                        <option value = "M">M</option>
+                        <option value = "L">L</option>
+                        <option value = "XL">XL</option>
+                        <option value = "2XL">2XL</option>
+                    </select>
+                </div>
+        
+                <input type = "hidden" name = "ProductID" value = "{{$product->id}}">      
+            </form>
+        </div>
+    </div>
+
+    <div class = "flex flex-row">
+        <div class = "basis-1/2">
+            <h1 class = "text-3xl text-red-500 pt-4 mb-4 right-0">NT {{ $product->price }}</h1>
+        </div>
+
+        <div class = "basis-1/2 flex">
+             <button type = "submit" form = "cartitem" class = "rounded-lg bg-blue-500 hover:bg-blue-700 text-white text-xl w-40 h-10 ml-auto mt-4">
+                加入購物車
+            </button>
+        </div>
+    </div>
+    
 </div>
 
 <script>
