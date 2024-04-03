@@ -9,6 +9,8 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
+use App\Models\Combination;
+use App\Models\combinations_detail;
 
 use App\Http\Controllers\CombinationController;
 
@@ -43,6 +45,20 @@ Route::get('/home', function () {
     //  $cateGory = new Category();
     //  $cateGory->name = '運動褲';
     //  $cateGory->save();
+
+    // $combinations = new Combination();
+    // $combinations_detail = new combinations_detail();
+
+    // $combinations->staff_id = 0;
+    // $combinations->name = "Nike運動套裝";
+    // $combinations->price = 1970;
+    // $combinations->product_id = 1;
+    // $combinations->save();
+
+    // $combinations_detail->combinations_id = $combinations->id;
+    // $combinations_detail->producted_id = 10;
+    // $combinations_detail->save();
+
     $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
     $products = Product::with('firstPhoto')->paginate(8);
