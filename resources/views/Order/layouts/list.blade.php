@@ -16,10 +16,13 @@
 
                     <div class = "w-1/2 border-2">
                         <div class = "flex flex-row pb-4 mt-4 ml-4">
-                            <div class = "basis-1/2">
+                            <div class = "basis-1/3">
                                 <h1>商品名稱</h1>
                             </div>
-                            <div class = "basis-1/2">
+                            <div class = "basis-1/3">
+                                <h1>尺寸</h1>
+                            </div>
+                            <div class = "basis-1/3">
                                 <h1>數量</h1>
                             </div>
                         </div>
@@ -27,10 +30,13 @@
 
                         @foreach($order->order_detials as $detial)
                             <div class = "flex flex-row pb-4 mt-4 ml-4">
-                                <div class = "basis-1/2">
+                                <div class = "basis-1/3">
                                     <h1>{{$detial->product->name}}</h1>
                                 </div>
-                                <div class = "basis-1/2">
+                                <div class = "basis-1/3">
+                                    <h1>{{$detial->size}}</h1>
+                                </div>
+                                <div class = "basis-1/3">
                                     <h1>{{$detial->quantity}}</h1>
                                 </div>
                             </div>

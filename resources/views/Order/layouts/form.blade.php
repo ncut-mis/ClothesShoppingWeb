@@ -11,10 +11,13 @@
                 <h1 class = "text-4xl mb-8 font-bold">結帳</h1>
                 <h1 class = "text-2xl mb-4 ml-4 font-bold">購物車清單</h1>
                 <div class = "flex flex-row pb-4">
-                    <div class = "basis-1/2 ml-4">
+                    <div class = "basis-1/3 ml-4">
                         <h1 class = "font-bold">產品名稱</h1>
                     </div>
-                    <div class = "basis-1/2">
+                    <div class = "basis-1/3">
+                        <h1 class = "font-bold">尺寸</h1>
+                    </div>  
+                    <div class = "basis-1/3">
                         <h1 class = "font-bold">數量</h1>
                     </div>                    
                 </div>
@@ -29,10 +32,13 @@
                         $amount += ($item->quantity)*($item->product->price);
                     @endphp
                     <div class = "flex flex-row pb-4 ml-8 mt-4">
-                        <div class = "basis-1/2">
+                        <div class = "basis-1/3">
                             <h1>{{$item->product->name}}</h1>
                         </div>
-                        <div class = "basis-1/2">
+                        <div class = "basis-1/3">
+                            <h1>{{$item->size}}</h1>
+                        </div>
+                        <div class = "basis-1/3">
                             <h1>{{$item->quantity}}</h1>
                         </div>
                     </div>
@@ -70,6 +76,8 @@
                             <label for = "phone">收件人電話</label>
                             <input type = "text" id = "phone" name = "phone" class = "rounded ml-4">
                         </div>
+                        <br>
+                        <h1 class = "text-red-500 ml-4 mb-4">本網站暫時只提供宅配到府的運送方式</h1>
                         <hr>
                         <div class = "flex">
                             <input type = "submit" value = "送出訂單" class = "mt-4 ml-4 rounded-lg bg-blue-500 text-white w-20 h-10 ml-auto">

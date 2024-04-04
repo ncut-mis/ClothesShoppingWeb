@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\order_detial;
 use App\Models\CartItem;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
+        $orders = Order::Where('user_id','=', Auth::user()->id)->get();
         return view('Order.index',['orders' => $orders]);
     }
 
@@ -58,6 +59,7 @@ class OrderController extends Controller
             $order_detial->order_id = $order->id;
             $order_detial->product_id = $cartItem->product_id;
             $order_detial->quantity = $cartItem->quantity;
+            $order_detial->size = $cartItem->size;
 
             $order_detial->save();
             $cartItem->delete();

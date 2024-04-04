@@ -39,6 +39,7 @@ class CartItemController extends Controller
         $cartitem->user_id = Auth()->user()->id;
         $cartitem->product_id = $request['ProductID'];
         $cartitem->quantity = $request['quantity'];
+        $cartitem->size = $request['size'];
         $cartitem->save();
 
         session()->flash('message', '加入購物車成功');
@@ -68,15 +69,29 @@ class CartItemController extends Controller
     public function update(Request $request)
     {
          $cart_id = $request['CartID'];
-         $quantity = $request['quantity'];
          $cart = CartItem::find($cart_id);
-         $cart->update([
-             'quantity' => $quantity,
-         ]);
-         $cart->save();
+
+         if($request->has('quantity')){
+            $quantity = $request['quantity'];
+            $cart->update([
+                'quantity' => $quantity,
+            ]);
+            
+            session()->flash('message', '修改數量成功');
+            return redirect(route('cartitem.index'));
+         }
+
+         if($request->has('size')){
+            $size = $request['size'];
+            $cart->size = $size;
+
+            $cart->save();
+            
+            session()->flash('message', '修改尺寸成功');
+            return redirect(route('cartitem.index'));
+         }
          
-         session()->flash('message', '修改數量成功');
-         return redirect(route('cartitem.index'));
+         
     }
 
     /**
