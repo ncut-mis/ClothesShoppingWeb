@@ -80,7 +80,7 @@
                         <h1 class = "text-red-500 ml-4 mb-4">本網站暫時只提供宅配到府的運送方式</h1>
                         <hr>
                         <div class = "flex">
-                            <input type = "submit" value = "送出訂單" class = "mt-4 ml-4 rounded-lg bg-blue-500 text-white w-20 h-10 ml-auto">
+                            <input type = "submit" value = "送出訂單" class = "mt-4 ml-4 rounded-lg bg-blue-500 hover:bg-blue-800 text-white w-20 h-10 ml-auto cursor-pointer">
                         </div>
                 </form>
             </div>

@@ -16,7 +16,7 @@
             <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
                 @csrf
                 <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-                <input type = "submit" value = "追蹤" class = "bg-pink-500 w-20 h-10 text-white rounded-lg font-bold">
+                <input type = "submit" value = "追蹤" class = "bg-pink-500 hover:bg-pink-800 w-20 h-10 text-white rounded-lg font-bold cursor-pointer">
             </form>
 
             <div class = "flex">

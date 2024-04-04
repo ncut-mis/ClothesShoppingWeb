@@ -103,7 +103,7 @@
                             @csrf
                             @method('patch')
                             <input type = "hidden" name = "OrderID" value = "{{$order->id}}">
-                            <input type = "submit" value = "申請取消訂單" class = "bg-red-500 w-30 h-10 text-white font-bold rounded">
+                            <input type = "submit" value = "申請取消訂單" class = "bg-red-500 hover-red-800 w-30 h-10 text-white font-bold rounded cursor-pointer">
                         </form>
                     </div>
                     <hr>
