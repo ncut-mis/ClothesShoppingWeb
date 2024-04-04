@@ -57,12 +57,12 @@
             <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
                 <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}</h1>                                 
                 <div>
-                    <form  method="POST">
+                    <form  method="POST" action="{{route('cartitem.store')}}">
                         @csrf
 
                         <div class = "mt-4">
-                            <label for = "size">{{$combination->product->name}}</label>
-                            <select id = "size" name = "size">
+                            <label for = "sizeMain">{{$combination->product->name}}</label>
+                            <select id = "sizeMain" name = "sizes[{{$combination->product->id}}]">
                                 <option value = "XS">XS</option>
                                 <option value = "S">S</option>
                                 <option value = "M">M</option>
@@ -74,8 +74,8 @@
 
                         @foreach($combination->combinations_detail as $item)
                         <div class = "mt-4">
-                            <label for = "size">{{$item->product->name}}</label>
-                            <select id = "size" name = "size">
+                            <label for = "size-{{$item->product->id}}">{{$item->product->name}}</label>
+                            <select id = "size-{{$item->product->id}}" name = "sizes[{{$item->product->id}}]">
                                 <option value = "XS">XS</option>
                                 <option value = "S">S</option>
                                 <option value = "M">M</option>
