@@ -1,5 +1,6 @@
 <x-app-layout>
     <div class="bg-orange-500 pt-4 pb-4 flex justify-between">
+        <!--顯示服裝類別導覽鍵-->
         <div class="relative">
             <x-nav-link :href="route('/home')" class="text-lg">
                 所有商品
@@ -12,10 +13,12 @@
         </div>
 
         <div class = "absolute right-0 flex">
+            <!--顯示分頁連結-->
             <div class="flex-1 mr-4">
                 {{ $categories->links('vendor.pagination.simple-tailwind2') }}
             </div>
 
+            <!--顯示搜尋欄-->
             <div class="flex mr-4 flex-none">
                 <form method="GET" action = "{{route('Products.search')}}">
                     @csrf

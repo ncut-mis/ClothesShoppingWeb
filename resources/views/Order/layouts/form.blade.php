@@ -23,14 +23,18 @@
                 </div>
                 <hr>
 
+                <!--計算總金額變數初始化-->
                 @php
                     $amount = 0; 
                 @endphp
 
+                <!--顯示購物車清單-->
                 @foreach($CartItems as $item)
+                    <!--計算總金額-->
                     @php
                         $amount += ($item->quantity)*($item->product->price);
                     @endphp
+
                     <div class = "flex flex-row pb-4 ml-8 mt-4">
                         <div class = "basis-1/3">
                             <h1>{{$item->product->name}}</h1>
@@ -44,6 +48,8 @@
                     </div>
                     <hr>
                 @endforeach
+
+                <!--顯示總價-->
                 <div class = "flex">
                     <h1 class = "text-red-500 text-xl mt-4 mb-4 ml-auto">總價：{{$amount}}元</h1>
                 </div>
@@ -52,6 +58,8 @@
                 <form method = "POST" action = "{{route('order.store')}}">
                     @csrf
                     <input type = "hidden" name = "amount" value = "{{$amount}}">
+
+                    <!--選擇付款方式-->
                     <h1 class = "text-2xl mt-4 ml-4 font-bold">付款方式</h1>
                         <div class = "mt-4 ml-4">
                             <input type="radio"  name="choose" value="0" >
@@ -67,6 +75,7 @@
                         </div>    
                         <hr>
 
+                        <!--收件人資料表單-->
                         <h1 class = "text-2xl mt-4 ml-4 font-bold">收件人資料</h1>
                         <div class = "ml-4 mt-4">
                             <label for = "address">收件人地址</label>

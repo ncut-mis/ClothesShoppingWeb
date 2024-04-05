@@ -2,12 +2,25 @@
     @if(session('message'))    
         alert("{{ session('message') }}");
     @endif 
+
+     // 用于插入图片的函数
+    function insertImage(divId, imagePath) {
+        var img = document.createElement("img");
+        img.src = imagePath; // 使用变量 imagePath 作为图片地址
+        img.alt = "描述文字"; // 替代文本
+
+        // 将创建的 img 元素插入到指定的 div 中
+        document.getElementById(divId).appendChild(img);
+    }
 </script>
+
+<!--單品顯示區域-->
 <div class = "flex flex-row">
     <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3">
         <div class = "product pl-8 ">
             <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
             <div class = "photo">
+                <!--暫時設定為顯示第一個圖片-->
                 <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" class = "max-w-sm max-h-sm">  
             </div>
             <h1 class = "text-3xl text-red-500 pt-4 bottom-0 right-0">NT {{ $product->price }}</h1>
@@ -24,6 +37,8 @@
             </div>
         </div>
     </div>
+
+    <!--搭配組合顯示區域-->
     @if($combinations->count()>0)
         @foreach($combinations as $combination)
             <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3 relative">
@@ -53,13 +68,15 @@
                 </div>
             </div>
 
+            <!--搭配組合加入購物車時選擇尺寸的區塊-->
             <div id="popup2" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-            <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
+                <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
                 <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}</h1>                                 
                 <div>
                     <form  method="POST" action="{{route('cartitem.store')}}">
                         @csrf
 
+                        <!--主要商品選擇尺寸選單-->
                         <div class = "mt-4">
                             <label for = "sizeMain">{{$combination->product->name}}</label>
                             <select id = "sizeMain" name = "sizes[{{$combination->product->id}}]">
@@ -72,6 +89,7 @@
                             </select>
                         </div>
 
+                        <!--搭配商品選擇尺寸選單-->
                         @foreach($combination->combinations_detail as $item)
                         <div class = "mt-4">
                             <label for = "size-{{$item->product->id}}">{{$item->product->name}}</label>
@@ -91,6 +109,84 @@
                     </form>
                 </div>              
             </div> 
+
+            <!--預覽搭配組合區塊-->
+            <div id="popup3" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
+                <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup3()">&times;</span>
+                <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}預覽</h1>
+                <div class = "grid grid-cols-1 md:grid-cols-2 gap-4">                  
+                    <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "cap">   
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "top">                                 
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40" id = "pant"> 
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40" id = "sock"> 
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "shoe">     
+                    </div>
+
+                    <!--加載主要商品-->
+                    @switch($combination->product->Category->category_type)
+                        @case(0)
+                            <script>
+                                insertImage("cap", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(1)
+                            <script>
+                                insertImage("top", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(2)
+                            <script>
+                                insertImage("pant", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(3)
+                            <script>
+                                insertImage("sock", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(4)
+                            <script>
+                                insertImage("shoe", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @endswitch
+
+                    <!--加載搭配商品-->
+                    @foreach($combination->combinations_detail as $item)
+                        @switch($item->product->Category->category_type)
+                            @case(0)
+                                <script>
+                                    insertImage("cap", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
+                                </script>
+                                @break
+                            @case(1)
+                                <script>
+                                    insertImage("top", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
+                                </script>
+                                @break
+                            @case(2)
+                                <script>
+                                    insertImage("pant", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
+                                </script>
+                                @break
+                            @case(3)
+                                <script>
+                                    insertImage("sock", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
+                                </script>
+                                @break
+                            @case(4)
+                                <script>
+                                    insertImage("shoe", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
+                                </script>
+                                @break
+                            @endswitch
+                    @endforeach
+                </div>           
+            </div>
         @endforeach
     @else
         <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3">
@@ -99,6 +195,7 @@
     @endif
 </div>
 
+<!--單品選擇尺寸及數量區塊-->
 <div id="popup" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
     <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup()">&times;</span>
     
@@ -165,6 +262,14 @@
 
   document.getElementById('combination_add').addEventListener('click', function() {
     document.getElementById('popup2').classList.remove('hidden');
+  });
+
+  function closePopup3() {
+    document.getElementById('popup3').classList.add('hidden');
+  }
+
+  document.getElementById('Preview').addEventListener('click', function() {
+    document.getElementById('popup3').classList.remove('hidden');
   });
 </script>
 

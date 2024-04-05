@@ -20,6 +20,7 @@
                       $amount = 0; 
                     @endphp
 
+                    <!--顯示購物車清單-->
                     @foreach($items as $item)
                         @php
                             $itemID = $item->id;
@@ -29,9 +30,13 @@
                             <div class = "basis-1/4 flex items-center pb-4">{{$item->product->name}}</div >
                             <div  class = "basis-1/4 flex items-center pb-4">{{$item->size}}</div >
                             <div  class = "basis-1/4 flex items-center pb-4">{{$item->quantity}}</div >
+
+                            <!--操作按鈕區塊-->
                             <div class = "basis-1/4 flex flex-row">
+                                <!--修改尺寸區塊-->
                                 <div class = "basis-1/3 mb-4">
                                     <button id="updateSize" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改尺寸</button>
+                                    <!--顯示修改尺寸用的小視窗-->
                                     <div id="popup2" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
                                         <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
                                         <form method = "POST" action = "{{route('cartitem.update')}}">
@@ -56,8 +61,10 @@
                                     </div>
                                 </div>
 
+                                <!--修改數量區塊-->
                                 <div class = "basis-1/3 mb-4">
                                     <button id="updateQuantity" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改數量</button>
+                                    <!--顯示修改數量用的小視窗-->
                                     <div id="popup1" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
                                         <span class="absolute top-1 right-2 right-0 cursor-pointer" onclick="closePopup1()">&times;</span>
                                         <form method="POST" action="{{route('cartitem.update')}}">
@@ -73,6 +80,7 @@
                                     </div>
                                 </div>
                            
+                                <!--移出購物車區塊-->
                                 <form method = "POST" action = "{{route('cartitem.destroy')}}" class = "basis-1/3 mb-4">
                                     @csrf
                                     @method('DELETE')
@@ -84,6 +92,8 @@
                         <hr>                       
                     @endforeach
                     {{$items->links()}}
+
+                    <!--結帳區塊-->
                     <div class = "flex">
                         <h1 class = "text-red-500 text-2xl mt-6">NT {{$amount}}</h1>
                         <button onclick="window.location='{{ route('order.create') }}'" class = "bg-blue-700 hover:bg-blue-900 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-4 mr-4">結帳</button>                       

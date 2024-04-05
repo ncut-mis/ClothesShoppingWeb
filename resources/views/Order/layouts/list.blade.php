@@ -9,7 +9,8 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900">
                 <h1 class = "text-4xl mb-4">訂單一覽</h1>
-                <hr>                
+                <hr>      
+                <!--顯示所有訂單-->          
                 @foreach($orders as $order)
                     
                     <h1 class = "text-xl font-semibold mt-4 mb-4">訂單編號：{{$order->id}}</h1>
@@ -28,6 +29,7 @@
                         </div>
                         <hr>
 
+                        <!--顯示訂單明細-->
                         @foreach($order->order_detials as $detial)
                             <div class = "flex flex-row pb-4 mt-4 ml-4">
                                 <div class = "basis-1/3">
@@ -42,12 +44,15 @@
                             </div>
                             <hr>
                         @endforeach
+
+                        <!--顯示總價-->
                         <div class = "flex">
                             <h1 class = "text-xl text-red-500 mt-4 mr-4 mb-4 ml-auto">總價：{{$order->amount}}元</h1>
                         </div>                   
                         <hr>
                     </div>
 
+                    <!--因資料庫裡以數字儲存，故先行設定顯示的字-->
                     @php
                         switch ($order->paymentmethodid) {
                             case 0:
@@ -90,6 +95,8 @@
 
                         $remit = $order->remit === 0 ? "未付款" : "已付款";
                     @endphp
+
+                    <!--訂單明細顯示-->
                     <div class = "mt-4">
                         <div class = "mt-4">付款方式：{{$paymentmethodid}}</div>
                         <div class = "mt-4">運送日期：{{$order->trains_time}}</div>
@@ -98,6 +105,8 @@
                         <div class = "mt-4">訂單狀態：{{$status}}</div>
                         <div class = "mt-4 mb-4">付款狀態：{{$remit}}</div>
                     </div>
+
+                    <!--申請取消訂單表單，因admin部分尚未完工，所以此動作會先把訂單狀態改為已取消-->
                     <div class = "flex">
                         <form method = "POST" action = "{{route('order.cancel')}}" class = "ml-auto mb-4">
                             @csrf
