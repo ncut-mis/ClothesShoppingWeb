@@ -1,17 +1,28 @@
-{{-- 引入主布局文件 --}}
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-{{-- 定義內容區域 --}}
-@section('content')
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+
+    <!-- Scripts -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
     <div class="container">
         <h2>商品管理</h2>
 
-        {{-- 新增商品按鈕 --}}
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">
+{{--         新增商品按鈕 --}}
+        <button type="button" class="btn btn-primary"  >
             新增商品
         </button>
 
-        {{-- 商品列表 --}}
+{{--         商品列表 --}}
         <div class="mt-4">
             <table class="table">
                 <thead>
@@ -19,23 +30,21 @@
                     <th>商品名稱</th>
                     <th>價格</th>
                     <th>搭配組合</th>
-                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                {{-- 假設有一個 $products 變數包含所有商品 --}}
-{{--                @foreach ($products as $product)--}}
-{{--                    <tr>--}}
-{{--                        <td>{{ $product->name }}</td>--}}
-{{--                        <td>{{ $product->price }}</td>--}}
-{{--                        <td>{{ $product->combination }}</td>--}}
-{{--                        <td>--}}
-{{--                            --}}{{-- 操作按鈕 --}}
-{{--                            <button class="btn btn-info">編輯</button>--}}
-{{--                            <button class="btn btn-danger">刪除</button>--}}
-{{--                        </td>--}}
-{{--                    </tr>--}}
-{{--                @endforeach--}}
+
+                @foreach ($products as $product)
+                    <tr>
+                        <td>{{ $product->name }}</td>
+                        <td>{{ $product->price }}</td>
+                        <td>{{ $product->combination }}</td>
+                        <td>
+                            <button class="btn btn-info">編輯</button>
+                            <button class="btn btn-danger">刪除</button>
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -62,8 +71,8 @@
                                 <input type="number" class="form-control" id="price" name="price" required>
                             </div>
                             <div class="form-group">
-                                <label for="combo">搭配組合</label>
-                                <input type="text" class="form-control" id="combo" name="combo">
+                                <label for="combination">搭配組合</label>
+                                <input type="text" class="form-control" id="combination" name="combination">
                             </div>
                         </div>
                         <div class="modal-footer">

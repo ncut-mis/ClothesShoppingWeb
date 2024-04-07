@@ -66,11 +66,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('ProductSearch', [ProductController::class, 'search'])->name('Products.search');
-Route::get('Products/{product}', [ProductController::class, 'show'])->name('Products.show');
+
 
 Route::middleware('auth')->group(function () {
-    Route::post('Products', [ProductController::class, 'store'])->name('Products.store');
+    Route::get('productSearch', [ProductController::class, 'search'])->name('Products.search');
+    Route::get('products/{product}', [ProductController::class, 'show'])->name('Products.show');
+    Route::post('products', [ProductController::class, 'store'])->name('products.store');
 });
 
 Route::middleware('auth')->group(function () {
