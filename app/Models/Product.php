@@ -9,6 +9,7 @@ use App\Models\CartItem;
 use App\Models\Combination;
 use App\Models\combinations_detail;
 use App\Models\order_detial;
+use App\Models\Tracked_item;
 
 class Product extends Model
 {
@@ -31,6 +32,10 @@ class Product extends Model
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
+    }
+    public function trackItem()
+    {
+        return $this->hasMany(Tracked_item::class);
     }
 
     public function ProductPhoto()

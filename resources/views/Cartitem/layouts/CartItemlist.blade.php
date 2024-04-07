@@ -10,10 +10,11 @@
                 <div class="p-6 text-gray-900">
                     <h1 class = "text-2xl font-bold">購物車清單</h1>
                     <div class = "flex flex-row pb-4 mt-8">
-                        <h1 class = "basis-1/4 font-bold">商品名稱</h1>
-                        <h1 class = "basis-1/4 font-bold">尺寸</h1>
-                        <h1 class = "basis-1/4 font-bold">數量</h1>
-                        <h1 class = "basis-1/4 font-bold">操作</h1>
+                        <h1 class = "basis-1/5 font-bold">商品名稱</h1>
+                        <h1 class = "basis-1/5 font-bold">單價</h1>
+                        <h1 class = "basis-1/5 font-bold">尺寸</h1>
+                        <h1 class = "basis-1/5 font-bold">數量</h1>
+                        <h1 class = "basis-1/5 font-bold">操作</h1>
                     </div>  
                     <hr>    
                     @php
@@ -27,12 +28,13 @@
                             $amount += ($item->quantity)*($item->product->price);
                         @endphp
                         <div class = "flex flex-row mt-4">
-                            <div class = "basis-1/4 flex items-center pb-4">{{$item->product->name}}</div >
-                            <div  class = "basis-1/4 flex items-center pb-4">{{$item->size}}</div >
-                            <div  class = "basis-1/4 flex items-center pb-4">{{$item->quantity}}</div >
+                            <div class = "basis-1/5 flex items-center pb-4">{{$item->product->name}}</div>
+                            <div  class = "basis-1/5 flex items-center pb-4 text-red-500">{{$item->product->price}}</div >
+                            <div  class = "basis-1/5 flex items-center pb-4">{{$item->size}}</div >
+                            <div  class = "basis-1/5 flex items-center pb-4">{{$item->quantity}}</div >
 
                             <!--操作按鈕區塊-->
-                            <div class = "basis-1/4 flex flex-row">
+                            <div class = "basis-1/5 flex flex-row">
                                 <!--修改尺寸區塊-->
                                 <div class = "basis-1/3 mb-4">
                                     <button id="updateSize" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改尺寸</button>
