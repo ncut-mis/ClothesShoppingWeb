@@ -33,7 +33,7 @@ class TrackedItemController extends Controller
     public function store(Request $request)
     {
         $ProductID = $request['ProductID'];
-        if(Tracked_item::Where('product_id','=','$ProductID')->exists()){
+        if(Tracked_item::Where('product_id','=',$ProductID)->exists()){
             session()->flash('message', '追蹤失敗，該商品已被追蹤');
             return redirect(route('Products.show', ['product' => $ProductID]));
         }

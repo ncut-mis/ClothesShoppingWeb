@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreign('combinations_id')->references('id')->on('combinations');
             $table->integer('producted_id');
             $table->foreign('producted_id')->references('id')->on('product');
-
+            $table->timestamps();
         });
     }
 

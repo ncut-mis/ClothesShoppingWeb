@@ -10,9 +10,8 @@
                 <div class="p-6 text-gray-900">
                     <h1 class = "text-2xl font-semibold">追蹤清單</h1>
                     <div class = "flex flex-row pb-4 mt-5">
-                        <div class = "basis-1/3 font-semibold">商品名稱</div>
-                        <div class = "basis-1/3 font-semibold"></div>
-                        <div class = "basis-1/3 font-semibold">操作</div>
+                        <div class = "basis-1/2 font-semibold">商品名稱</div>
+                        <div class = "basis-1/2 font-semibold">操作</div>
                     </div>
                     <hr>
                           
@@ -22,14 +21,18 @@
                             $productName = $product->name;
                         @endphp
                         <div class = "flex flex-row mt-4">
-                            <div class = "basis-1/3 flex items-center pb-4">{{$productName}}</div>
-                            <div class = "basis-1/3 flex items-center pb-4"></div>
-                            <div class = "basis-1/3">
+                            <a href = "{{route('Products.show', ['product' => $product]) }}" class = "basis-1/2">
+                                <div class = "flex items-center pb-4">
+                                    <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}" class = "w-20 h-20"> 
+                                    <h1 class = "ml-4">{{$productName}}</h1>
+                                </div>
+                            </a>
+                            <div class = "basis-1/2 flex items-center">
                                 <form method="POST" action = "{{route('trackeditem.destroy')}}">
                                     @csrf
                                     @method('DELETE')
                                     <input type = "hidden" name = "Track_ID" value = "{{ $item->id }}">
-                                    <input type = "submit" value = "解除追蹤" class = "mb-4 text-white bg-red-500 w-20 h-10 rounded">
+                                    <input type = "submit" value = "解除追蹤" class = "mb-4 text-white bg-red-500 hover:bg-red-800 w-20 h-10 rounded cursor-pointer">
                                 </form>
                             </div>
                         </div>

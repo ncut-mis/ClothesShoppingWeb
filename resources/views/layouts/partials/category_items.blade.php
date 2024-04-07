@@ -1,4 +1,5 @@
 <div class="product_area grid grid-cols-4 gap-4">
+    <!--顯示商品-->
     @foreach ($products as $product) 
         <!--可添加判斷商品是否有圖片的if-else判斷式-->
         <a href = "{{route('Products.show', ['product' => $product]) }}">
@@ -22,6 +23,7 @@
     @endforeach        
 </div>
 
+<!--顯示分頁連結-->
 <div class = "flex">
        <div class = "mx-auto">{{ $products->links('vendor.pagination.simple-tailwind') }}</div> 
 </div>  

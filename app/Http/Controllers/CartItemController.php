@@ -35,14 +35,22 @@ class CartItemController extends Controller
      */
     public function store(Request $request)
     {
-        $cartitem = new CartItem();
-        $cartitem->user_id = Auth()->user()->id;
-        $cartitem->product_id = $request['ProductID'];
-        $cartitem->quantity = $request['quantity'];
-        $cartitem->save();
+        if ($request->has('sizes')) {
+            $sizes = $request->input('sizes');
+            foreach ($sizes as $productId => $size) {
+                $this->addToCart($request->user()->id, $productId, 1, $size); // 假设数量默认为1
+            }
+         } 
+        else {
+            // 处理单个商品
+            $productId = $request->input('ProductID');
+            $quantity = $request->input('quantity');
+            $size = $request->input('size');
+            $this->addToCart($request->user()->id, $productId, $quantity, $size);
+        }
 
         session()->flash('message', '加入購物車成功');
-        return redirect(route('Products.show', ['product' => $cartitem->product_id]));
+        return redirect(route('cartitem.index'));
 
     }
 
@@ -68,15 +76,29 @@ class CartItemController extends Controller
     public function update(Request $request)
     {
          $cart_id = $request['CartID'];
-         $quantity = $request['quantity'];
          $cart = CartItem::find($cart_id);
-         $cart->update([
-             'quantity' => $quantity,
-         ]);
-         $cart->save();
+
+         if($request->has('quantity')){
+            $quantity = $request['quantity'];
+            $cart->update([
+                'quantity' => $quantity,
+            ]);
+            
+            session()->flash('message', '修改數量成功');
+            return redirect(route('cartitem.index'));
+         }
+
+         if($request->has('size')){
+            $size = $request['size'];
+            $cart->size = $size;
+
+            $cart->save();
+            
+            session()->flash('message', '修改尺寸成功');
+            return redirect(route('cartitem.index'));
+         }
          
-         session()->flash('message', '修改數量成功');
-         return redirect(route('cartitem.index'));
+         
     }
 
     /**
@@ -89,5 +111,15 @@ class CartItemController extends Controller
         $cart->delete();
         session()->flash('message', '移出購物車成功');
         return redirect(route('cartitem.index'));
+    }
+
+    protected function addToCart($userId, $productId, $quantity, $size)
+    {
+        $cartItem = new CartItem();
+        $cartItem->user_id = $userId;
+        $cartItem->product_id = $productId;
+        $cartItem->quantity = $quantity;
+        $cartItem->size = $size;
+        $cartItem->save();
     }
 }
