@@ -15,14 +15,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
     <div class="container">
+        @section('content')
         <h2>商品管理</h2>
 
-{{--         新增商品按鈕 --}}
         <button type="button" class="btn btn-primary"  >
             新增商品
         </button>
 
-{{--         商品列表 --}}
         <div class="mt-4">
             <table class="table">
                 <thead>
