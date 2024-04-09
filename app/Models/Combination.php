@@ -19,7 +19,7 @@ class Combination extends Model
 
     public function combinations_detail()
     {
-        return $this->hasMany(combinations_detail::class , 'combinations_id');
+        return $this->hasMany(combinations_detail::class , 'combination_id');
     }
 
     public function product()

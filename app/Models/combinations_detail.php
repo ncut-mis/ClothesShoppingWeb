@@ -24,7 +24,7 @@ class combinations_detail extends Model
 
     public function product()
     {
-        return $this->belongsTo(Product::class,'producted_id');
+        return $this->belongsTo(Product::class,'product_id');
     }
 
 }

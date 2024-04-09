@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('combinations_detail',function (Blueprint $table) {
             $table->id();
-            $table->integer('combinations_id');
-            $table->foreign('combinations_id')->references('id')->on('combinations');
-            $table->integer('producted_id');
-            $table->foreign('producted_id')->references('id')->on('product');
+            $table->integer('combination_id');
+            $table->foreign('combination_id')->references('id')->on('combinations');
+            $table->integer('product_id');
+            $table->foreign('product_id')->references('id')->on('product');
             $table->timestamps();
         });
     }
