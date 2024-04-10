@@ -57,7 +57,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        
+
         foreach ($request->file('images') as $image){
             $filename = $image->getClientOriginalName(); //待優化，有潛在問題
             $image->move(public_path('images'), $filename);
@@ -70,7 +70,7 @@ class ProductController extends Controller
         //$imageName = time() . '.' . $request->image->extension();
         //$request->image->move(public_path('images'), $imageName);
 
-        
+
 
         return back()->with('success', 'You have successfully upload image.')->with('image', $filename);
 

@@ -42,22 +42,22 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
-    //  $cateGory = new Category();
-    //  $cateGory->name = '運動褲';
-    //  $cateGory->save();
+      $cateGory = new Category();
+      $cateGory->name = '運動褲';
+      $cateGory->save();
 
-    // $combinations = new Combination();
-    // $combinations_detail = new combinations_detail();
+     $combinations = new Combination();
+     $combinations_detail = new combinations_detail();
 
-    // $combinations->staff_id = 0;
-    // $combinations->name = "Nike運動套裝";
-    // $combinations->price = 1970;
-    // $combinations->product_id = 1;
-    // $combinations->save();
+     $combinations->staff_id = 0;
+     $combinations->name = "Nike運動套裝";
+     $combinations->price = 1970;
+     $combinations->product_id = 1;
+     $combinations->save();
 
-    // $combinations_detail->combinations_id = $combinations->id;
-    // $combinations_detail->producted_id = 10;
-    // $combinations_detail->save();
+     $combinations_detail->combinations_id = $combinations->id;
+     $combinations_detail->producted_id = 10;
+     $combinations_detail->save();
 
     $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
@@ -65,11 +65,11 @@ Route::get('/home', function () {
     return view('home', compact('products','categories'));
 
 
-    // $cateGory = Category::find(11);
-    // $cateGory->update([
-    //     'name' => '卡其褲',
-    // ]);
-    // $cateGory->save();
+     $cateGory = Category::find(11);
+     $cateGory->update([
+         'name' => '卡其褲',
+     ]);
+     $cateGory->save();
 
 })->middleware(['auth', 'verified'])->name('/home');
 
