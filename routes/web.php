@@ -87,7 +87,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('productSearch', [ProductController::class, 'search'])->name('Products.search');
     Route::get('products/{product}', [ProductController::class, 'show'])->name('Products.show');
-    Route::post('products', [ProductController::class, 'store'])->name('products.store');
+    Route::post('products', [ProductController::class, 'store'])->name('Products.store');
 });
 
 Route::middleware('auth')->group(function () {

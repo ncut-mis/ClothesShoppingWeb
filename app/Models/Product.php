@@ -45,7 +45,7 @@ class Product extends Model
 
     public function firstPhoto()
     {
-    return $this->hasOne(ProductPhoto::class)->oldestOfMany();
+        return $this->hasOne(ProductPhoto::class)->oldestOfMany();
     }
 
     public function order_detial()
