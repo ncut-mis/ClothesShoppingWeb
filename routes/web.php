@@ -114,7 +114,10 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function (){
     Route::get('/staff/combinations',[CombinationController::class,'index'])->name('combinations.index');
     Route::get('/staff/combinations/create',[CombinationController::class,'create'])->name('combinations.create');
-    Route::post('/staff/combinations/store',[CombinationController::class,'store'])->name('combinations.store');
+    Route::get('/staff/combinations/search',[CombinationController::class,'search'])->name('combinations.search');
+    Route::post('/staff/combinations',[CombinationController::class,'store'])->name('combinations.store');
+    Route::get('/staff/combinations/{combination}/edit',[CombinationController::class,'edit'])->name('combinations.edit');
+    Route::patch('/staff/combinations/{combination}',[CombinationController::class,'update'])->name('combinations.update');
     Route::delete('/staff/combinations/destroy',[CombinationController::class,'destroy'])->name('combinations.destroy');
 
 });
