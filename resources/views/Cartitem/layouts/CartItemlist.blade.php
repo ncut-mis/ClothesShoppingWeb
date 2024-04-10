@@ -26,15 +26,21 @@
                         @php
                             $itemID = $item->id;
                             $amount += ($item->quantity)*($item->product->price);
+                            $product = \App\Models\Product::find($item->product_id);
                         @endphp
                         <div class = "flex flex-row mt-4">
-                            <div class = "basis-1/5 flex items-center pb-4">{{$item->product->name}}</div>
+                            <a href = "{{route('Products.show', ['product' => $product]) }}" class = "basis-1/5">
+                                <div class = "flex items-center pb-4">
+                                    <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}" class = "w-20 h-20"> 
+                                    <h1 class = "ml-4">{{$item->product->name}}</h1>
+                                </div>
+                            </a>
                             <div  class = "basis-1/5 flex items-center pb-4 text-red-500">{{$item->product->price}}</div >
                             <div  class = "basis-1/5 flex items-center pb-4">{{$item->size}}</div >
                             <div  class = "basis-1/5 flex items-center pb-4">{{$item->quantity}}</div >
 
                             <!--操作按鈕區塊-->
-                            <div class = "basis-1/5 flex flex-row">
+                            <div class = "basis-1/5 flex flex-row items-center">
                                 <!--修改尺寸區塊-->
                                 <div class = "basis-1/3 mb-4">
                                     <button id="updateSize-{{$item->id}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改尺寸</button>
