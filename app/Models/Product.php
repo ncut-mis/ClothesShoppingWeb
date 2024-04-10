@@ -62,4 +62,9 @@ class Product extends Model
     {
         return $this->hasMany(combinations_detail::class);
     }
+
+    public static function Track_isExist($productID){
+        $exist = Tracked_item::Where('product_id','=',$productID)->exists();
+        return $exist;
+    }
 }

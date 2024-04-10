@@ -80,12 +80,13 @@ class TrackedItemController extends Controller
      */
     public function destroy(Request $request)
     {
-        $track_id = $request['Track_ID'];
-        $track = Tracked_item::find($track_id);
+        $productID = $request['Product_ID'];
+        $track = Tracked_item::Where('product_id','=',$productID);
         $track->delete();
 
         session()->flash('message', '解除追蹤成功');
-        return redirect(route('trackeditem.index'));
-
+        $referer = $request->headers->get('referer');
+        
+        return redirect()->to($referer);
     }
 }

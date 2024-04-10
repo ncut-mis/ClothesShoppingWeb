@@ -31,7 +31,7 @@
                                 <form method="POST" action = "{{route('trackeditem.destroy')}}">
                                     @csrf
                                     @method('DELETE')
-                                    <input type = "hidden" name = "Track_ID" value = "{{ $item->id }}">
+                                    <input type = "hidden" name = "Product_ID" value = "{{ $item->product_id }}">
                                     <input type = "submit" value = "解除追蹤" class = "mb-4 text-white bg-red-500 hover:bg-red-800 w-20 h-10 rounded cursor-pointer">
                                 </form>
                             </div>

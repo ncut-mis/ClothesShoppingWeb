@@ -13,8 +13,8 @@ class combinations_detail extends Model
     protected $table = 'combinations_detail';
 
     protected $fillable = [
-        'combinations_id',
-        'producted_id',
+        'combination_id',
+        'product_id',
     ];
 
     public function Combination()

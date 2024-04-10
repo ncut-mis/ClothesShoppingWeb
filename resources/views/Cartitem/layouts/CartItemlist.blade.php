@@ -37,10 +37,10 @@
                             <div class = "basis-1/5 flex flex-row">
                                 <!--修改尺寸區塊-->
                                 <div class = "basis-1/3 mb-4">
-                                    <button id="updateSize" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改尺寸</button>
+                                    <button id="updateSize-{{$item->id}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改尺寸</button>
                                     <!--顯示修改尺寸用的小視窗-->
-                                    <div id="popup2" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-                                        <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
+                                    <div id="popupSize-{{$item->id}}" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
+                                        <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup('popupSize-{{$item->id}}')">&times;</span>
                                         <form method = "POST" action = "{{route('cartitem.update')}}">
                                             @csrf
                                             @method('patch')
@@ -65,10 +65,10 @@
 
                                 <!--修改數量區塊-->
                                 <div class = "basis-1/3 mb-4">
-                                    <button id="updateQuantity" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改數量</button>
+                                    <button id="updateQuantity-{{$item->id}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改數量</button>
                                     <!--顯示修改數量用的小視窗-->
-                                    <div id="popup1" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-                                        <span class="absolute top-1 right-2 right-0 cursor-pointer" onclick="closePopup1()">&times;</span>
+                                    <div id="popupQuantity-{{$item->id}}" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
+                                        <span class="absolute top-1 right-2 right-0 cursor-pointer" onclick="closePopup('popupQuantity-{{$item->id}}')">&times;</span>
                                         <form method="POST" action="{{route('cartitem.update')}}">
                                             @csrf  
                                             @method('patch')
@@ -107,20 +107,21 @@
 </div>
 
 
-<script>
-  function closePopup1() {
-    document.getElementById('popup1').classList.add('hidden');
-  }
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    @foreach ($items as $item)
+            document.getElementById('updateQuantity-{{ $item->id }}').addEventListener('click', function() {
+                document.getElementById('popupQuantity-{{ $item->id }}').classList.remove('hidden');
+        });
 
-  document.getElementById('updateQuantity').addEventListener('click', function() {
-    document.getElementById('popup1').classList.remove('hidden');
-  });
+        document.getElementById('updateSize-{{ $item->id }}').addEventListener('click', function() {
+            document.getElementById('popupSize-{{ $item->id }}').classList.remove('hidden');
+        });
+    @endforeach
+    });
 
-  function closePopup2() {
-    document.getElementById('popup2').classList.add('hidden');
-  }
-
-  document.getElementById('updateSize').addEventListener('click', function() {
-    document.getElementById('popup2').classList.remove('hidden');
-  });
+    function closePopup(popupId) {
+        document.getElementById(popupId).classList.add('hidden');
+}
 </script>
+
