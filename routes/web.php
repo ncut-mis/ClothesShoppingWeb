@@ -42,6 +42,14 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
+    $product = new Product();
+    $product->name = 'nike短袖';
+    $product->price='200';
+    $product->description ='好穿短袖';
+    $product->stock = '10';
+    $product->category_id ='1';
+    $product->save();
+
       $cateGory = new Category();
       $cateGory->name = '運動褲';
       $cateGory->save();
@@ -126,7 +134,8 @@ Route::middleware('auth')->group(function (){
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
 Route::post('/product', [ProductController::class, 'store'])->name('product.store');
-Route::get('/product/{product}', [ProductController::class, 'edit'])->name('product.edit');
-
+Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
+Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
+Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 
 require __DIR__ . '/auth.php';

@@ -241,6 +241,7 @@
             <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
             <div class = "photo">
                 <img src="{{ asset('images/' . optional($product->firstPhoto)->file_address) }}" alt="Product Image" class = "max-w-sm max-h-sm">
+
             </div>
         </div>
 
