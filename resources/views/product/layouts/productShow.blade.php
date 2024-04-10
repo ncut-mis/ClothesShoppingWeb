@@ -12,25 +12,62 @@
         // 将创建的 img 元素插入到指定的 div 中
         document.getElementById(divId).appendChild(img);
     }
+
+    <script src="//unpkg.com/alpinejs" defer></script>
 </script>
 
 <!--單品顯示區域-->
 <div class = "flex flex-row">
     <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3">
-        <div class = "product pl-8 ">
+        <div class = "product pl-8 pr-8">
             <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
-            <div class = "photo">
-                <!--暫時設定為顯示第一個圖片-->
-                <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" class = "max-w-sm max-h-sm">  
-            </div>
+
+            <div class="relative" x-data="{ activePhoto: 0, photos: [
+                @foreach($product->ProductPhoto as $index => $photo)
+                    '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
+                @endforeach
+            ] }">
+                <!-- 图片轮播显示 -->
+                <template x-for="(photo, index) in photos" :key="index">
+                    <img :src="photo" 
+                    x-show="activePhoto === index"
+                    class="w-full h-auto block rounded"
+                    style="display: none;" />
+                </template>
+
+                <!-- 轮播控制按钮 -->
+                <div class="flex justify-center mt-4">
+                    <button 
+                        class="mx-1 text-xl bg-gray-300 rounded w-5" 
+                        @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1"
+                    >&lt;</button>
+    
+                    <button 
+                        class="mx-1 text-xl bg-gray-300 rounded w-5" 
+                        @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1"
+                    >&gt;</button>
+                </div>
+            </div>         
+
+            
+
             <h1 class = "text-3xl text-red-500 pt-4 bottom-0 right-0">NT {{ $product->price }}</h1>
         </div>
         <div class = "opration grid grid-cols-2 gap-2 pl-8 pt-8">
-            <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
-                @csrf
-                <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-                <input type = "submit" value = "追蹤" class = "bg-pink-500 hover:bg-pink-800 w-20 h-10 text-white rounded-lg font-bold cursor-pointer">
-            </form>
+            @if(\App\Models\Product::Track_isExist($product->id))
+                <form method="POST" action="{{route('trackeditem.destroy')}}" class = "pb-4">
+                    @csrf
+                    @method('DELETE')
+                    <input type = "hidden" name = "Product_ID" value = "{{$product->id}}">
+                    <input type = "submit" value = "解除追蹤" class = "bg-pink-500 hover:bg-pink-800 w-40 h-10 text-white rounded-lg font-bold cursor-pointer">
+                </form> 
+            @else
+                <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
+                    @csrf
+                    <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
+                    <input type = "submit" value = "追蹤" class = "bg-pink-500 hover:bg-pink-800 w-20 h-10 text-white rounded-lg font-bold cursor-pointer">
+                </form>
+            @endif
 
             <div class = "flex">
                 <button id="add" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>

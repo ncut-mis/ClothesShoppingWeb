@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPhoto;
 use App\Models\Combination;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -33,19 +34,18 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
+    public function store(Request $request)
     {
-        global $data;
+        //global $data;
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
             'description' => 'required|string|max:255',
             'category_id' => 'required|integer',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $newProduct = Product::create($data);
-        return redirect(route('product.index'));
+        //$newProduct = Product::create($data);
+        //return redirect(route('product.index'));
 
         $product = new Product();
         $product->name = $validated['name'];
@@ -57,16 +57,22 @@ class ProductController extends Controller
 
         $product->save();
 
-        $imageName = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('images'), $imageName);
+        
+        foreach ($request->file('images') as $image){
+            $filename = $image->getClientOriginalName(); //待優化，有潛在問題
+            $image->move(public_path('images'), $filename);
 
-        $productphoto = new ProductPhoto();
-        $productphoto->product_id = $product->id;
-        $productphoto->file_address = $imageName;
+            $productphoto = new ProductPhoto();
+            $productphoto->product_id = $product->id;
+            $productphoto->file_address = $filename;
+            $productphoto->save();
+        }
+        //$imageName = time() . '.' . $request->image->extension();
+        //$request->image->move(public_path('images'), $imageName);
 
-        $productphoto->save();
+        
 
-        return back()->with('success', 'You have successfully upload image.')->with('image', $imageName);
+        return back()->with('success', 'You have successfully upload image.')->with('image', $filename);
 
     }
 
@@ -109,20 +115,22 @@ class ProductController extends Controller
     {
         $exists = Product::Where('name', '=', $request['keyword'])->exists();
         $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
+        $categories = Category::paginate(10, ['*'], 'categoryPage')
+                          ->withQueryString();
         if ($exists) {
             if (Auth::check()){
-                return view('home', compact('products'));
+                return view('home', compact('products','categories'));
             }
             else{
-                return view('GuestHome', compact('products'));
+                return view('GuestHome', compact('products','categories'));
             }
         } else {
             session()->flash('message', '查無商品');
             if (Auth::check()){
-                return view('home', compact('products'));
+                return view('home', compact('products','categories'));
             }
             else{
-                return view('GuestHome', compact('products'));
+                return view('GuestHome', compact('products','categories'));
             }
         }
 

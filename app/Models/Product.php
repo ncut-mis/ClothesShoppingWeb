@@ -45,7 +45,7 @@ class Product extends Model
 
     public function firstPhoto()
     {
-    return $this->hasOne(ProductPhoto::class)->oldestOfMany();
+        return $this->hasOne(ProductPhoto::class)->oldestOfMany();
     }
 
     public function order_detial()
@@ -61,5 +61,10 @@ class Product extends Model
     public function combinations_detail()
     {
         return $this->hasMany(combinations_detail::class);
+    }
+
+    public static function Track_isExist($productID){
+        $exist = Tracked_item::Where('product_id','=',$productID)->exists();
+        return $exist;
     }
 }
