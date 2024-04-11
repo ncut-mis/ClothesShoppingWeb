@@ -73,6 +73,9 @@ Route::get('/home', function () {
 
 })->middleware(['auth', 'verified'])->name('/home');
 
+Route::get('/adminHome',function(){
+    return view('adminHome');
+})->middleware(['auth', 'verified', 'is_admin'])->name('/adminHome');
 
 Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
 
