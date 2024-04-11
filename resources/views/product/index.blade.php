@@ -10,6 +10,13 @@
 <body>
     <h1>商品</h1>
     <div>
+        @if(session()->has('success'))
+            <div>
+                {{session('success')}}
+            </div>
+        @endif
+    </div>
+    <div>
         <table border="1">
             <tr>
                 <th>商品編號</th>
@@ -18,6 +25,7 @@
                 <th>商品價格</th>
                 <th>商品描述</th>
                 <th>編輯</th>
+                <th>刪除</th>
             </tr>
             @foreach($products as $product)
                 <tr>
@@ -28,6 +36,13 @@
                     <td>{{$product->description}}</td>
                     <td>
                         <a href="{{route('product.edit', ['product' => $product])}}">Edit</a>
+                    </td>
+                    <td>
+                        <form method="post" action="{{route('product.destroy',['product' => $product->id])}}">
+                            @csrf
+                            @method('delete')
+                            <input type="submit" value="Delete"/>
+                        </form>
                     </td>
                 </tr>
             @endforeach

@@ -42,22 +42,30 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/home', function () {
-    //  $cateGory = new Category();
-    //  $cateGory->name = '運動褲';
-    //  $cateGory->save();
+    $product = new Product();
+    $product->name = 'nike短袖';
+    $product->price='200';
+    $product->description ='好穿短袖';
+    $product->stock = '10';
+    $product->category_id ='1';
+    $product->save();
 
-    // $combinations = new Combination();
-    // $combinations_detail = new combinations_detail();
+      $cateGory = new Category();
+      $cateGory->name = '運動褲';
+      $cateGory->save();
 
-    // $combinations->staff_id = 0;
-    // $combinations->name = "Nike運動套裝";
-    // $combinations->price = 1970;
-    // $combinations->product_id = 1;
-    // $combinations->save();
+     $combinations = new Combination();
+     $combinations_detail = new combinations_detail();
 
-    // $combinations_detail->combinations_id = $combinations->id;
-    // $combinations_detail->producted_id = 10;
-    // $combinations_detail->save();
+     $combinations->staff_id = 0;
+     $combinations->name = "Nike運動套裝";
+     $combinations->price = 1970;
+     $combinations->product_id = 1;
+     $combinations->save();
+
+     $combinations_detail->combinations_id = $combinations->id;
+     $combinations_detail->producted_id = 10;
+     $combinations_detail->save();
 
     $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
@@ -65,11 +73,11 @@ Route::get('/home', function () {
     return view('home', compact('products','categories'));
 
 
-    // $cateGory = Category::find(11);
-    // $cateGory->update([
-    //     'name' => '卡其褲',
-    // ]);
-    // $cateGory->save();
+     $cateGory = Category::find(11);
+     $cateGory->update([
+         'name' => '卡其褲',
+     ]);
+     $cateGory->save();
 
 })->middleware(['auth', 'verified'])->name('/home');
 
@@ -115,10 +123,13 @@ Route::middleware('auth')->group(function () {
 
 //搭配組合
 Route::middleware('auth')->group(function (){
-    Route::get('/staff/combinations',[CombinationController::class,'index'])->name('combinations.index');
-    Route::get('/staff/combinations/create',[CombinationController::class,'create'])->name('combinations.create');
-    Route::post('/staff/combinations/store',[CombinationController::class,'store'])->name('combinations.store');
-    Route::delete('/staff/combinations/destroy',[CombinationController::class,'destroy'])->name('combinations.destroy');
+    Route::get('/combinations',[CombinationController::class,'index'])->name('combinations.index');
+    Route::get('/combinations/create',[CombinationController::class,'create'])->name('combinations.create');
+    Route::get('/combinations/search',[CombinationController::class,'search'])->name('combinations.search');
+    Route::post('/combinations',[CombinationController::class,'store'])->name('combinations.store');
+    Route::get('/combinations/{combination}/edit',[CombinationController::class,'edit'])->name('combinations.edit');
+    Route::patch('/combinations/{combination}',[CombinationController::class,'update'])->name('combinations.update');
+    Route::delete('/combinations/destroy',[CombinationController::class,'destroy'])->name('combinations.destroy');
 
 });
 
@@ -126,7 +137,8 @@ Route::middleware('auth')->group(function (){
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
 Route::post('/product', [ProductController::class, 'store'])->name('product.store');
-Route::get('/product/{product}', [ProductController::class, 'edit'])->name('product.edit');
-
+Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
+Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
+Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
 
 require __DIR__ . '/auth.php';

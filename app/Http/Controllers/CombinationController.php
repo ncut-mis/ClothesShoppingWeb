@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Request;
 use App\Models\Combination;
 use App\Http\Requests\StoreCombinationRequest;
 use App\Http\Requests\UpdateCombinationRequest;
@@ -12,11 +13,11 @@ class CombinationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products=Product::all();
-
-        return view('combinations.index',compact('products'));
+        global $data;
+        $combinations = Combination::all();
+        return view('combinations.index', $data);
     }
 
     /**
