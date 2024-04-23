@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Request;
+use Illuminate\Http\Request;
 use App\Models\Combination;
 use App\Http\Requests\StoreCombinationRequest;
 use App\Http\Requests\UpdateCombinationRequest;
@@ -15,9 +15,9 @@ class CombinationController extends Controller
      */
     public function index(Request $request)
     {
-        global $data;
+        //global $data;
         $combinations = Combination::all();
-        return view('combinations.index', $data);
+        return view('combinations.index',compact('combinations'));
     }
 
     /**
@@ -33,7 +33,21 @@ class CombinationController extends Controller
      */
     public function store(StoreCombinationRequest $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'description' => 'required|string|max:255',
+            'category_id' => 'required|integer',
+        ]);
+
+        $combination = new Combination();
+        $combination->name = $validated['name'];
+        $combination->price = $validated['price'];
+        $combination->description = $validated['description'];
+        $combination->category_id = $validated['category_id'];
+
+        $combination->save();
+
     }
 
     /**
