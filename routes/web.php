@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Product;
+use App\Http\Controllers\Admin\Auth\LoginController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -15,6 +18,7 @@ use App\Models\combinations_detail;
 use App\Http\Controllers\CombinationController;
 
 use App\Models\Order;
+use App\Models\admin;
 
 
 /*
@@ -50,11 +54,6 @@ Route::get('/home', function () {
      $products = Product::with('firstPhoto')->paginate(8);
      return view('home', compact('products','categories'));
 })->middleware(['auth', 'verified'])->name('/home');
-
-//平台人員首頁
-Route::get('/adminHome',function(){
-    return view('adminHome');
-})->middleware(['auth', 'verified', 'is_admin'])->name('/adminHome');
 
 //選擇服裝類別
 Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
@@ -106,6 +105,33 @@ Route::middleware('auth')->group(function (){
 
 });
 
+//管理員
+Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function(){
+    Route::namespace('Auth')->middleware('guest:admin')->group(function(){
+        //login route
+        Route::get('/login',[LoginController::class,'login'])->name('login');
+        Route::post('/login',[LoginController::class,'processLogin']);
+    });
+    Route::namespace('Auth')->middleware('auth:admin')->group(function(){
+        Route::post('/logout',function(Request $request){
+            Auth::guard('admin')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->action([
+                LoginController::class,
+                'login'
+            ]);
+        })->name('logout');
+    });
+});
+
+//管理員首頁
+Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function(){
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
+});
+
 //商品
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 Route::get('productSearch', [ProductController::class, 'search'])->name('Products.search');
@@ -115,5 +141,6 @@ Route::get('products/{product}', [ProductController::class, 'show'])->name('Prod
 Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
 Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
 Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
 
 require __DIR__ . '/auth.php';
