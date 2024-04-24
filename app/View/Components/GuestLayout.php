@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components\Admin;
+namespace App\View\Components;
 
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -12,6 +12,6 @@ class GuestLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.admin.guest');
+        return view('layouts.guest');
     }
 }

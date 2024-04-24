@@ -20,6 +20,11 @@ class CombinationController extends Controller
         return view('combinations.index', $data);
     }
 
+    public function admin_index()
+    {
+        $combinations = Combination::all();
+        return view('admin.combination.index', ['combinations' =>$combinations]);
+    }
     /**
      * Show the form for creating a new resource.
      */

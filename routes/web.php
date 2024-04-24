@@ -105,7 +105,7 @@ Route::middleware('auth')->group(function (){
 
 });
 
-//管理員
+//管理員登入
 Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function(){
     Route::namespace('Auth')->middleware('guest:admin')->group(function(){
         //login route
@@ -125,11 +125,16 @@ Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function(){
     });
 });
 
-//管理員首頁
+//管理員
 Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function(){
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/home', function () {
+        return view('admin.home');
+    })->name('home');
+
+    Route::get('/AdminProduct', [ProductController::class, 'admin_index'])->name('product.adminIndex');
+    Route::get('/AdminCombination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
+    Route::get('/AdminCartItem', [CartItemController::class, 'admin_index'])->name('cartitem.adminIndex');
+    Route::get('/AdminCategory', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
 });
 
 //商品

@@ -22,6 +22,13 @@ class CartItemController extends Controller
         return view('Cartitem.index', ['items' => $items]);
     }
 
+    public function admin_index()
+    {
+        $items = CartItem::all();
+                 
+        return view('admin.cartitem.index', ['items' => $items]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
