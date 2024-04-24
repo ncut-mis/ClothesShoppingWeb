@@ -52,7 +52,7 @@ class CombinationController extends Controller
         $combination->category_id = $validated['category_id'];
 
         $combination->save();
-        return redirect()->route('combinations.index')
+        return redirect()->route('combination.index')
                          ->with('success','新增成功');
 
     }
@@ -76,16 +76,33 @@ class CombinationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCombinationRequest $request, Combination $combination)
+    public function update(UpdateCombinationRequest $request)
     {
-        //
+        $combination_id = $request['combinationID'];
+        $combination = Combination::find($combination_id);
+
+        if($request->has('quantity')){
+            $quantity = $request['quantity'];
+            $combination->update([
+                'quantity' => $quantity,
+            ]);
+
+            session()->flash('message', '修改數量成功');
+            return redirect(route('combination.index'));
+        }
+
+
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Combination $combination)
+    public function destroy(Request $request)
     {
-        //
+        $combination_id = $request['CartID'];
+        $cart = Combination::find($combination_id);
+        $cart->delete();
+        session()->flash('message', '刪除成功');
+        return redirect(route('combination.index'));
     }
 }
