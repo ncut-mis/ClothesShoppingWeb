@@ -51,5 +51,6 @@
     </div>
 
     @include('layouts.partials.category_items')
+    
 @endsection
 
