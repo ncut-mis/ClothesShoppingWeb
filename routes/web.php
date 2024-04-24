@@ -33,14 +33,17 @@ use App\Models\admin;
 */
 
 //訪客首頁
-Route::get('/', function () {
-    $categories = Category::paginate(10, ['*'], 'categoryPage')
-                          ->withQueryString();
-    $products = Product::paginate(8); // 示例中随机取5件服装
-
-    return view('GuestHome', compact('products','categories'));
-
-})->name('/');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function () {
+        $categories = Category::paginate(10, ['*'], 'categoryPage')
+                              ->withQueryString();
+        $products = Product::paginate(8); // 示例中随机取5件服装
+        $layout = 'layouts.guest';
+    
+        return view('GuestHome', compact('products','categories', 'layout'));
+    
+    })->name('/');
+});
 
 //測試用
 Route::get('/dashboard', function () {
@@ -52,7 +55,9 @@ Route::get('/home', function () {
      $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
      $products = Product::with('firstPhoto')->paginate(8);
-     return view('home', compact('products','categories'));
+     $layout = 'layouts.app';
+
+     return view('home', compact('products','categories', 'layout'));
 })->middleware(['auth', 'verified'])->name('/home');
 
 //選擇服裝類別
