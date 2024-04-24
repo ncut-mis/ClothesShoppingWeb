@@ -54,10 +54,12 @@ class CategoryController extends Controller
 
         // 返回一个视图，只包含服装数据列表
         if (Auth::check()) {
-            return view('home', compact('categories','products'));
+            $layout = 'layouts.app';
+            return view('home', compact('categories','products','layout'));
         }
         else{
-            return view('GuestHome', compact('categories','products'));
+            $layout = 'layouts.guest';
+            return view('GuestHome', compact('categories','products','layout'));
         }
         
     }
