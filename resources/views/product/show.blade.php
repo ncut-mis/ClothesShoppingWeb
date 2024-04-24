@@ -1,10 +1,10 @@
-<script>
-    @if(session('message'))
-        <script>
-            alert("{{ session('message') }}");
-        </script>
-    @endif
+@if(session('message'))
+    <script>
+        alert("{{ session('message') }}");
+    </script>
+@endif
 
+<script>
      // 用于插入图片的函数
     function insertImage(divId, imagePath) {
         var img = document.createElement("img");
@@ -14,9 +14,9 @@
         // 将创建的 img 元素插入到指定的 div 中
         document.getElementById(divId).appendChild(img);
     }
-
-    <script src="//unpkg.com/alpinejs" defer></script>
 </script>
+
+<script src="//unpkg.com/alpinejs" defer></script>
 
 @extends($layout)
 
@@ -264,14 +264,31 @@
 
                     <div class = "mt-4">
                         <label for = "size">請選擇尺寸</label>
-                        <select id = "size" name = "size">
-                            <option value = "XS">XS</option>
-                            <option value = "S">S</option>
-                            <option value = "M">M</option>
-                            <option value = "L">L</option>
-                            <option value = "XL">XL</option>
-                            <option value = "2XL">2XL</option>
-                        </select>
+                        <!--判斷是否為鞋子 -->
+                        @if($product->Category->category_type == 4) 
+                            <select id = "size" name = "size">
+                                <option value = "US 7">US 7</option>
+                                <option value = "US 7.5">US 7.5</option>
+                                <option value = "US 8">US 8</option>
+                                <option value = "US 8.5">US 8.5</option>
+                                <option value = "US 9">US 9</option>
+                                <option value = "US 9.5">US 9.5</option>
+                                <option value = "US 10">US 10</option>
+                                <option value = "US 10.5">US 10.5</option>
+                                <option value = "US 11">US 11</option>
+                                <option value = "US 11.5">US 11.5</option>
+                                <option value = "US 12">US 12</option>
+                            </select>
+                        @else
+                            <select id = "size" name = "size">
+                                <option value = "XS">XS</option>
+                                <option value = "S">S</option>
+                                <option value = "M">M</option>
+                                <option value = "L">L</option>
+                                <option value = "XL">XL</option>
+                                <option value = "2XL">2XL</option>
+                            </select>
+                        @endif
                     </div>
 
                     <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
@@ -295,31 +312,31 @@
     <div class = "description bg-white  mt-4 ml-4 rounded-lg">
         <p>{!! nl2br(e($product->description)) !!} </p>
     </div>
+    <script>
+        function closePopup() {
+            document.getElementById('popup').classList.add('hidden');
+        }
+
+        document.getElementById('add').addEventListener('click', function() {
+            document.getElementById('popup').classList.remove('hidden');
+        });
+
+        function closePopup2() {
+            document.getElementById('popup2').classList.add('hidden');
+        }
+
+        document.getElementById('combination_add').addEventListener('click', function() {
+            document.getElementById('popup2').classList.remove('hidden');
+        });
+
+        function closePopup3() {
+            document.getElementById('popup3').classList.add('hidden');
+        }
+
+        document.getElementById('Preview').addEventListener('click', function() {
+            document.getElementById('popup3').classList.remove('hidden');
+        });  
+    </script>
 @endsection
 
 
-<script>
-  function closePopup() {
-    document.getElementById('popup').classList.add('hidden');
-  }
-
-  document.getElementById('add').addEventListener('click', function() {
-    document.getElementById('popup').classList.remove('hidden');
-  });
-
-  function closePopup2() {
-    document.getElementById('popup2').classList.add('hidden');
-  }
-
-  document.getElementById('combination_add').addEventListener('click', function() {
-    document.getElementById('popup2').classList.remove('hidden');
-  });
-
-  function closePopup3() {
-    document.getElementById('popup3').classList.add('hidden');
-  }
-
-  document.getElementById('Preview').addEventListener('click', function() {
-    document.getElementById('popup3').classList.remove('hidden');
-  });
-</script>
