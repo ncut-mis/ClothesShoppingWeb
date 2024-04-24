@@ -63,7 +63,7 @@
                                                 </select>
                                             </div>
                                             <div class = "flex mt-4">
-                                                <input type = "submit" value = "修改尺寸" class = "ml-auto bg-blue-500 rounded-lg text-white w-20 h-10 top-1 right-2">
+                                                <input type = "submit" value = "修改尺寸" class = "ml-auto bg-blue-500 hover:bg-blue-800 rounded-lg text-white w-20 h-10 top-1 right-2 cursor-pointer">
                                             </div>
                                         </form>
                                     </div>
@@ -82,7 +82,7 @@
                                             <input type = "hidden" name = "CartID" value = "{{$itemID}}">
                                             <input type = "number" name = "quantity" min = "1" max = "50" value = "{{$item->quantity}}">
                                             <div class = "flex mt-4">
-                                                <input type = "submit" value = "修改數量" class = "ml-auto bg-blue-500 rounded-lg text-white w-20 h-10 top-1 right-2">
+                                                <input type = "submit" value = "修改數量" class = "ml-auto bg-blue-500 hover:bg-blue-800 rounded-lg text-white w-20 h-10 top-1 right-2 cursor-pointer">
                                             </div>
                                         </form>
                                     </div>

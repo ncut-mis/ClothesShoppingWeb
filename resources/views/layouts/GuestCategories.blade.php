@@ -21,7 +21,7 @@
                     @csrf
                     <label for = "keyword" class = "text-white text-xl">搜尋</label>
                     <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
-                    <input type="submit" value="搜尋" class = "bg-orange-800 text-white rounded-lg w-20 h-10">
+                    <input type="submit" value="搜尋" class = "bg-orange-700 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
                 </form>
             </div>
         </div>

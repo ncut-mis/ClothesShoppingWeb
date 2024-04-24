@@ -11,7 +11,7 @@
                                 <h1 class = "text-lg">{{ $product->name }}</h1>
                                 <br>
                                 <div class = photo>
-{{--                                    <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" alt="" class="object-cover w-full h-full" style="height:auto;">--}}
+                                   <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" alt="" class="object-cover w-full h-full" style="height:auto;">
                                 </div>
                                 <h1 class = "text-xl text-red-500">NT {{ $product->price }}</h1>
                             </div>

@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\Product;
+use App\Http\Controllers\Admin\Auth\LoginController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
@@ -15,6 +18,7 @@ use App\Models\combinations_detail;
 use App\Http\Controllers\CombinationController;
 
 use App\Models\Order;
+use App\Models\admin;
 
 
 /*
@@ -28,6 +32,7 @@ use App\Models\Order;
 |
 */
 
+//訪客首頁
 Route::get('/', function () {
     $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
@@ -37,73 +42,42 @@ Route::get('/', function () {
 
 })->name('/');
 
+//測試用
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/home', function () {
-    $product = new Product();
-    $product->name = 'nike短袖';
-    $product->price='200';
-    $product->description ='好穿短袖';
-    $product->stock = '10';
-    $product->category_id ='1';
-    $product->save();
-
-      $cateGory = new Category();
-      $cateGory->name = '運動褲';
-      $cateGory->save();
-
-     $combinations = new Combination();
-     $combinations_detail = new combinations_detail();
-
-     $combinations->staff_id = 0;
-     $combinations->name = "Nike運動套裝";
-     $combinations->price = 1970;
-     $combinations->product_id = 1;
-     $combinations->save();
-
-     $combinations_detail->combinations_id = $combinations->id;
-     $combinations_detail->producted_id = 10;
-     $combinations_detail->save();
-
-    $categories = Category::paginate(10, ['*'], 'categoryPage')
+//會員首頁
+Route::get('/home', function () {   
+     $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
-    $products = Product::with('firstPhoto')->paginate(8);
-    return view('home', compact('products','categories'));
-
-
-     $cateGory = Category::find(11);
-     $cateGory->update([
-         'name' => '卡其褲',
-     ]);
-     $cateGory->save();
-
+     $products = Product::with('firstPhoto')->paginate(8);
+     return view('home', compact('products','categories'));
 })->middleware(['auth', 'verified'])->name('/home');
 
-
+//選擇服裝類別
 Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
 
+//會員中心
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-
-
+//商品
 Route::middleware('auth')->group(function () {
-    Route::get('productSearch', [ProductController::class, 'search'])->name('Products.search');
-    Route::get('products/{product}', [ProductController::class, 'show'])->name('Products.show');
     Route::post('products', [ProductController::class, 'store'])->name('Products.store');
 });
 
+//追蹤清單
 Route::middleware('auth')->group(function () {
     Route::post('/TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');
     Route::get('/TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');
     Route::delete('/TrackedItem', [TrackedItemController::class, 'destroy'])->name('trackeditem.destroy');
 });
 
+//購物車
 Route::middleware('auth')->group(function () {
     Route::post('/CartItem', [CartItemController::class, 'store'])->name('cartitem.store');
     Route::get('/CartItem', [CartItemController::class, 'index'])->name('cartitem.index');
@@ -111,6 +85,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/CartItem', [CartItemController::class, 'destroy'])->name('cartitem.destroy');
 });
 
+//訂單
 Route::middleware('auth')->group(function () {
     Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
@@ -130,12 +105,47 @@ Route::middleware('auth')->group(function (){
 
 });
 
+//管理員登入
+Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function(){
+    Route::namespace('Auth')->middleware('guest:admin')->group(function(){
+        //login route
+        Route::get('/login',[LoginController::class,'login'])->name('login');
+        Route::post('/login',[LoginController::class,'processLogin']);
+    });
+    Route::namespace('Auth')->middleware('auth:admin')->group(function(){
+        Route::post('/logout',function(Request $request){
+            Auth::guard('admin')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return redirect()->action([
+                LoginController::class,
+                'login'
+            ]);
+        })->name('logout');
+    });
+});
 
+//管理員
+Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function(){
+    Route::get('/home', function () {
+        return view('admin.home');
+    })->name('home');
+
+    Route::get('/AdminProduct', [ProductController::class, 'admin_index'])->name('product.adminIndex');
+    Route::get('/AdminCombination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
+    Route::get('/AdminCartItem', [CartItemController::class, 'admin_index'])->name('cartitem.adminIndex');
+    Route::get('/AdminCategory', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
+});
+
+//商品
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+Route::get('productSearch', [ProductController::class, 'search'])->name('Products.search');
 Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
 Route::post('/product', [ProductController::class, 'store'])->name('product.store');
+Route::get('products/{product}', [ProductController::class, 'show'])->name('Products.show');
 Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
 Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
 Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
+
 
 require __DIR__ . '/auth.php';
