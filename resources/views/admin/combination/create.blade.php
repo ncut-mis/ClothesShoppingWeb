@@ -6,7 +6,7 @@
     <title>新增搭配組合</title>
 </head>
 <h1>新增搭配組合</h1>
-<form action="{{ route('combinations.store') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('combination.store') }}" method="POST" enctype="multipart/form-data">
     　　　@csrf
     <div class="form-group">
         <label for="image">選擇圖片:</label>

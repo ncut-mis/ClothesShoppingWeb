@@ -48,7 +48,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 //會員首頁
-Route::get('/home', function () {   
+Route::get('/home', function () {
      $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();
      $products = Product::with('firstPhoto')->paginate(8);
@@ -95,13 +95,13 @@ Route::middleware('auth')->group(function () {
 
 //搭配組合
 Route::middleware('auth')->group(function (){
-    Route::get('/combinations',[CombinationController::class,'index'])->name('combinations.index');
-    Route::get('/combinations/create',[CombinationController::class,'create'])->name('combinations.create');
-    Route::get('/combinations/search',[CombinationController::class,'search'])->name('combinations.search');
-    Route::post('/combinations',[CombinationController::class,'store'])->name('combinations.store');
-    Route::get('/combinations/{combination}/edit',[CombinationController::class,'edit'])->name('combinations.edit');
-    Route::patch('/combinations/{combination}',[CombinationController::class,'update'])->name('combinations.update');
-    Route::delete('/combinations/destroy',[CombinationController::class,'destroy'])->name('combinations.destroy');
+    Route::get('/admin/combination',[CombinationController::class,'index'])->name('combination.index');
+    Route::get('/admin/combination/create',[CombinationController::class,'create'])->name('combination.create');
+    Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
+    Route::post('/admin/combination',[CombinationController::class,'store'])->name('combination.store');
+    Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
+    Route::patch('/admin/combination/{combination}',[CombinationController::class,'update'])->name('combination.update');
+    Route::delete('/admin/combination/destroy',[CombinationController::class,'destroy'])->name('combination.destroy');
 
 });
 

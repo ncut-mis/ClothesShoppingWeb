@@ -17,7 +17,7 @@ class CombinationController extends Controller
     {
         //global $data;
         $combinations = Combination::all();
-        return view('combinations.index',compact('combinations'));
+        return view('admin.combination.index',compact('combinations'));
     }
 
     public function admin_index()
@@ -30,7 +30,7 @@ class CombinationController extends Controller
      */
     public function create()
     {
-        return view('combinations.create');
+        return view('admin.combination.create');
     }
 
     /**
@@ -52,6 +52,8 @@ class CombinationController extends Controller
         $combination->category_id = $validated['category_id'];
 
         $combination->save();
+        return redirect()->route('combinations.index')
+                         ->with('success','新增成功');
 
     }
 
