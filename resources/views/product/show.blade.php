@@ -16,51 +16,83 @@
     }
 </script>
 
-<script src="//unpkg.com/alpinejs" defer></script>
-
 @extends($layout)
 
 @section('content')
     <!--單品顯示區域-->
     <div class = "flex flex-row">
-        <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3">
-            <div class = "product pl-8 pr-8">
+        <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3">
+            <div class = "product pl-8 pr-8 w-full">
                 <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
-
-                <<div class="relative" x-data="{ activePhoto: 0, photos: [
-                    @if($product->ProductPhoto->isNotEmpty())
+                <div class = "w-full flex flex-row">
+                    <div class="relative basis-2/3" x-data="{ activePhoto: 0, photos: [
                         @foreach($product->ProductPhoto as $index => $photo)
                             '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
                         @endforeach
-                    @endif
-                ] }">
+                    ] }">
 
-                    <!-- 图片轮播显示 -->
-                    <template x-for="(photo, index) in photos" :key="index">
-                        <img :src="photo"
-                        x-show="activePhoto === index"
-                        class="w-full h-auto block rounded"
-                        style="display: none;" />
-                    </template>
+                        <!-- 图片轮播显示 -->
+                        <template x-for="(photo, index) in photos" :key="index">
+                            <img :src="photo" 
+                                x-show="activePhoto === index" 
+                                class="w-full h-auto block rounded" 
+                                style="display: none;" />
+                        </template>
 
-                    <!-- 轮播控制按钮 -->
-                    <div class="flex justify-center mt-4">
-                        <button
-                            class="mx-1 text-xl bg-gray-300 rounded w-5"            
-                            @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1"
-                        >&lt;</button>
-
-                        <button
-                            class="mx-1 text-xl bg-gray-300 rounded w-5"
-                            @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1"
-                        >&gt;</button>
+                        <!-- 轮播控制按钮 -->
+                        <div class="flex justify-center mt-4">
+                            <button class="mx-1 text-xl bg-gray-300 rounded w-5"            
+                                    @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
+                                &lt;
+                            </button>
+                            <button class="mx-1 text-xl bg-gray-300 rounded w-5"
+                                    @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
+                                &gt;
+                            </button>
+                        </div>
                     </div>
+
+                    <!--選擇規格區塊-->
+                    <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "mt-8 basis-1/3 ml-8">
+                        @csrf
+                        <div class = "ml-4">
+                            <label for = "quantity">請選擇數量</label>
+                            <input type = "number" name = "quantity" min = "1" max = "50" class = "rounded-lg w-20">
+                        </div>
+                        <br>
+
+                        <!-- 即將更改程式碼 -->
+                        <div class = "mt-4 ml-4">
+                            <label for = "size">請選擇尺寸</label>
+                                <select id = "size" name = "size" class = "rounded-lg w-20">
+                                    @foreach($product->specification as $specification)
+                                        @if($specification->specification_type === 'size')
+                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>                           
+                        </div>
+                        <br>
+
+                        <div class = "mt-4 ml-4">
+                        <label for = "color">請選擇顏色</label>
+                            <select id = "color" name = "color" class = "rounded-lg w-20">
+                                @foreach($product->specification as $specification)
+                                    @if($specification->specification_type === 'color')
+                                        <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <br>
+
+                        <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
+                    </form>
                 </div>
-
-
-
                 <h1 class = "text-3xl text-red-500 pt-4 bottom-0 right-0">NT {{ $product->price }}</h1>
             </div>
+            
+            <!--操作區塊-->
             <div class = "opration grid grid-cols-2 gap-2 pl-8 pt-8">
                 @if(\App\Models\Product::Track_isExist($product->id))
                     <form method="POST" action="{{route('trackeditem.destroy')}}" class = "pb-4">
@@ -78,7 +110,7 @@
                 @endif
 
                 <div class = "flex">
-                    <button id="add" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
+                    <button id="" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
                 </div>
             </div>
         </div>
@@ -240,87 +272,12 @@
         @endif
     </div>
 
-    <!--單品選擇尺寸及數量區塊-->
-    <div id="popup" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-        <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup()">&times;</span>
-
-        <div class = "flex flex-row">
-            <div class = "basis-1/2">
-                <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
-                <div class = "photo">
-                    <img src="{{ asset('images/' . optional($product->firstPhoto)->file_address) }}" alt="Product Image" class = "max-w-sm max-h-sm">
-
-                </div>
-            </div>
-
-            <div class = "basis-1/2 ml-8">
-                <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "mt-8">
-                    @csrf
-                    <div>
-                        <label for = "quantity">請選擇數量</label>
-                        <input type = "number" name = "quantity" min = "1" max = "50">
-                    </div>
-                    <br>
-
-                    <div class = "mt-4">
-                        <label for = "size">請選擇尺寸</label>
-                        <!--判斷是否為鞋子 -->
-                        @if($product->Category->category_type == 4) 
-                            <select id = "size" name = "size">
-                                <option value = "US 7">US 7</option>
-                                <option value = "US 7.5">US 7.5</option>
-                                <option value = "US 8">US 8</option>
-                                <option value = "US 8.5">US 8.5</option>
-                                <option value = "US 9">US 9</option>
-                                <option value = "US 9.5">US 9.5</option>
-                                <option value = "US 10">US 10</option>
-                                <option value = "US 10.5">US 10.5</option>
-                                <option value = "US 11">US 11</option>
-                                <option value = "US 11.5">US 11.5</option>
-                                <option value = "US 12">US 12</option>
-                            </select>
-                        @else
-                            <select id = "size" name = "size">
-                                <option value = "XS">XS</option>
-                                <option value = "S">S</option>
-                                <option value = "M">M</option>
-                                <option value = "L">L</option>
-                                <option value = "XL">XL</option>
-                                <option value = "2XL">2XL</option>
-                            </select>
-                        @endif
-                    </div>
-
-                    <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-                </form>
-            </div>
-        </div>
-
-        <div class = "flex flex-row">
-            <div class = "basis-1/2">
-                <h1 class = "text-3xl text-red-500 pt-4 mb-4 right-0">NT {{ $product->price }}</h1>
-            </div>
-
-            <div class = "basis-1/2 flex">
-                <button type = "submit" form = "cartitem" class = "rounded-lg bg-blue-500 hover:bg-blue-700 text-white text-xl w-40 h-10 ml-auto mt-4">
-                    加入購物車
-                </button>
-            </div>
-        </div>
-    </div>
     <!--商品描述-->
     <div class = "description bg-white  mt-4 ml-4 rounded-lg">
         <p>{!! nl2br(e($product->description)) !!} </p>
     </div>
+
     <script>
-        function closePopup() {
-            document.getElementById('popup').classList.add('hidden');
-        }
-
-        document.getElementById('add').addEventListener('click', function() {
-            document.getElementById('popup').classList.remove('hidden');
-        });
-
         function closePopup2() {
             document.getElementById('popup2').classList.add('hidden');
         }

@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Combination;
 use App\Models\combinations_detail;
+use App\Models\specification;
 
 use App\Http\Controllers\CombinationController;
 
@@ -56,7 +57,7 @@ Route::get('/home', function () {
                           ->withQueryString();
      $products = Product::with('firstPhoto')->paginate(8);
      $layout = 'layouts.app';
-
+     
      return view('home', compact('products','categories', 'layout'));
 })->middleware(['auth', 'verified'])->name('/home');
 

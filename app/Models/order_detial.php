@@ -15,6 +15,7 @@ class order_detial extends Model
         'order_id',
         'product_id',       
         'quantity',
+        'color',
     ];
 
     public function order()

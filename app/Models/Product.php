@@ -10,6 +10,8 @@ use App\Models\Combination;
 use App\Models\combinations_detail;
 use App\Models\order_detial;
 use App\Models\Tracked_item;
+use App\Models\specification;
+use App\Models\stock;
 
 class Product extends Model
 {
@@ -61,6 +63,16 @@ class Product extends Model
     public function combinations_detail()
     {
         return $this->hasMany(combinations_detail::class);
+    }
+
+    public function Specification()
+    {
+        return $this->hasMany(specification::class);
+    }
+
+    public function Stock()
+    {
+        return $this->hasMany(stock::class);
     }
 
     public static function Track_isExist($productID){
