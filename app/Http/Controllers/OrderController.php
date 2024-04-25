@@ -60,6 +60,7 @@ class OrderController extends Controller
             $order_detial->product_id = $cartItem->product_id;
             $order_detial->quantity = $cartItem->quantity;
             $order_detial->size = $cartItem->size;
+            $order_detial->color = $cartItem->colo;
 
             $order_detial->save();
             $cartItem->delete();

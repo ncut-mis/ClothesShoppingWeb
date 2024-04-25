@@ -12,13 +12,16 @@
                     <h1 class = "text-4xl mb-8 font-bold">結帳</h1>
                     <h1 class = "text-2xl mb-4 ml-4 font-bold">購物車清單</h1>
                     <div class = "flex flex-row pb-4">
-                        <div class = "basis-1/3 ml-4">
+                        <div class = "basis-1/4 ml-4">
                             <h1 class = "font-bold">產品名稱</h1>
                         </div>
-                        <div class = "basis-1/3">
+                        <div class = "basis-1/4">
                             <h1 class = "font-bold">尺寸</h1>
                         </div>  
-                        <div class = "basis-1/3">
+                        <div class = "basis-1/4">
+                            <h1 class = "font-bold">顏色</h1>
+                        </div>
+                        <div class = "basis-1/4">
                             <h1 class = "font-bold">數量</h1>
                         </div>                    
                     </div>
@@ -37,13 +40,16 @@
                         @endphp
 
                         <div class = "flex flex-row pb-4 ml-8 mt-4">
-                            <div class = "basis-1/3">
+                            <div class = "basis-1/4">
                                 <h1>{{$item->product->name}}</h1>
                             </div>
-                            <div class = "basis-1/3">
+                            <div class = "basis-1/4">
                                 <h1>{{$item->size}}</h1>
                             </div>
-                            <div class = "basis-1/3">
+                            <div class = "basis-1/4">
+                                <h1>{{$item->color}}</h1>
+                            </div>
+                            <div class = "basis-1/4">
                                 <h1>{{$item->quantity}}</h1>
                             </div>
                         </div>

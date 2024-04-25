@@ -42,10 +42,11 @@ class CartItemController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->has('sizes')) {
+        if ($request->has('sizes') && $request->has('color')) {
             $sizes = $request->input('sizes');
+            $color = $request->input('color');
             foreach ($sizes as $productId => $size) {
-                $this->addToCart($request->user()->id, $productId, 1, $size); // 假设数量默认为1
+                $this->addToCart($request->user()->id, $productId, 1, $size, $color[$productId]); // 假设数量默认为1
             }
          } 
         else {
@@ -53,12 +54,12 @@ class CartItemController extends Controller
             $productId = $request->input('ProductID');
             $quantity = $request->input('quantity');
             $size = $request->input('size');
-            $this->addToCart($request->user()->id, $productId, $quantity, $size);
+            $color = $request->input('color');
+            $this->addToCart($request->user()->id, $productId, $quantity, $size, $color);
         }
 
         session()->flash('message', '加入購物車成功');
         return redirect(route('cartitem.index'));
-
     }
 
     /**
@@ -120,13 +121,14 @@ class CartItemController extends Controller
         return redirect(route('cartitem.index'));
     }
 
-    protected function addToCart($userId, $productId, $quantity, $size)
+    protected function addToCart($userId, $productId, $quantity, $size, $color)
     {
         $cartItem = new CartItem();
         $cartItem->user_id = $userId;
         $cartItem->product_id = $productId;
         $cartItem->quantity = $quantity;
         $cartItem->size = $size;
+        $cartItem->color = $color;
         $cartItem->save();
     }
 }
