@@ -17,6 +17,8 @@ class Combination extends Model
         'price'
     ];
 
+
+
     public function combinations_detail()
     {
         return $this->hasMany(combinations_detail::class , 'combination_id');
