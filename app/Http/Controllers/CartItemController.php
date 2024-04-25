@@ -42,11 +42,11 @@ class CartItemController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->has('sizes') && $request->has('color')) {
+        if ($request->has('sizes') && $request->has('colors')) {
             $sizes = $request->input('sizes');
-            $color = $request->input('color');
+            $colors = $request->input('colors');
             foreach ($sizes as $productId => $size) {
-                $this->addToCart($request->user()->id, $productId, 1, $size, $color[$productId]); // 假设数量默认为1
+                $this->addToCart($request->user()->id, $productId, 1, $size, $colors[$productId]); // 假设数量默认为1
             }
          } 
         else {

@@ -110,7 +110,7 @@
                 @endif
 
                 <div class = "flex">
-                    <button id="" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
+                    <button onclick= "submitForm()" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
                 </div>
             </div>
         </div>
@@ -154,31 +154,57 @@
                             @csrf
 
                             <!--主要商品選擇尺寸選單-->
-                            <div class = "mt-4">
-                                <label for = "sizeMain">{{$combination->product->name}}</label>
+                            <div class = "mt-4 mb-4">
+                                <h1 class = "text-xl mb-4">{{$combination->product->name}}</h1>
+                                <label for = "sizeMain">尺寸</label>
                                 <select id = "sizeMain" name = "sizes[{{$combination->product->id}}]">
-                                    <option value = "XS">XS</option>
-                                    <option value = "S">S</option>
-                                    <option value = "M">M</option>
-                                    <option value = "L">L</option>
-                                    <option value = "XL">XL</option>
-                                    <option value = "2XL">2XL</option>
+                                    @foreach($combination->product->specification as $specification)
+                                        @if($specification->specification_type === 'size')
+                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                <br>
+
+                                <label for = "colorMain">顏色</label>
+                                <select id = "colorMain" name = "colors[{{$combination->product->id}}]" class = "mt-4">
+                                    @foreach($product->specification as $specification)
+                                        @if($specification->specification_type === 'color')
+                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
 
+                            <hr>
+
                             <!--搭配商品選擇尺寸選單-->
                             @foreach($combination->combinations_detail as $item)
-                            <div class = "mt-4">
-                                <label for = "size-{{$item->product->id}}">{{$item->product->name}}</label>
+                            <div class = "mt-4 mb-4">
+                                <h1 class = "text-xl mb-4">{{$item->product->name}}</h1>
+                                <label for = "size-{{$item->product->id}}">尺寸</label>
                                 <select id = "size-{{$item->product->id}}" name = "sizes[{{$item->product->id}}]">
-                                    <option value = "XS">XS</option>
-                                    <option value = "S">S</option>
-                                    <option value = "M">M</option>
-                                    <option value = "L">L</option>
-                                    <option value = "XL">XL</option>
-                                    <option value = "2XL">2XL</option>
+                                    @foreach($item->product->specification as $specification)
+                                        @if($specification->specification_type === 'size')
+                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+
+                                <br>
+
+                                <label for = "color-{{$item->product->id}}">顏色</label>
+                                <select id = "color-{{$item->product->id}}" name = "colors[{{$item->product->id}}]" class = "mt-4">
+                                    @foreach($item->product->specification as $specification)
+                                        @if($specification->specification_type === 'color')
+                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
+
+                            <hr>
                             @endforeach
                             <div class = "flex mt-4">
                                 <input type = "submit" value = "加入購物車" class = "rounded-lg bg-blue-500 hover:bg-blue-700 text-white text-xl w-40 h-10 ml-auto mt-4 ml-auto">
@@ -293,6 +319,10 @@
         document.getElementById('Preview').addEventListener('click', function() {
             document.getElementById('popup3').classList.remove('hidden');
         });  
+
+        function submitForm() {
+            document.getElementById('cartitem').submit();
+        }
     </script>
 @endsection
 
