@@ -7,7 +7,7 @@
                     @foreach($combinations as $combination)
                         <hr>
                         <div class = "mt-4 mb-4">
-                            {{ optional($post->$combinations)->name }}
+                            
                             <h1 class = "basis-1/3">{{$combination->name}}</h1>
                         </div>
                     @endforeach
