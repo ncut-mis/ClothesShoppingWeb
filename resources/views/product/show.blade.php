@@ -135,7 +135,7 @@
                         <h1 class = "text-3xl text-red-500 pt-4 mb-2 ml-4">NT {{ $combination->price }}</h1>
                     </div>
 
-                    <div class = "flex flex-row absolute bottom-4 w-full">
+                    <div class = "flex flex-row absolute bottom-8 w-full">
                         <div class = "basis-1/2">
                             <button id="Preview" class="basis-1/2 ml-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">預覽</button>
                         </div>

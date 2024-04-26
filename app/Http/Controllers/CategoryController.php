@@ -61,7 +61,16 @@ class CategoryController extends Controller
             $layout = 'layouts.guest';
             return view('GuestHome', compact('categories','products','layout'));
         }
-        
+    
+    }
+
+    public function admin_show($categoryID)
+    {
+        $categories = Category::all();
+
+        $products = Product::where('category_id', $categoryID)->paginate(10);
+
+        return view('admin.product.index', compact('categories','products'));       
     }
 
     /**

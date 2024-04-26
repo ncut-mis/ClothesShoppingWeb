@@ -9,19 +9,19 @@
                         {{ __('首頁') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.product.adminIndex')" :active="request()->routeIs('admin.home')">
-                        {{ __('商品列表') }}
+                        {{ __('商品管理') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.combination.adminIndex')" :active="request()->routeIs('admin.home')">
-                        {{ __('搭配列表') }}
+                        {{ __('搭配組合管理') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.cartitem.adminIndex')" :active="request()->routeIs('admin.home')">
-                        {{ __('訂單列表') }}
+                        {{ __('訂單管理') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.category.adminIndex')" :active="request()->routeIs('admin.home')">
-                        {{ __('產品類別列表') }}
+                        {{ __('產品類別管理') }}
                     </x-nav-link>
                     <x-nav-link  :active="request()->routeIs('admin.home')">
-                        {{ __('試搭') }}
+                        {{ __('試搭管理') }}
                     </x-nav-link>
                 </div>
             </div>

@@ -137,10 +137,11 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
         return view('admin.home');
     })->name('home');
 
-    Route::get('/AdminProduct', [ProductController::class, 'admin_index'])->name('product.adminIndex');
-    Route::get('/AdminCombination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
-    Route::get('/AdminCartItem', [CartItemController::class, 'admin_index'])->name('cartitem.adminIndex');
-    Route::get('/AdminCategory', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
+    Route::get('/Product', [ProductController::class, 'admin_index'])->name('product.adminIndex');
+    Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
+    Route::get('/CartItem', [CartItemController::class, 'admin_index'])->name('cartitem.adminIndex');
+    Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
+    Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminshow');
 });
 
 //商品

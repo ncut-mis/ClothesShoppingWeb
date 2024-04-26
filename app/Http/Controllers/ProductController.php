@@ -26,7 +26,8 @@ class ProductController extends Controller
     public function admin_index()
     {
         $product = Product::all();
-        return view('admin.product.index', ['products' =>$product]);
+        $categories = Category::all();
+        return view('admin.product.index', ['products' =>$product , 'categories' => $categories]);
     }
 
     /**
@@ -141,18 +142,22 @@ class ProductController extends Controller
                           ->withQueryString();
         if ($exists) {
             if (Auth::check()){
-                return view('home', compact('products','categories'));
+                $layout = 'layouts.app';
+                return view('home', compact('categories','products','layout'));
             }
             else{
-                return view('GuestHome', compact('products','categories'));
+                $layout = 'layouts.guest';
+                return view('GuestHome', compact('categories','products','layout'));
             }
         } else {
             session()->flash('message', '查無商品');
             if (Auth::check()){
-                return view('home', compact('products','categories'));
+                $layout = 'layouts.app';
+                return view('home', compact('categories','products','layout'));
             }
             else{
-                return view('GuestHome', compact('products','categories'));
+                $layout = 'layouts.guest';
+                return view('GuestHome', compact('categories','products','layout'));
             }
         }
 
