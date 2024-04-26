@@ -24,9 +24,9 @@ class CategoryController extends Controller
 
      public function admin_index()
     {
-        $items = Category::all();
+        $categories = Category::paginate(10);
                  
-        return view('admin.category.index', ['items' => $items]);
+        return view('admin.category.index', ['categories' => $categories]);
     }
     
     public function create()

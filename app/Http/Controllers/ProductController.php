@@ -25,9 +25,9 @@ class ProductController extends Controller
 
     public function admin_index()
     {
-        $product = Product::all();
+        $products = Product::paginate(10);
         $categories = Category::all();
-        return view('admin.product.index', ['products' =>$product , 'categories' => $categories]);
+        return view('admin.product.index', ['products' =>$products , 'categories' => $categories]);
     }
 
     /**
@@ -160,7 +160,19 @@ class ProductController extends Controller
                 return view('GuestHome', compact('categories','products','layout'));
             }
         }
+    }
 
-
+    public function admin_search(Request $request)
+    {
+        $exists = Product::Where('name', '=', $request['keyword'])->exists();
+        $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
+        $categories = Category::paginate(10, ['*'], 'categoryPage')
+                          ->withQueryString();
+        if ($exists) {
+            return view('admin.product.index', compact('categories','products'));
+        } else {
+            session()->flash('message', '查無商品');
+            return view('admin.product.index', compact('categories','products'));
+        }
     }
 }
