@@ -39,7 +39,10 @@
                 <div class="p-6 text-gray-900 ">
                     <h1 class = "text-3xl font-bold mb-4">操作區域</h1>
                     <hr>
-                    <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">加入試搭</button>  
+                    <form method = "POST" action = "" class = "basis-1/2 ml-auto mt-4 mr-8 inline-block">
+                    <input type = "hidden" name = "productID" value = "{{$product->id}}">
+                        <input type = "submit" value = "試搭" class = " bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                    </form>
                     <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">修改商品</button>    
                     <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">刪除商品</button>    
                     @if($product->	is_shelf == 0)
@@ -56,9 +59,24 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 ">
-                    <h1 class = "text-3xl font-bold mb-4">搭配清單</h1>
+                    <div class = "flex flex-row">
+                        <div class = "basis-1/3 flex items-center">
+                            <h1 class = "text-3xl font-bold mb-4">搭配清單</h1>
+                        </div>
+                        <div class = "basis-1/3">
+                            <form method="GET" action = "{{route('admin.combination.adminSearch')}}" class = "mb-6">
+                                @csrf
+                                <label for = "keyword" class = "text-white text-xl">搜尋</label>
+                                <input type = "hidden" name = "productID" value = "{{$product->id}}">
+                                <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
+                                <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
+                            </form>
+                        </div>
+                        <div class = "basis-1/3">
+                        </div>
+                    </div>
                     <hr>
-                    @foreach($combinations as $combination)
+                    @forelse($combinations as $combination)
                         <div class = "flex flex-row">
                             <h1 class = "basis-1/2 text-xl mt-4 mb-4 pt-2 inline-block">{{$combination->name}}</h1>
                             <div class = "basis-1/2">
@@ -68,7 +86,9 @@
                             </div>
                         </div>
                         <hr>
-                    @endforeach
+                        @empty
+                            <p class = "text-red-500 mt-4">查無搭配組合</p>
+                        @endforelse 
                 </div>
             </div>
         </div>

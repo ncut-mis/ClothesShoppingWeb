@@ -7,6 +7,8 @@ use App\Models\Combination;
 use App\Http\Requests\StoreCombinationRequest;
 use App\Http\Requests\UpdateCombinationRequest;
 use App\Models\Product;
+use App\Models\ProductPhoto;
+use App\Models\stock;
 
 class CombinationController extends Controller
 {
@@ -16,7 +18,7 @@ class CombinationController extends Controller
     public function index(Request $request)
     {
         //global $data;
-        $combinations = Combination::all();
+        $combinations = Combination::paginate(10);
         return view('admin.combination.index',compact('combinations'));
     }
 
@@ -104,5 +106,17 @@ class CombinationController extends Controller
         $cart->delete();
         session()->flash('message', '刪除成功');
         return redirect(route('combination.index'));
+    }
+
+    public function admin_search(Request $request)
+    {
+        $product = Product::find($request['productID']);
+        $keyword = $request['keyword'];
+        $combinations = Combination::where('product_id', $product->id)
+                           ->where('name', 'like', '%' . $keyword . '%')
+                           ->paginate(10);
+        $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
+        $stocks = stock::Where('product_id', '=', $product->id)->get();
+        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks]);
     }
 }

@@ -143,6 +143,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/Product/{product}', [ProductController::class, 'admin_show'])->name('product.adminShow');
     Route::patch('/StockUpdate', [StockController::class, 'update'])->name('stock.update');
     Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
+    Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
     Route::get('/CartItem', [CartItemController::class, 'admin_index'])->name('cartitem.adminIndex');
     Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
     Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
