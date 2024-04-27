@@ -10,6 +10,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TrackedItemController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StockController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Combination;
@@ -20,6 +21,7 @@ use App\Http\Controllers\CombinationController;
 
 use App\Models\Order;
 use App\Models\admin;
+use App\Models\stock;
 
 
 /*
@@ -138,11 +140,13 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     })->name('home');
 
     Route::get('/Product', [ProductController::class, 'admin_index'])->name('product.adminIndex');
+    Route::get('/Product/{product}', [ProductController::class, 'admin_show'])->name('product.adminShow');
+    Route::patch('/StockUpdate', [StockController::class, 'update'])->name('stock.update');
     Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     Route::get('/CartItem', [CartItemController::class, 'admin_index'])->name('cartitem.adminIndex');
     Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
     Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
-    Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('Products.adminSearch');
+    Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('product.adminSearch');
 });
 
 //商品

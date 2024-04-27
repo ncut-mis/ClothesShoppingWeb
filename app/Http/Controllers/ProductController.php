@@ -8,6 +8,7 @@ use App\Models\ProductPhoto;
 use App\Models\Combination;
 use App\Models\Category;
 use App\Models\specification;
+use App\Models\stock;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -19,8 +20,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::all();
-        return view('product.index', ['products' =>$product]);
+        $products = Product::all();
+        return view('product.index', ['products' =>$products]);
     }
 
     public function admin_index()
@@ -99,6 +100,17 @@ class ProductController extends Controller
             // 用戶未登入，使用 guest layout
             return view('product.show', ['product' => $product , 'combinations' => $combinations , 'layout' => 'layouts.guest']);
         }
+    }
+
+    public function admin_show(Product $product)
+    {
+        //image可修改成取亂數隨機顯示商品圖片，也可取出所有圖片，也可在Model去定義圖片顯示方法
+        $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
+        $combinations = Combination::Where('product_id', '=', $product->id)->paginate(10);
+        $stocks = stock::Where('product_id', '=', $product->id)->get();
+
+        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks]);
+
     }
 
     /**

@@ -32,10 +32,10 @@
                                         <option value = "{{$category->id}}">{{$category->name}}</option>                                
                                     @endforeach
                                 </select>
-                                <a href="{{ route('admin.product.adminIndex') }}" class = "ml-4 text-blue-500">重設</a>
+                                <a href="{{ route('admin.product.adminIndex' , ) }}" class = "ml-4 text-blue-500">重設</a>
                             </div>
                             <div class = "basis-1/3">
-                                <form method="GET" action = "{{route('admin.Products.adminSearch')}}">
+                                <form method="GET" action = "{{route('admin.product.adminSearch')}}">
                                     @csrf
                                     <label for = "keyword" class = "text-white text-xl">搜尋</label>
                                     <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
@@ -45,7 +45,7 @@
                         </div>
                         @forelse($products as $product)
                             <hr>   
-                            <a href = "">                   
+                            <a href = "{{route('admin.product.adminShow', ['product' => $product]) }}">                  
                                 <div class = "mt-4 mb-4 flex flex-row" >                                                
                                     <div class = "basis-1/3">
                                         <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" class = "w-20 h-20 basis-1/3"> 
