@@ -39,6 +39,26 @@ class ProductController extends Controller
         return view('product.create');
     }
 
+    public function AllData($productID)
+    {
+        $product = Product::find($productID);
+        $category_type = $product->Category->category_type;
+        $products = Product::whereDoesntHave('Category', function ($query) use ($category_type) {
+            $query->where('category_type', $category_type);
+        })->get();
+        return response()->json($products);
+    }
+
+    public function photo($productID)
+    {
+        $product = Product::where('id', $productID)->first();
+        $category_type = $product->Category->category_type;
+        $photoUrl = asset('images/' . $product->firstPhoto->file_address);
+        return response()->json([
+            'category_type' =>  $category_type, // 或者只选取所需的产品信息
+            'photoUrl' => $photoUrl
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.

@@ -12,6 +12,7 @@ use App\Models\order_detial;
 use App\Models\Tracked_item;
 use App\Models\specification;
 use App\Models\stock;
+use App\Models\TrialItem;
 
 class Product extends Model
 {
@@ -78,5 +79,10 @@ class Product extends Model
     public static function Track_isExist($productID){
         $exist = Tracked_item::Where('product_id','=',$productID)->exists();
         return $exist;
+    }
+
+    public function TrialItem()
+    {
+        return $this->hasMany(TrialItem::class);
     }
 }

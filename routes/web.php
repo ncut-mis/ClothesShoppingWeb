@@ -11,6 +11,7 @@ use App\Http\Controllers\TrackedItemController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\TrialItemController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Combination;
@@ -148,6 +149,10 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
     Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
     Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('product.adminSearch');
+    Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
+    Route::get('/Photo/{productID}' , [ProductController::class, 'photo'])->name('product.photo');
+    Route::get('/TrialItem',[TrialItemController::class, 'index'])->name('trialitem.index');
+    Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
 });
 
 //商品
