@@ -10,6 +10,8 @@ class TrialItem extends Model
 {
     use HasFactory;
 
+    protected $table = 'trial_items';
+
     protected $fillable = [      
         'product_id',    
         'trial_product_id',   

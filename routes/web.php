@@ -151,8 +151,9 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('product.adminSearch');
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
     Route::get('/Photo/{productID}' , [ProductController::class, 'photo'])->name('product.photo');
-    Route::get('/TrialItem',[TrialItemController::class, 'index'])->name('trialitem.index');
+    Route::get('/TrialItem/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
     Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
+    Route::delete('/TrialItem',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
 });
 
 //商品

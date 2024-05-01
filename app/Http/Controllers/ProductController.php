@@ -9,6 +9,7 @@ use App\Models\Combination;
 use App\Models\Category;
 use App\Models\specification;
 use App\Models\stock;
+use App\Models\TrialItem;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -38,17 +39,7 @@ class ProductController extends Controller
     {
         return view('product.create');
     }
-
-    public function AllData($productID)
-    {
-        $product = Product::find($productID);
-        $category_type = $product->Category->category_type;
-        $products = Product::whereDoesntHave('Category', function ($query) use ($category_type) {
-            $query->where('category_type', $category_type);
-        })->get();
-        return response()->json($products);
-    }
-
+    
     public function photo($productID)
     {
         $product = Product::where('id', $productID)->first();
@@ -127,9 +118,10 @@ class ProductController extends Controller
         //image可修改成取亂數隨機顯示商品圖片，也可取出所有圖片，也可在Model去定義圖片顯示方法
         $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
         $combinations = Combination::Where('product_id', '=', $product->id)->paginate(10);
+        $TrialItems = TrialItem::Where('product_id', '=', $product->id)->paginate(10);
         $stocks = stock::Where('product_id', '=', $product->id)->get();
 
-        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks]);
+        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks , 'TrialItems' => $TrialItems]);
 
     }
 
