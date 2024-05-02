@@ -81,26 +81,31 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 ">
-                    <h1 class = "text-3xl font-bold mb-4">試搭清單</h1>    
-                    @forelse($TrialItems as $TrialItem)
-                        <div class = "border">
-                            <h1 class = "text-xl font-bold mt-4 ml-4">試搭{{$TrialItem->id}}</h1>
-                            <h1 class = "mt-4 ml-4">{{$product->name}}</h1>
-                            <h1 class = "mt-4 ml-4 mb-4">{{$TrialItem->trialProduct->name}}</h1>
-                            <div class = "flex">
-                                <form method = "POST" class = "">
-                                    <input type = "hidden" name = "product_id" value = "{{ $product->id }}">
-                                    <input type = "hidden" name = "trial_product_id" value = "{{ $TrialItem->trialProduct->id }}">
-                                    <input type = "submit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "加入搭配清單">
-                                </form>  
-                                <form method = "POST" action = "{{route('admin.trialitem.destroy')}}" class = "">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type = "hidden" name = "TrialitemID" value = "{{ $TrialItem->id }}">
-                                    <input type = "submit" class = "bg-red-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "刪除">
-                                </form> 
-                            </div>
+                    <div class = "flex">
+                        <h1 class = "text-3xl font-bold mb-4">試搭清單</h1>
+                        <div>
+                            <button id="PreviewBtn" class="basis-1/2 ml-4 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">預覽</button>    
                         </div>
+                    </div>
+                    @forelse($TrialItems as $TrialItem)
+                    <div class = "border">
+                        <h1 class = "text-xl font-bold mt-4 ml-4">試搭{{$TrialItem->id}}</h1>
+                        <h1 class = "mt-4 ml-4">{{$product->name}}</h1>
+                        <h1 class = "mt-4 ml-4 mb-4">{{$TrialItem->trialProduct->name}}</h1>
+                        <div class = "flex">
+                            <form method = "POST" class = "">
+                                <input type = "hidden" name = "product_id" value = "{{ $product->id }}">
+                                <input type = "hidden" name = "trial_product_id" value = "{{ $TrialItem->trialProduct->id }}">
+                                <input type = "submit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "加入搭配清單">
+                            </form>  
+                            <form method = "POST" action = "{{route('admin.trialitem.destroy')}}" class = "">
+                                @csrf
+                                @method('DELETE')
+                                <input type = "hidden" name = "TrialitemID" value = "{{ $TrialItem->id }}">
+                                <input type = "submit" class = "bg-red-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "刪除">
+                            </form> 
+                        </div>
+                    </div>
                     @empty  
                         <p class = "text-red-500 mt-4">查無試搭</p>
                     @endforelse 
@@ -191,6 +196,82 @@
         @endforeach
     </div>
 
+    <!-- 試搭預覽 -->
+    <div id="Preview" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/2 h-full overflow-y-scroll">
+        <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closePreview()">&times;</span>
+        <div class = "grid grid-cols-1 gap-5 h-full">
+            <div class="bg-gray-300 w-40 h-40 mt-4 mx-auto md:col-span-2 border" id = "cap">
+            </div>
+            <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2 border" id = "top">
+            </div>
+            <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2 border" id = "pant">
+            </div>
+            <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2 border" id = "sock">
+            </div>
+            <div class="bg-gray-300 w-40 h-40 mb-4 mx-auto md:col-span-2 border" id = "shoe">
+            </div>
+        </div>
+        <!-- 主要商品加載圖片 -->
+        @switch($product->Category->category_type)
+            @case(0)
+                <script>
+                    insertImage("cap", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                </script>
+                @break
+            @case(1)
+                <script>
+                    insertImage("top", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                </script>
+                @break
+            @case(2)
+                <script>
+                    insertImage("pant", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                </script>
+                @break
+            @case(3)
+                <script>
+                    insertImage("sock", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                </script>
+                @break
+            @case(4)
+                <script>
+                    insertImage("shoe", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                </script>
+                @break
+        @endswitch
+
+        @foreach($TrialItems as $TrialItem)     
+            <!-- 搭配商品加載圖片 -->       
+            @switch($TrialItem->trialProduct->Category->category_type)
+                @case(0)
+                    <script>
+                        insertImage("cap", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                    </script>
+                    @break
+                @case(1)
+                    <script>
+                        insertImage("top", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                    </script>
+                    @break
+                @case(2)
+                    <script>
+                        insertImage("pant", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                    </script>
+                    @break
+                @case(3)
+                    <script>
+                        insertImage("sock", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                    </script>
+                    @break
+                @case(4)
+                    <script>
+                        insertImage("shoe", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                    </script>
+                    @break
+            @endswitch
+        @endforeach
+    </div>
+
     <script>
         function closeStocklist() {
             document.getElementById('stocklist').classList.add('hidden');
@@ -198,6 +279,15 @@
 
         document.getElementById('stockcheck').addEventListener('click', function() {
             document.getElementById('stocklist').classList.remove('hidden');
+            
+        });
+
+        function closePreview() {
+            document.getElementById('Preview').classList.add('hidden');
+        }
+
+        document.getElementById('PreviewBtn').addEventListener('click', function() {
+            document.getElementById('Preview').classList.remove('hidden');
             
         });
 

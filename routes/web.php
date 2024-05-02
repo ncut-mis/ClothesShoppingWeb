@@ -12,6 +12,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\TrialItemController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Combination;
@@ -154,6 +155,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/TrialItem/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
     Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
     Route::delete('/TrialItem',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
+    Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');
 });
 
 //商品

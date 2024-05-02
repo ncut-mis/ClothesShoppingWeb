@@ -17,7 +17,7 @@
                     <x-nav-link :href="route('admin.category.adminIndex')" :active="request()->routeIs('admin.home')">
                         {{ __('產品類別管理') }}
                     </x-nav-link>
-                    <x-nav-link  :active="request()->routeIs('admin.home')">
+                    <x-nav-link  :href="route('admin.adminlist.index')" :active="request()->routeIs('admin.home')">
                         {{ __('人員管理') }}
                     </x-nav-link>
                 </div>
