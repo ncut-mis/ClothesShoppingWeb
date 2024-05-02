@@ -20,63 +20,171 @@
 
 @section('content')
     <!--單品顯示區域-->
-    <div class = "flex flex-row">
-        <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3">
-            <div class = "product pl-8 pr-8 w-full">
-                <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
-                <div class = "w-full flex flex-row">
-                    <div class="relative basis-2/3" x-data="{ activePhoto: 0, photos: [
-                        @foreach($product->ProductPhoto as $index => $photo)
-                            '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
-                        @endforeach
-                    ] }">
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3">
+                        <div class = "product pl-8 pr-8 w-full">
+                            <div class = "w-full flex flex-row">
+                                <!-- 圖片顯示區域 -->
+                                <div class="relative basis-2/3" x-data="{ activePhoto: 0, photos: [
+                                        @foreach($product->ProductPhoto as $index => $photo)
+                                            '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
+                                        @endforeach
+                                    ] }">
 
-                        <!-- 图片轮播显示 -->
-                        <template x-for="(photo, index) in photos" :key="index">
-                            <img :src="photo" 
-                                x-show="activePhoto === index" 
-                                class="w-full h-auto block rounded" 
-                                style="display: none;" />
-                        </template>
+                                    <!-- 图片轮播显示 -->
+                                    <template x-for="(photo, index) in photos" :key="index">
+                                        <img :src="photo" 
+                                            x-show="activePhoto === index" 
+                                            class="w-full h-auto block rounded" 
+                                            style="display: none;" />
+                                    </template>
 
-                        <!-- 轮播控制按钮 -->
-                        <div class="flex justify-center mt-4">
-                            <button class="mx-1 text-xl bg-gray-300 rounded w-5"            
-                                    @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
-                                &lt;
-                            </button>
-                            <button class="mx-1 text-xl bg-gray-300 rounded w-5"
-                                    @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
-                                &gt;
-                            </button>
+                                    <!-- 轮播控制按钮 -->
+                                    <div class="flex justify-center mt-4">
+                                        <button class="mx-1 text-xl bg-gray-300 rounded w-5"            
+                                                @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
+                                            &lt;
+                                        </button>
+                                        <button class="mx-1 text-xl bg-gray-300 rounded w-5"
+                                                @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
+                                            &gt;
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!--選擇規格區塊-->
+                                <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "mt-8 basis-1/3 ml-8">
+                                    <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
+                                    <h1 class = "text-3xl text-red-500 pl-4 mt-4">NT {{ $product->price }}</h1>
+                                    @csrf
+                                    <div class = "ml-4 mt-4">
+                                        <label for = "quantity">請選擇數量</label>
+                                        <input type = "number" name = "quantity" min = "1" max = "50" class = "rounded-lg w-20">
+                                    </div>
+                                    <br>
+
+                                    <!-- 尺寸選擇 -->
+                                    <div class = "mt-4 ml-4">
+                                        <label for = "size">請選擇尺寸</label>
+                                        <select id = "size" name = "size" class = "rounded-lg w-20">
+                                            @foreach($product->specification as $specification)
+                                                @if($specification->specification_type === 'size')
+                                                    <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>                           
+                                    </div>
+                                    <br>
+
+                                    <!-- 顏色選擇 -->
+                                    <div class = "mt-4 ml-4">
+                                    <label for = "color">請選擇顏色</label>
+                                        <select id = "color" name = "color" class = "rounded-lg w-20">
+                                            @foreach($product->specification as $specification)
+                                                @if($specification->specification_type === 'color')
+                                                    <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <br>
+
+                                    <!-- 傳遞商品id -->
+                                    <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
+                                </form>
+                            </div>
+                            
+                        </div>
+                        
+                        <!--操作區塊-->
+                        <div class = "flex justify-end gap-2 pl-8 pt-8">
+                            @if(\App\Models\Product::Track_isExist($product->id))
+                                <form method="POST" action="{{route('trackeditem.destroy')}}" class = "pb-4">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type = "hidden" name = "Product_ID" value = "{{$product->id}}">
+                                    <input type = "submit" value = "解除追蹤" class = "bg-pink-500 hover:bg-pink-800 w-40 h-20 text-white text-2xl rounded-lg font-bold cursor-pointer">
+                                </form>
+                            @else
+                                <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
+                                    @csrf
+                                    <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
+                                    <input type = "submit" value = "追蹤" class = "bg-pink-500 hover:bg-pink-800 w-40 h-20 text-white text-2xl rounded-lg font-bold cursor-pointer">
+                                </form>
+                            @endif
+
+                            <div class = "flex">
+                                <button onclick= "submitForm()" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white text-2xl font-bold w-40 h-20 rounded-lg">加入購物車</button>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+        
+    <!--搭配組合顯示區域-->
+    @if($combinations->count()>0)
+        @foreach($combinations as $combination)
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <h1 class = "text-3xl font-bold mb-4">建議的搭配組合</h1>
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 text-gray-900">
+                            <div class = "text-3xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
+                            <div class = "grid grid-cols-5 mt-4">
+                                <div class = "photo w-20 h-20">
+                                    <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}">
+                                </div>
+                                @foreach($combination->combinations_detail as $item)
+                                    <div class = "photo w-20 h-20">
+                                        <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}">
+                                    </div>
+                                @endforeach
+                            </div>
 
-                    <!--選擇規格區塊-->
-                    <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "mt-8 basis-1/3 ml-8">
+                            <div class = "flex justify-end">
+                                <h1 class = "text-3xl text-red-500">NT {{ $combination->price }}</h1>
+                                <div class = "mr-4">
+                                    <button id="Preview" class="basis-1/2 ml-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">預覽</button>
+                                </div>
+                                <div class = "">
+                                    <button id="combination_add" class="basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>      
+                        
+                    
+            <!--搭配組合加入購物車時選擇尺寸的區塊-->
+            <div id="popup2" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
+                <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
+                <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}</h1>
+                <div>
+                    <form  method="POST" action="{{route('cartitem.store')}}">
                         @csrf
-                        <div class = "ml-4">
-                            <label for = "quantity">請選擇數量</label>
-                            <input type = "number" name = "quantity" min = "1" max = "50" class = "rounded-lg w-20">
-                        </div>
-                        <br>
 
-                        <!-- 即將更改程式碼 -->
-                        <div class = "mt-4 ml-4">
-                            <label for = "size">請選擇尺寸</label>
-                                <select id = "size" name = "size" class = "rounded-lg w-20">
-                                    @foreach($product->specification as $specification)
-                                        @if($specification->specification_type === 'size')
-                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>                           
-                        </div>
-                        <br>
+                        <!--主要商品選擇尺寸選單-->
+                        <div class = "mt-4 mb-4">
+                            <h1 class = "text-xl mb-4">{{$combination->product->name}}</h1>
+                            <label for = "sizeMain">尺寸</label>
+                            <select id = "sizeMain" name = "sizes[{{$combination->product->id}}]">
+                                @foreach($combination->product->specification as $specification)
+                                    @if($specification->specification_type === 'size')
+                                        <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
 
-                        <div class = "mt-4 ml-4">
-                        <label for = "color">請選擇顏色</label>
-                            <select id = "color" name = "color" class = "rounded-lg w-20">
+                            <br>
+
+                            <label for = "colorMain">顏色</label>
+                            <select id = "colorMain" name = "colors[{{$combination->product->id}}]" class = "mt-4">
                                 @foreach($product->specification as $specification)
                                     @if($specification->specification_type === 'color')
                                         <option value = "{{$specification->name}}">{{$specification->name}}</option>
@@ -84,223 +192,137 @@
                                 @endforeach
                             </select>
                         </div>
-                        <br>
 
-                        <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-                    </form>
-                </div>
-                <h1 class = "text-3xl text-red-500 pt-4 bottom-0 right-0">NT {{ $product->price }}</h1>
-            </div>
-            
-            <!--操作區塊-->
-            <div class = "opration grid grid-cols-2 gap-2 pl-8 pt-8">
-                @if(\App\Models\Product::Track_isExist($product->id))
-                    <form method="POST" action="{{route('trackeditem.destroy')}}" class = "pb-4">
-                        @csrf
-                        @method('DELETE')
-                        <input type = "hidden" name = "Product_ID" value = "{{$product->id}}">
-                        <input type = "submit" value = "解除追蹤" class = "bg-pink-500 hover:bg-pink-800 w-40 h-10 text-white rounded-lg font-bold cursor-pointer">
-                    </form>
-                @else
-                    <form method="POST" action="{{route('trackeditem.store')}}" class = "pb-4">
-                        @csrf
-                        <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
-                        <input type = "submit" value = "追蹤" class = "bg-pink-500 hover:bg-pink-800 w-20 h-10 text-white rounded-lg font-bold cursor-pointer">
-                    </form>
-                @endif
+                        <hr>
 
-                <div class = "flex">
-                    <button onclick= "submitForm()" class="ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
-                </div>
-            </div>
-        </div>
-
-        <!--搭配組合顯示區域-->
-        @if($combinations->count()>0)
-            @foreach($combinations as $combination)
-                <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3 relative">
-                    <div class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
-                    <div class = "grid grid-cols-3 gap-3 mt-4">
-                        <div class = "photo">
-                            <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}">
-                        </div>
+                        <!--搭配商品選擇尺寸選單-->
                         @foreach($combination->combinations_detail as $item)
-                            <div class = "photo">
-                                <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}">
-                            </div>
+                        <div class = "mt-4 mb-4">
+                            <h1 class = "text-xl mb-4">{{$item->product->name}}</h1>
+                            <label for = "size-{{$item->product->id}}">尺寸</label>
+                            <select id = "size-{{$item->product->id}}" name = "sizes[{{$item->product->id}}]">
+                                @foreach($item->product->specification as $specification)
+                                    @if($specification->specification_type === 'size')
+                                        <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+
+                            <br>
+
+                            <label for = "color-{{$item->product->id}}">顏色</label>
+                            <select id = "color-{{$item->product->id}}" name = "colors[{{$item->product->id}}]" class = "mt-4">
+                                @foreach($item->product->specification as $specification)
+                                    @if($specification->specification_type === 'color')
+                                        <option value = "{{$specification->name}}">{{$specification->name}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <hr>
                         @endforeach
-                    </div>
-
-                    <div class = "absolute bottom-20 w-full">
-                        <h1 class = "text-3xl text-red-500 pt-4 mb-2 ml-4">NT {{ $combination->price }}</h1>
-                    </div>
-
-                    <div class = "flex flex-row absolute bottom-8 w-full">
-                        <div class = "basis-1/2">
-                            <button id="Preview" class="basis-1/2 ml-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">預覽</button>
+                        <div class = "flex mt-4">
+                            <input type = "submit" value = "加入購物車" class = "rounded-lg bg-blue-500 hover:bg-blue-700 text-white text-xl w-40 h-10 ml-auto mt-4 ml-auto">
                         </div>
-                        <div class = "basis-1/2 flex">
-                            <button id="combination_add" class="basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg">加入購物車</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
+            </div>
 
-                <!--搭配組合加入購物車時選擇尺寸的區塊-->
-                <div id="popup2" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-                    <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup2()">&times;</span>
-                    <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}</h1>
-                    <div>
-                        <form  method="POST" action="{{route('cartitem.store')}}">
-                            @csrf
-
-                            <!--主要商品選擇尺寸選單-->
-                            <div class = "mt-4 mb-4">
-                                <h1 class = "text-xl mb-4">{{$combination->product->name}}</h1>
-                                <label for = "sizeMain">尺寸</label>
-                                <select id = "sizeMain" name = "sizes[{{$combination->product->id}}]">
-                                    @foreach($combination->product->specification as $specification)
-                                        @if($specification->specification_type === 'size')
-                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-
-                                <br>
-
-                                <label for = "colorMain">顏色</label>
-                                <select id = "colorMain" name = "colors[{{$combination->product->id}}]" class = "mt-4">
-                                    @foreach($product->specification as $specification)
-                                        @if($specification->specification_type === 'color')
-                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <hr>
-
-                            <!--搭配商品選擇尺寸選單-->
-                            @foreach($combination->combinations_detail as $item)
-                            <div class = "mt-4 mb-4">
-                                <h1 class = "text-xl mb-4">{{$item->product->name}}</h1>
-                                <label for = "size-{{$item->product->id}}">尺寸</label>
-                                <select id = "size-{{$item->product->id}}" name = "sizes[{{$item->product->id}}]">
-                                    @foreach($item->product->specification as $specification)
-                                        @if($specification->specification_type === 'size')
-                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-
-                                <br>
-
-                                <label for = "color-{{$item->product->id}}">顏色</label>
-                                <select id = "color-{{$item->product->id}}" name = "colors[{{$item->product->id}}]" class = "mt-4">
-                                    @foreach($item->product->specification as $specification)
-                                        @if($specification->specification_type === 'color')
-                                            <option value = "{{$specification->name}}">{{$specification->name}}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <hr>
-                            @endforeach
-                            <div class = "flex mt-4">
-                                <input type = "submit" value = "加入購物車" class = "rounded-lg bg-blue-500 hover:bg-blue-700 text-white text-xl w-40 h-10 ml-auto mt-4 ml-auto">
-                            </div>
-                        </form>
+            <!--預覽搭配組合區塊-->
+            <div id="popup3" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
+                <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup3()">&times;</span>
+                <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}預覽</h1>
+                <div class = "grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "cap">
                     </div>
-                </div>
+                    <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "top">
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40" id = "pant">
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40" id = "sock">
+                    </div>
+                    <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "shoe">
+                    </div>
 
-                <!--預覽搭配組合區塊-->
-                <div id="popup3" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-                    <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup3()">&times;</span>
-                    <h1 class = "text-4xl pt-4 pl-4 pb-4">{{$combination->name}}預覽</h1>
-                    <div class = "grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "cap">
-                        </div>
-                        <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "top">
-                        </div>
-                        <div class="bg-gray-300 w-40 h-40" id = "pant">
-                        </div>
-                        <div class="bg-gray-300 w-40 h-40" id = "sock">
-                        </div>
-                        <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "shoe">
-                        </div>
+                    <!--加載主要商品-->
+                    @switch($combination->product->Category->category_type)
+                        @case(0)
+                            <script>
+                                insertImage("cap", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(1)
+                            <script>
+                                insertImage("top", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(2)
+                            <script>
+                                insertImage("pant", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(3)
+                            <script>
+                                insertImage("sock", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @case(4)
+                            <script>
+                                insertImage("shoe", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                            </script>
+                            @break
+                        @endswitch
 
-                        <!--加載主要商品-->
-                        @switch($combination->product->Category->category_type)
+                    <!--加載搭配商品-->
+                    @foreach($combination->combinations_detail as $item)
+                        @switch($item->product->Category->category_type)
                             @case(0)
                                 <script>
-                                    insertImage("cap", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                                    insertImage("cap", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
                                 </script>
                                 @break
                             @case(1)
                                 <script>
-                                    insertImage("top", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                                    insertImage("top", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
                                 </script>
                                 @break
                             @case(2)
                                 <script>
-                                    insertImage("pant", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                                    insertImage("pant", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
                                 </script>
                                 @break
                             @case(3)
                                 <script>
-                                    insertImage("sock", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                                    insertImage("sock", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
                                 </script>
                                 @break
                             @case(4)
                                 <script>
-                                    insertImage("shoe", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
+                                    insertImage("shoe", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
                                 </script>
                                 @break
                             @endswitch
-
-                        <!--加載搭配商品-->
-                        @foreach($combination->combinations_detail as $item)
-                            @switch($item->product->Category->category_type)
-                                @case(0)
-                                    <script>
-                                        insertImage("cap", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
-                                    </script>
-                                    @break
-                                @case(1)
-                                    <script>
-                                        insertImage("top", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
-                                    </script>
-                                    @break
-                                @case(2)
-                                    <script>
-                                        insertImage("pant", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
-                                    </script>
-                                    @break
-                                @case(3)
-                                    <script>
-                                        insertImage("sock", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
-                                    </script>
-                                    @break
-                                @case(4)
-                                    <script>
-                                        insertImage("shoe", "{{ asset('images/' . $item->product->firstPhoto->file_address) }}");
-                                    </script>
-                                    @break
-                                @endswitch
-                        @endforeach
-                    </div>
+                    @endforeach
                 </div>
-            @endforeach
-        @else
-            <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3">
-                <div class = "text-4xl pt-4 pl-4 pb-4">此商品暫無搭配組合</div>
             </div>
-        @endif
-    </div>
-
+        @endforeach
+    @else
+        <div class = "bg-white max-w-lg mt-4 ml-4 rounded-lg basis-1/3">
+            <div class = "text-4xl pt-4 pl-4 pb-4">此商品暫無搭配組合</div>
+        </div>
+    @endif
+  
     <!--商品描述-->
-    <div class = "description bg-white  mt-4 ml-4 rounded-lg">
-        <p>{!! nl2br(e($product->description)) !!} </p>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <h1 class = "text-3xl font-bold mb-4">商品描述</h1>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <p>{!! nl2br(e($product->description)) !!} </p>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
