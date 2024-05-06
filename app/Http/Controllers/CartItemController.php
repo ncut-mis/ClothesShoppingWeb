@@ -51,6 +51,10 @@ class CartItemController extends Controller
          } 
         else {
             // 处理单个商品
+            if($request->input('quantity') == ""){
+                session()->flash('message', '請輸入數量');
+                return redirect()->back();
+            }
             $productId = $request->input('ProductID');
             $quantity = $request->input('quantity');
             $size = $request->input('size');

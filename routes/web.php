@@ -105,7 +105,7 @@ Route::middleware('auth')->group(function () {
 
 //搭配組合
 Route::middleware('auth')->group(function (){
-    Route::get('/admin/combination',[CombinationController::class,'index'])->name('combination.index');
+    Route::get('/combination/{combination}',[CombinationController::class,'index'])->name('combination.index');
     Route::get('/admin/combination/create',[CombinationController::class,'create'])->name('combination.create');
     Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
     Route::post('/admin/combination',[CombinationController::class,'store'])->name('combination.store');

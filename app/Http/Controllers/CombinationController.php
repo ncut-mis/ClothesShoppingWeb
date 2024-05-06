@@ -15,11 +15,10 @@ class CombinationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Combination $combination)
     {
-        //global $data;
-        $combinations = Combination::paginate(10);
-        return view('admin.combination.index',compact('combinations'));
+        $product = Product::find($combination->product_id);
+        return view('combination.index',compact('combination','product'));
     }
 
     public function admin_index()
