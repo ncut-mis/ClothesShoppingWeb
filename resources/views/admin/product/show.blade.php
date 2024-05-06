@@ -10,25 +10,23 @@
     @endif 
 
     <script>
-        // 用于插入图片的函数
-        function insertImage(divId, imagePath) {
-            // 获取目标 div 容器
-            var div = document.getElementById(divId);
-
-            // 查找 div 容器中的第一个 img 元素
-            var img = div.querySelector('img');
-
-            if (img) {
-            // 如果 img 元素已经存在，只更新它的 src
-            img.src = imagePath;
-            } else {
-            // 如果不存在，创建新的 img 元素
-            img = document.createElement('img');
-            img.src = imagePath;
-            img.alt = '描述文本'; // 替换为您想要的 alt 文本
-            div.appendChild(img);
-            }
+        // 新增DIV的函數
+        function insertDIV(divId , ID){
+            var newDiv = document.createElement('div'); // 创建一个新的 div 元素
+            newDiv.id = ID; // 设置ID
+            newDiv.className = 'inline-block border w-40 h-40';
+            document.getElementById(divId).appendChild(newDiv);
         }
+
+        // 用于插入图片的函数
+        function insertImage(divId, imagePath) {        
+            var img = document.createElement("img");
+            img.src = imagePath; // 使用变量 imagePath 作为图片地址
+            img.alt = "描述文字"; // 替代文本
+
+            // 将创建的 img 元素插入到指定的 div 中
+            document.getElementById(divId).appendChild(img);
+        }  
     </script>
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -114,6 +112,7 @@
         </div>
     </div> 
 
+    <!-- 搭配清單 -->
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -146,6 +145,41 @@
         </div>
     </div> 
 
+    <!-- 規格清單 -->
+    <div class="py-4">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 ">
+                    <div class="flex items-center">
+                        <h1 class = "text-3xl font-bold mb-4 inline-block">規格列表</h1>
+                        <button id="AddSpecificationBtn" class="ml-auto mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">新增規格</button>
+                    </div>
+                    <hr>
+                    @foreach($specifications as $specification)
+                        <div class = "flex flex-row mt-4 mb-4">
+                            <div class = "basis-1/3">
+                                <h1 class = "text-xl">{{$specification->specification_type}}</h1>
+                            </div>    
+                            <div class = "basis-1/3">
+                                <h1 class = "text-xl">{{$specification->name}}</h1>
+                            </div>    
+                            <div class = "basis-1/3">
+                                <form action = "{{route('admin.specification.destroy')}}" method = "POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type = "hidden" name = "specification_id" value = "{{ $specification->id }}">
+                                    <input type = "submit" value = "刪除" class = "bg-red-500 hover:bg-red-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                                </form>
+                            </div>    
+                        </div>
+                        <hr>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- 商品詳細 -->
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -197,45 +231,50 @@
     </div>
 
     <!-- 試搭預覽 -->
-    <div id="Preview" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/2 h-full overflow-y-scroll">
+    <div id="Preview" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/2 overflow-y-scroll">
         <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closePreview()">&times;</span>
-        <div class = "grid grid-cols-1 gap-5 h-full">
-            <div class="bg-gray-300 w-40 h-40 mt-4 mx-auto md:col-span-2 border" id = "cap">
+        <div class = "grid grid-cols-1 gap-1 border">
+            <div class="h-40 mt-4 ml-4 md:col-span-2 border" id = "cap">
             </div>
-            <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2 border" id = "top">
+            <div class="h-40 ml-4 md:col-span-2 border" id = "top">
             </div>
-            <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2 border" id = "pant">
+            <div class="h-40 ml-4 md:col-span-2 border" id = "pant">
             </div>
-            <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2 border" id = "sock">
+            <div class="h-40 ml-4 md:col-span-2 border" id = "sock">
             </div>
-            <div class="bg-gray-300 w-40 h-40 mb-4 mx-auto md:col-span-2 border" id = "shoe">
+            <div class="h-40 mb-4 ml-4 md:col-span-2 border" id = "shoe">
             </div>
         </div>
         <!-- 主要商品加載圖片 -->
         @switch($product->Category->category_type)
             @case(0)
                 <script>
-                    insertImage("cap", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                    insertDIV("cap" , "{{$product->id}}");
+                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
                 </script>
                 @break
             @case(1)
                 <script>
-                    insertImage("top", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                    insertDIV("top" , "{{$product->id}}");
+                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
                 </script>
                 @break
             @case(2)
                 <script>
-                    insertImage("pant", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                    insertDIV("pant" , "{{$product->id}}");
+                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
                 </script>
                 @break
             @case(3)
                 <script>
-                    insertImage("sock", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                    insertDIV("sock" , "{{$product->id}}");
+                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
                 </script>
                 @break
             @case(4)
                 <script>
-                    insertImage("shoe", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                    insertDIV("shoe" , "{{$product->id}}");
+                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
                 </script>
                 @break
         @endswitch
@@ -245,31 +284,57 @@
             @switch($TrialItem->trialProduct->Category->category_type)
                 @case(0)
                     <script>
-                        insertImage("cap", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("cap" , "{{$product->id}}");
+                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(1)
                     <script>
-                        insertImage("top", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("top" , "{{$product->id}}");
+                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(2)
                     <script>
-                        insertImage("pant", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("pant" , "{{$product->id}}");
+                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(3)
                     <script>
-                        insertImage("sock", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("sock" , "{{$product->id}}");
+                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(4)
                     <script>
-                        insertImage("shoe", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("shoe" , "{{$product->id}}");
+                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
             @endswitch
         @endforeach
+    </div>
+
+    <div id="AddSpecification" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden overflow-y-scroll">
+        <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closeAddSpecification()">&times;</span>
+        <form action = "{{route('admin.specification.store')}}" method = "POST">
+            @csrf
+            <input type = "hidden" name = "product_id" value = "{{ $product->id }}">
+            <h1 class = "text-xl font-bold">規格種類</h1>
+            <input type = "radio" id = "size" name = "type" value = "size">
+            <label for="size">尺寸</label>
+            <br>
+            <input type = "radio" id = "color" name = "type" value = "color">
+            <label for="color">顏色</label>
+            <br>
+            <br>
+
+            <label for = "name" class = "text-xl font-bold">規格名稱</label>
+            <br>
+            <input type = "text" id = "name" name = "name" class = "rounded">
+            <input type = "submit" value = "新增" class = "ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+        </form>
     </div>
 
     <script>
@@ -288,6 +353,15 @@
 
         document.getElementById('PreviewBtn').addEventListener('click', function() {
             document.getElementById('Preview').classList.remove('hidden');
+            
+        });
+
+        function closeAddSpecification() {
+            document.getElementById('AddSpecification').classList.add('hidden');
+        }
+
+        document.getElementById('AddSpecificationBtn').addEventListener('click', function() {
+            document.getElementById('AddSpecification').classList.remove('hidden');
             
         });
 

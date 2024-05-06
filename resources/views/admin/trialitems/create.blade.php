@@ -61,25 +61,27 @@
                         }
                     @endphp
 
-                    <label class="block text-xl font-medium text-gray-700">{{ $TypeName }}</label>
-                    <select id = "productlist{{$category_type}}" name = "productlist[]" onchange="addPhoto({{$category_type}})">
-                        <option value="" disabled selected></option>
-                        @foreach($products as $product)
-                            <option value="{{$product->id}}">{{$product->name}}</option>
-                        @endforeach
-                    </select>
+                    <div class = "ml-6">
+                        <label class="block text-xl font-medium text-gray-700">{{ $TypeName }}</label>
+                        <select id = "productlist{{$category_type}}" name = "productlist[]" onchange="addPhoto({{$category_type}})" class = "rounded">
+                            <option value="" disabled selected></option>
+                            @foreach($products as $product)
+                                <option value="{{$product->id}}">{{$product->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 @endforeach
             </form>
-            <div class = "grid grid-cols-1 md:grid-cols-2 gap-4 basis-1/2">
-                <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "cap">
+            <div class = "grid grid-cols-1 md:grid-cols-2 gap-4 basis-1/2 border">
+                <div class="border w-40 h-40 mx-auto md:col-span-2 mt-4" id = "cap">
                 </div>
-                <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "top">
+                <div class="border w-40 h-40 mx-auto md:col-span-2" id = "top">
                 </div>
-                <div class="bg-gray-300 w-40 h-40 ml-20" id = "pant">
+                <div class="border w-40 h-40 mx-auto md:col-span-2" id = "pant">
                 </div>
-                <div class="bg-gray-300 w-40 h-40 ml-2" id = "sock">
+                <div class="border w-40 h-40 mx-auto md:col-span-2" id = "sock">
                 </div>
-                <div class="bg-gray-300 w-40 h-40 mx-auto md:col-span-2" id = "shoe">
+                <div class="border w-40 h-40 mx-auto md:col-span-2 mb-4" id = "shoe">
                 </div>
             </div>
 
@@ -113,7 +115,7 @@
             @endswitch
         </div>
         <div class = "flex">
-            <button id="formSubmit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-16 cursor-pointer">加入試搭</button>      
+            <button id="formSubmit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-16 mr-4 mb-4 cursor-pointer">加入試搭</button>      
         </div>
         </div>
         </div>
@@ -140,29 +142,32 @@
         // 设定的 div ID 数组
             const categoryTypes = ['cap', 'top', 'pant', 'sock', 'shoe'];
             const divId = categoryTypes[category_type];
-
+            
             // 遍历所有的 categoryType
             categoryTypes.forEach(function(currentCategoryType) {
                 if(currentCategoryType === divId){
                 // 如果当前迭代的 categoryType 与传入的 category_type 相同，则跳过
                 return;
                 }
-
+          
                 // 通过 currentCategoryType 获取相应的 div 元素
                 var div = document.getElementById(currentCategoryType);
-
                 // 在该 div 元素中查找 img 元素
                 var img = div ? div.querySelector('img') : null;
 
                 if (img) {
                 // 如果找到 img 元素，则移除
                         img.remove();               
-                } else {
-                    console.log('没有找到图片元素以供删除。');
-                }
-                var select = document.getElementById('productlist' + category_type);
-                select.selectedIndex = -1;
+                }                       
             });
+
+            // 將選項復原
+            for(let i = 0 ; i < 5 ; i++){
+                var select = document.getElementById('productlist' + i);
+                if (select) {
+                    select.selectedIndex = 0;
+                }  
+            } 
         }
 
         document.getElementById('formSubmit').addEventListener('click', function() {

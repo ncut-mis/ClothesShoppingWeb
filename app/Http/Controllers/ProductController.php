@@ -120,9 +120,9 @@ class ProductController extends Controller
         $combinations = Combination::Where('product_id', '=', $product->id)->paginate(10);
         $TrialItems = TrialItem::Where('product_id', '=', $product->id)->paginate(10);
         $stocks = stock::Where('product_id', '=', $product->id)->get();
+        $specifications = specification::Where('product_id','=',$product->id)->get();
 
-        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks , 'TrialItems' => $TrialItems]);
-
+        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks , 'TrialItems' => $TrialItems , 'specifications' => $specifications]);
     }
 
     /**

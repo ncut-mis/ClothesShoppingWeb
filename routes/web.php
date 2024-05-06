@@ -13,11 +13,11 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\TrialItemController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SpecificationController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Combination;
 use App\Models\combinations_detail;
-use App\Models\specification;
 
 use App\Http\Controllers\CombinationController;
 
@@ -156,6 +156,8 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
     Route::delete('/TrialItem',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
     Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');
+    Route::post('/Specification',[SpecificationController::class, 'store'])->name('specification.store');
+    Route::delete('/Specification',[SpecificationController::class, 'destroy'])->name('specification.destroy');
 });
 
 //商品
