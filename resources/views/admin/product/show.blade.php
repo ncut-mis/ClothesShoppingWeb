@@ -168,6 +168,7 @@
                                     @csrf
                                     @method('DELETE')
                                     <input type = "hidden" name = "specification_id" value = "{{ $specification->id }}">
+                                    <input type = "hidden" name = "product_id" value = "{{ $product->id }}">
                                     <input type = "submit" value = "刪除" class = "bg-red-500 hover:bg-red-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
                                 </form>
                             </div>    

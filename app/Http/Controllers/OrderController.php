@@ -22,6 +22,13 @@ class OrderController extends Controller
         return view('Order.index',['orders' => $orders]);
     }
 
+    public function admin_index()
+    {
+        $items = Order::Where('status','=',0)->get();
+                 
+        return view('admin.order.index', ['items' => $items]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -75,6 +82,13 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         //
+    }
+
+    public function admin_show(Order $order)
+    {
+        $order_detials = order_detial::Where('order_id','=',$order->id)->get();
+
+        return view('admin.order.show', ['order' => $order , 'order_detials' => $order_detials]);
     }
 
     /**
