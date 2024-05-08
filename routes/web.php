@@ -97,10 +97,11 @@ Route::middleware('auth')->group(function () {
 
 //訂單
 Route::middleware('auth')->group(function () {
-    Route::get('/Order', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/Order/{status}', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/OrderShow/{order}', [OrderController::class, 'show'])->name('order.show');
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
-    Route::patch('/OrderCancel', [OrderController::class, 'cancel'])->name('order.cancel');
+    Route::patch('/OrderUpdate', [OrderController::class, 'update'])->name('order.update');
 });
 
 //搭配組合

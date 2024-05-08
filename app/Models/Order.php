@@ -14,4 +14,9 @@ class Order extends Model
     {
         return $this->hasMany(order_detial::class);
     }
+
+    public function firstProduct()
+    {
+        return $this->hasOne(order_detial::class)->oldestOfMany();
+    }
 }

@@ -44,7 +44,7 @@
                             {{ __('購物車') }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('order.index')">
+                        <x-dropdown-link :href="route('order.index',['status' => 0])">
                             {{ __('查看訂單') }}
                         </x-dropdown-link>
 

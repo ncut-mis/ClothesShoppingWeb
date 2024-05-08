@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\order_detial;
 use App\Models\CartItem;
+use App\Models\stock;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -16,9 +17,12 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($status)
     {
-        $orders = Order::Where('user_id','=', Auth::user()->id)->get();
+        $orders = Order::Where([
+                               ['user_id','=', Auth::user()->id],
+                               ['status','=',$status]
+                               ])->get();
         return view('Order.index',['orders' => $orders]);
     }
 
@@ -56,7 +60,7 @@ class OrderController extends Controller
         $order->phone = $request['phone'];
         $order->trains_time = Carbon::now(); //暫定為下訂單時間，平台人員再另行修改
         $order->comment = "";
-        $order->remit = 0; //暫定為未付款
+        $order->remit = 1; //暫定為已付款
         $order->staff_id = 1; //暫定為1
         $order->save();
 
@@ -71,8 +75,16 @@ class OrderController extends Controller
 
             $order_detial->save();
             $cartItem->delete();
+
+            $stock = stock::Where([
+                                  ['product_id' , '=', $order_detial->product_id],
+                                  ['size' , '=' , $order_detial->size],
+                                  ['color' , '=' ,$order_detial->color]
+            ])->first();
+            $stock->stock = ($stock->stock)-($order_detial->quantity);
+            $stock->save();
         }
-        return redirect(route('order.index'));
+        return redirect(route('order.index',['status' => 0]));
         
     }
 
@@ -81,7 +93,9 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        //
+        $order_detials = order_detial::Where('order_id','=',$order->id)->get();
+
+        return view('order.show', ['order' => $order , 'order_detials' => $order_detials]);
     }
 
     public function admin_show(Order $order)
@@ -102,9 +116,28 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderRequest $request, Order $order)
+    public function update(Request $request)
     {
-        //
+        $orderID = $request['OrderID'];
+        $status = $request['status'];
+        $order = Order::find($orderID);
+        $order->status = $status;
+
+        $order->save();
+
+        if($order->status == 4)
+        {
+            session()->flash('message', '取貨成功');           
+        }
+        if($order->status == 5)
+        {
+            session()->flash('message', '已完成訂單');           
+        }
+        if($order->status == 6)
+        {
+            session()->flash('message', '取消成功');
+        }      
+        return redirect(route('order.index' , ['status' => $order->status]));  
     }
 
     /**
@@ -113,16 +146,5 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         //
-    }
-
-    public function cancel(Request $request)
-    {
-        $orderID = $request['OrderID'];
-        $order = Order::find($orderID);
-        $order->status = 6;
-
-        $order->save();
-        session()->flash('message', '取消成功');
-        return redirect(route('order.index'));     
     }
 }
