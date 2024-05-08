@@ -160,6 +160,8 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');
     Route::post('/Specification',[SpecificationController::class, 'store'])->name('specification.store');
     Route::delete('/Specification',[SpecificationController::class, 'destroy'])->name('specification.destroy');
+    Route::get('/AdminCreate',[AdminController::class, 'create'])->name('admin.create');
+    Route::post('/Admin',[AdminController::class, 'store'])->name('admin.store');
 });
 
 //商品
