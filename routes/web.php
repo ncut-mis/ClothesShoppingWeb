@@ -44,9 +44,9 @@ Route::middleware(['guest'])->group(function () {
                               ->withQueryString();
         $products = Product::paginate(8); // 示例中随机取5件服装
         $layout = 'layouts.guest';
-    
+
         return view('GuestHome', compact('products','categories', 'layout'));
-    
+
     })->name('/');
 });
 
@@ -61,7 +61,7 @@ Route::get('/home', function () {
                           ->withQueryString();
      $products = Product::with('firstPhoto')->paginate(8);
      $layout = 'layouts.app';
-     
+
      return view('home', compact('products','categories', 'layout'));
 })->middleware(['auth', 'verified'])->name('/home');
 
@@ -141,20 +141,30 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/home', function () {
         return view('admin.home');
     })->name('home');
-
+    //商品
     Route::get('/Product', [ProductController::class, 'admin_index'])->name('product.adminIndex');
     Route::get('/Product/{product}', [ProductController::class, 'admin_show'])->name('product.adminShow');
     Route::patch('/StockUpdate', [StockController::class, 'update'])->name('stock.update');
     Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
+    //訂單
     Route::get('/Order', [OrderController::class, 'admin_index'])->name('order.adminIndex');
     Route::get('/Order/{order}', [OrderController::class, 'admin_show'])->name('order.adminShow');
+    //類別
     Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
     Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
+    Route::get('/Category/create',[CategoryController::class,'create'])->name('admin.category.create');
+    Route::post('/Category',[CategoryController::class,'store'])->name('admin.category.store');
+    Route::get('/Category/{categoryID}',[CategoryController::class,'edit'])->name('admin.category.edit');
+    Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('admin.category.update');
+    Route::delete('/Category',[CategoryController::class,'destroy'])->name('admin.category.destroy');
+    //搜尋
     Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('product.adminSearch');
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
     Route::get('/Photo/{productID}' , [ProductController::class, 'photo'])->name('product.photo');
     Route::get('/TrialItem/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
+    Route::get('/TrialItem/{productID}/edit' , [TrialItemController::class,'edit'])->name('trialitem.edit');
+    Route::patch('/TrialItem/{productID}',[TrialItemController::class,'update'])->name('trialitem.update');
     Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
     Route::delete('/TrialItem',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
     Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');

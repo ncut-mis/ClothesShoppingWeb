@@ -16,21 +16,21 @@
     }
 </script>
 
-<div id = "category-items-display">   
+<div id = "category-items-display">
     <x-admin.app-layout>
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">               
+                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
                         <div class = "flex flex-row">
                             <div class = "basis-1/3 flex items-center">
                                 <h1 class = "text-2xl font-bold pb-4">商品列表</h1>
-                                <a href="" class = "ml-4 text-blue-500"><p class = "pb-4">新增商品</p></a>  
-                            </div>                                                
+                                <a href="" class = "ml-4 text-blue-500"><p class = "pb-4">新增商品</p></a>
+                            </div>
                             <div class = "basis-1/3 mb-4">
                                 <select id = "category" name = "category" onchange="handleCategoryChange()" class = "rounded-lg">
-                                    @foreach($categories as $category)                                
-                                        <option value = "{{$category->id}}">{{$category->name}}</option>                                
+                                    @foreach($categories as $category)
+                                        <option value = "{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
                                 </select>
                                 <a href="{{ route('admin.product.adminIndex' , ) }}" class = "ml-4 text-blue-500">重設</a>
@@ -45,24 +45,24 @@
                             </div>
                         </div>
                         @forelse($products as $product)
-                            <hr>   
-                            <a href = "{{route('admin.product.adminShow', ['product' => $product]) }}">                  
-                                <div class = "mt-4 mb-4 flex flex-row" >                                                
+                            <hr>
+                            <a href = "{{route('admin.product.adminShow', ['product' => $product]) }}">
+                                <div class = "mt-4 mb-4 flex flex-row" >
                                     <div class = "basis-1/3">
-                                        <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" class = "w-20 h-20 basis-1/3"> 
-                                    </div>     
+                                        <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" class = "w-20 h-20 basis-1/3">
+                                    </div>
                                     <div class = "basis-1/3 flex items-center">
-                                        <h1>{{$product->name}}</h1>  
-                                    </div>                    
+                                        <h1>{{$product->name}}</h1>
+                                    </div>
                                     <div class = "basis-1/3">
-                                        
+
                                     </div>
                                 </div>
                             </a>
                         @empty
-                            <hr> 
+                            <hr>
                             <p class = "text-red-500 mt-4">查無產品</p>
-                        @endforelse                      
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -71,4 +71,4 @@
             <div class = "mx-auto">{{ $products->links('vendor.pagination.simple-tailwind') }}</div>
         </div>
     </x-admin.app-layout>
-</div>  
+</div>

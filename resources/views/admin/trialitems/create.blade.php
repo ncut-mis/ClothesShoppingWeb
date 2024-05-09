@@ -1,10 +1,10 @@
 <x-admin.app-layout>
     <!-- 有回傳值就顯示 -->
-    @if(session('message'))    
+    @if(session('message'))
         <script>
             alert("{{ session('message') }}");
         </script>
-    @endif 
+    @endif
 
     <script>
         // 用于插入图片的function
@@ -31,15 +31,15 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-gray-900">   
+            <div class="p-6 text-gray-900">
             <h1 class = "text-3xl font-bold">試搭</h1>
             <button id = "reset" class = " inline-block bg-red-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-8 cursor-pointer" onclick="removeImage({{$MainProduct->Category->category_type}})"> 重設 </button>
-        </div>
+            </div>
         <div class = "flex flex-row h-full">
             <form id = "trail" method = "POST" action = "{{route('admin.trialitem.store')}}" class = "w-1/4 h-full mb-4 basis-1/2">
                 @csrf
                 <input type = "hidden" name = "productID" value = "{{$MainProduct->id}}">
-                
+
                 @foreach($groupedProducts as $category_type => $products)
                     @php
                         switch($category_type){
@@ -115,12 +115,12 @@
             @endswitch
         </div>
         <div class = "flex">
-            <button id="formSubmit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-16 mr-4 mb-4 cursor-pointer">加入試搭</button>      
+            <button id="formSubmit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-16 mr-4 mb-4 cursor-pointer">加入試搭</button>
         </div>
         </div>
         </div>
     </div>
-</div>   
+</div>
 
     <script>
         function addPhoto(category_type) {
@@ -142,14 +142,14 @@
         // 设定的 div ID 数组
             const categoryTypes = ['cap', 'top', 'pant', 'sock', 'shoe'];
             const divId = categoryTypes[category_type];
-            
+
             // 遍历所有的 categoryType
             categoryTypes.forEach(function(currentCategoryType) {
                 if(currentCategoryType === divId){
                 // 如果当前迭代的 categoryType 与传入的 category_type 相同，则跳过
                 return;
                 }
-          
+
                 // 通过 currentCategoryType 获取相应的 div 元素
                 var div = document.getElementById(currentCategoryType);
                 // 在该 div 元素中查找 img 元素
@@ -157,8 +157,8 @@
 
                 if (img) {
                 // 如果找到 img 元素，则移除
-                        img.remove();               
-                }                       
+                        img.remove();
+                }
             });
 
             // 將選項復原
@@ -166,8 +166,8 @@
                 var select = document.getElementById('productlist' + i);
                 if (select) {
                     select.selectedIndex = 0;
-                }  
-            } 
+                }
+            }
         }
 
         document.getElementById('formSubmit').addEventListener('click', function() {
