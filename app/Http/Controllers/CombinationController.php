@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Combination;
+use App\Models\combinations_detail;
 use App\Http\Requests\StoreCombinationRequest;
 use App\Http\Requests\UpdateCombinationRequest;
 use App\Models\Product;
@@ -17,8 +18,7 @@ class CombinationController extends Controller
      */
     public function index(Combination $combination)
     {
-        $product = Product::find($combination->product_id);
-        return view('combination.index',compact('combination','product'));
+        
     }
 
     public function admin_index()
@@ -63,7 +63,13 @@ class CombinationController extends Controller
      */
     public function show(Combination $combination)
     {
-        //
+        $product = Product::find($combination->product_id);
+        $items = combinations_detail::where('combination_id', $combination->id)
+                                  ->join('products', 'combinations_detail.product_id', '=', 'products.id')
+                                  ->join('categories', 'products.category_id', '=', 'categories.id')
+                                  ->orderBy('categories.category_type', 'asc')  
+                                  ->get();
+        return view('combination.show',compact('combination','product','items'));
     }
 
     /**

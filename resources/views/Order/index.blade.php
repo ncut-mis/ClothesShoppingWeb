@@ -12,45 +12,37 @@
                     <h1 class = "text-4xl mb-4">訂單一覽</h1>
                     <br>
                     <div class = "mb-4">
-                        <a href = "{{route('order.index',['status' => 0])}}" class = "mr-4 text-blue-500">待確認</a>
-                        <a href = "{{route('order.index',['status' => 1])}}" class = "mr-4 text-blue-500">已確認</a>
-                        <a href = "{{route('order.index',['status' => 2])}}" class = "mr-4 text-blue-500">已出貨</a>
-                        <a href = "{{route('order.index',['status' => 3])}}" class = "mr-4 text-blue-500">已到貨</a>
-                        <a href = "{{route('order.index',['status' => 4])}}" class = "mr-4 text-blue-500">已領貨</a>
-                        <a href = "{{route('order.index',['status' => 5])}}" class = "mr-4 text-blue-500">已完成</a>
-                        <a href = "{{route('order.index',['status' => 6])}}" class = "mr-4 text-blue-500">申請取消</a>
-                        <a href = "{{route('order.index',['status' => 7])}}" class = "mr-4 text-blue-500">已取消</a>
+                        <a href = "{{route('order.index',['status' => 0])}}" class = "mr-4 text-blue-500">已成立</a>
+                        <a href = "{{route('order.index',['status' => 1])}}" class = "mr-4 text-blue-500">已出貨</a>
+                        <a href = "{{route('order.index',['status' => 2])}}" class = "mr-4 text-blue-500">已到貨</a>
+                        <a href = "{{route('order.index',['status' => 3])}}" class = "mr-4 text-blue-500">已完成</a>
+                        <a href = "{{route('order.index',['status' => 4])}}" class = "mr-4 text-blue-500">申請取消</a>
+                        <a href = "{{route('order.index',['status' => 5])}}" class = "mr-4 text-blue-500">已取消</a>
                     </div>
                     <hr>      
                     <!--顯示所有訂單-->          
                     @foreach($orders as $order)
                         @php
                             switch($order->status){
-                                    case 0 :
-                                        $status = "待確認";
-                                        break;
-                                    case 1 :
-                                        $status = "已確認";
-                                        break;
-                                    case 2 :
-                                        $status = "已出貨";
-                                        break;
-                                    case 3 :
-                                        $status = "已到貨";
-                                        break;
-                                    case 4 :
-                                        $status = "已領貨";
-                                        break;
-                                    case 5 :
-                                        $status = "已完成";
-                                        break;
-                                    case 6 :
-                                        $status = "申請取消";
-                                        break;
-                                    case 7 :
-                                        $status = "已取消";
-                                        break;
-                            }
+                                case 0 :
+                                    $status = "已成立";
+                                    break;
+                                case 1 :
+                                    $status = "已出貨";
+                                    break;
+                                case 2 :
+                                    $status = "已到貨";
+                                    break;
+                                case 3 :
+                                    $status = "已完成";
+                                    break;
+                                case 4 :
+                                    $status = "申請取消";
+                                    break;
+                                case 5 :
+                                    $status = "已取消";
+                                    break;
+                        }
                         @endphp
 
                         <h1 class = "text-xl font-semibold mt-4 mb-4">訂單編號：{{$order->id}}</h1>
@@ -76,7 +68,6 @@
              
                         @switch($order->status)
                             @case(0)
-                            @case(1)
                                 <div class = "flex">
                                     <form method = "POST" action = "{{route('order.update')}}" class = "ml-auto mb-4">
                                         @csrf
@@ -88,21 +79,9 @@
                                 </div>
                                 <hr>
                                 @break
+                            @case(1)
+                                @break
                             @case(2)
-                                @break
-                            @case(3)
-                                <div class = "flex">
-                                    <form method = "POST" action = "{{route('order.update')}}" class = "ml-auto mb-4">
-                                        @csrf
-                                        @method('patch')
-                                        <input type = "hidden" name = "OrderID" value = "{{$order->id}}">
-                                        <input type = "hidden" name = "status" value = "4">
-                                        <input type = "submit" value = "取貨" class = "bg-blue-500 hover-blue-500 w-20 h-10 text-white font-bold rounded cursor-pointer">
-                                    </form>
-                                </div>
-                                <hr>
-                                @break
-                            @case(4)
                                 <div class = "flex">
                                     <form method = "POST" action = "{{route('order.update')}}" class = "ml-auto mb-4">
                                         @csrf
@@ -114,9 +93,9 @@
                                 </div>
                                 <hr>
                                 @break
+                            @case(3)
+                            @case(4)
                             @case(5)
-                            @case(6)
-                            @case(7)
                         @endswitch
                         
                     @endforeach              

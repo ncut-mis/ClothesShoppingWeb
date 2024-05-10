@@ -140,7 +140,7 @@
         @foreach($combinations as $combination)                    
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <a href = "{{route('combination.index',['combination' => $combination])}}"> 
+                    <a href = "{{route('combination.show',['combination' => $combination])}}"> 
                         <div class="p-6 text-gray-900">
                             <div class = "text-3xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
                             <div class = "grid grid-cols-5 mt-4 mb-4">

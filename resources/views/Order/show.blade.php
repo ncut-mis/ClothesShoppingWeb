@@ -72,27 +72,21 @@
 
                         switch($order->status){
                             case 0 :
-                                $status = "待確認";
+                                $status = "已成立";
                                 break;
                             case 1 :
-                                $status = "已確認";
-                                break;
-                            case 2 :
                                 $status = "已出貨";
                                 break;
-                            case 3 :
+                            case 2 :
                                 $status = "已到貨";
                                 break;
-                            case 4 :
-                                $status = "已領貨";
-                                break;
-                            case 5 :
+                            case 3 :
                                 $status = "已完成";
                                 break;
-                            case 6 :
+                            case 4 :
                                 $status = "申請取消";
                                 break;
-                            case 7 :
+                            case 5 :
                                 $status = "已取消";
                                 break;
                         }

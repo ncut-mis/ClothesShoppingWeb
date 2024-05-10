@@ -75,7 +75,7 @@
                                     @endswitch
 
                                 <!--加載搭配商品-->
-                                @foreach($combination->combinations_detail as $item)
+                                @foreach($items as $item)
                                     @switch($item->product->Category->category_type)
                                         @case(0)
                                             <script>
@@ -116,16 +116,16 @@
                                     @csrf
 
                                     <!--主要商品選擇規格選單-->
-                                    <div class = "mt-4 mb-4 flex flex-row">
-                                        <div class = "basis-1/3">                                            
-                                            <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}" class = "w-40 h-40 border">
+                                    <div class = "mt-4 mb-4 flex flex-row border bg-gray-100">
+                                        <div class = "basis-1/3 mt-4 mb-4">                                            
+                                            <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}" class = "w-40 h-40 border ml-4">
                                         </div>
-                                        <div class = "basis-1/3 text-center"> 
+                                        <div class = "basis-1/3 text-center mt-4 mb-4"> 
                                             <h1 class = "text-xl mt-4">{{$combination->product->name}}</h1>
                                             <br>
                                             <h1 class = "text-xl font-bold text-red-500">${{$combination->product->price}}</h1>
                                         </div>
-                                        <div class = "basis-1/3 ml-4 mt-4">
+                                        <div class = "basis-1/3 ml-4 mt-4 mb-4">
                                             <label for = "sizeMain">尺寸</label>
                                             <select id = "sizeMain" name = "sizes[{{$combination->product->id}}]" class = "rounded">
                                                 @foreach($combination->product->specification as $specification)
@@ -145,16 +145,16 @@
                                                     @endif
                                                 @endforeach
                                             </select>
+                                            <h1 class = "text-red-500 mt-8">主要商品</h1>
                                         </div>
                                     </div>
 
-                                    <hr>
 
                                     <!--搭配商品選擇尺寸選單-->
-                                    @foreach($combination->combinations_detail as $item)
+                                    @foreach($items as $item)
                                         <div class = "mt-4 mb-4 flex flex-row">
                                             <div class = "basis-1/3">                                            
-                                                <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}" class = "w-40 h-40 border">
+                                                <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}" class = "w-40 h-40 border ml-4">
                                             </div>
                                             <div class = "basis-1/3 text-center"> 
                                                 <h1 class = "text-xl mt-4">{{$item->product->name}}</h1>

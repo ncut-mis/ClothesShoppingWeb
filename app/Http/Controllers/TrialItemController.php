@@ -22,44 +22,23 @@ class TrialItemController extends Controller
     public function create($productID)
     {
         $product = Product::find($productID);
-        $category_type = $product->Category->category_type; // 获取主产品的类别类型
-        $products = Product::with('category')
-                            ->whereHas('category', function ($query) use ($category_type) {
-                                $query->where('category_type', '<>', $category_type);
-                            })
-                            ->get();
-        $groupedProducts = $products->groupBy(function ($item, $key) {
-            return $item->category->category_type;
-        });
 
-        return view('admin.trialitems.create', ['MainProduct' => $product , 'groupedProducts' => $groupedProducts]);
+        return view('admin.trialitems.create', ['MainProduct' => $product]);
     }
 
     public function store(Request $request)
     {
-        $productID = $request['productID'];  // 主商品ID
-        $product = Product::find($productID);
+        $MainproductID = $request['MainProductID'];  // 主商品ID
+        $product = Product::find($MainproductID);
 
-        // 获取所选产品列表
-        $selectedProductIDs = $request->input('productlist', []);
+        $this->createTrialItem($MainproductID, $request->input('product'));
 
-        // 遍历所选产品列表
-        foreach ($selectedProductIDs as $selectedProductID) {
-            // 检查是否存在相同部位的试搭项
-            $selectedProduct = Product::find($selectedProductID);
-            if ($this->hasExistingTrialItem($selectedProduct->Category->category_type)) {
-                session()->flash('message', '已存在相同部位的服裝');
-                return redirect()->route('admin.product.adminShow', ['product' => $product]);
-            }
+        $TrialTtems = TrialItem::Where('product_id','=',$MainproductID)->get();
 
-            // 新增试搭项
-            $this->createTrialItem($productID, $selectedProductID);
-        }
-       
-        // 加入试搭成功消息
-        session()->flash('message', '加入試搭成功');
-        return redirect()->route('admin.product.adminShow', ['product' => $product]);
+        return view('admin.trialitems.create', ['MainProduct' => $product , 'TrialTtems' => $TrialTtems]);
     }
+
+    
 
     public function update(Request $request)
     {
@@ -74,6 +53,7 @@ class TrialItemController extends Controller
         session()->flash('message', '刪除成功');
         return redirect()->back();
     }
+
 
     private function hasExistingTrialItem($categoryType)
     {
@@ -97,5 +77,6 @@ class TrialItemController extends Controller
         $trialItem->trial_product_id = $selectedProductId;
         $trialItem->save();
     }
+    
 }
 
