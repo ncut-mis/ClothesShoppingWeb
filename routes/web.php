@@ -156,7 +156,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/Photo/{productID}' , [ProductController::class, 'photo'])->name('product.photo');
     Route::get('/TrialItem/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
     Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
-    Route::delete('/TrialItem',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
+    Route::delete('/TrialItemDelete',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
     Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');
     Route::post('/Specification',[SpecificationController::class, 'store'])->name('specification.store');
     Route::delete('/Specification',[SpecificationController::class, 'destroy'])->name('specification.destroy');

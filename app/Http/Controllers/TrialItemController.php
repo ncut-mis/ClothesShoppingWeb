@@ -22,8 +22,9 @@ class TrialItemController extends Controller
     public function create($productID)
     {
         $product = Product::find($productID);
+        $TrialTtems = TrialItem::Where('product_id','=',$productID)->get();
 
-        return view('admin.trialitems.create', ['MainProduct' => $product]);
+        return view('admin.trialitems.create', ['MainProduct' => $product , 'TrialTtems' => $TrialTtems]);
     }
 
     public function store(Request $request)
@@ -50,8 +51,14 @@ class TrialItemController extends Controller
         $TrialitemID = $request['TrialitemID'];
         $trialItem = TrialItem::find($TrialitemID);
         $trialItem->delete();
+
+        $productID = $request['productID'];
+        $product = Product::find($productID);   
+        $TrialTtems = TrialItem::Where('product_id','=',$productID)->get();
+
         session()->flash('message', '刪除成功');
-        return redirect()->back();
+        return view('admin.trialitems.create', ['MainProduct' => $product , 'TrialTtems' => $TrialTtems]);
+        
     }
 
 

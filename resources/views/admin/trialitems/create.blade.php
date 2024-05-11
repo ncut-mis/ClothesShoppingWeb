@@ -34,6 +34,7 @@
             var newDiv = document.createElement('div'); // 创建一个新的 div 元素
             newDiv.id = ID; // 设置ID
             newDiv.className = 'inline-block border w-40 h-40';
+
             document.getElementById(divId).appendChild(newDiv);
         }
 
@@ -77,7 +78,28 @@
                                     <input type = "submit" value = "加入試搭" class = "mt-4 bg-blue-500 hover:bg-blue-700 w-20 h-10 cursor-pointer rounded-lg text-white"> 
                                 </form>       
                             </div>
+                            <div>
+                                <h1 class = "text-2xl font-bold mt-4 mb-4">追蹤商品清單</h1>
+                                <hr>
+                                @foreach($TrialTtems as $TrialTtem)
+                                <div class = "flex flex-row mt-4">
+                                    <div class = "basis-1/3">
+                                        <img src="{{ asset('images/' . $TrialTtem->trialProduct->firstPhoto->file_address) }}" class = "w-10 h-10 basis-1/3"> 
+                                    </div>    
+                                    <h1 class = "text-xl basis-1/3">{{$TrialTtem->trialProduct->name}}</h1>
+                                    <form method = "POST" action = "{{route('admin.trialitem.destroy')}}" class = "basis-1/3">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type = "hidden" name = "TrialitemID" value = "{{ $TrialTtem->id }}">
+                                        <input type = "hidden" name = "productID" value = "{{ $MainProduct->id }}">
+                                        <input type = "submit" class = "bg-red-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "刪除">
+                                    </form>                               
+                                </div>
+                                <hr>
+                                @endforeach
+                            </div>
                         </div>
+
                         <div class = "basis-1/2">
                             <div class = "grid grid-cols-1 gap-1 border">
                                 <div class="h-40 mt-4 ml-4 mr-4 md:col-span-2 border" id = "cap">

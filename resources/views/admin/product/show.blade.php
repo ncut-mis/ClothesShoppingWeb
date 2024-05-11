@@ -74,44 +74,6 @@
         </div>
     </div> 
 
-    <!-- 試搭清單 -->
-    <div class="py-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 ">
-                    <div class = "flex">
-                        <h1 class = "text-3xl font-bold mb-4">試搭清單</h1>
-                        <div>
-                            <button id="PreviewBtn" class="basis-1/2 ml-4 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">預覽</button>    
-                        </div>
-                    </div>
-                    @forelse($TrialItems as $TrialItem)
-                    <div class = "border">
-                        <h1 class = "text-xl font-bold mt-4 ml-4">試搭{{$TrialItem->id}}</h1>
-                        <h1 class = "mt-4 ml-4">{{$product->name}}</h1>
-                        <h1 class = "mt-4 ml-4 mb-4">{{$TrialItem->trialProduct->name}}</h1>
-                        <div class = "flex">
-                            <form method = "POST" class = "">
-                                <input type = "hidden" name = "product_id" value = "{{ $product->id }}">
-                                <input type = "hidden" name = "trial_product_id" value = "{{ $TrialItem->trialProduct->id }}">
-                                <input type = "submit" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-40 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "加入搭配清單">
-                            </form>  
-                            <form method = "POST" action = "{{route('admin.trialitem.destroy')}}" class = "">
-                                @csrf
-                                @method('DELETE')
-                                <input type = "hidden" name = "TrialitemID" value = "{{ $TrialItem->id }}">
-                                <input type = "submit" class = "bg-red-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-4 mb-4 cursor-pointer" value = "刪除">
-                            </form> 
-                        </div>
-                    </div>
-                    @empty  
-                        <p class = "text-red-500 mt-4">查無試搭</p>
-                    @endforelse 
-                </div>
-            </div>
-        </div>
-    </div> 
-
     <!-- 搭配清單 -->
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -235,15 +197,15 @@
     <div id="Preview" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/2 overflow-y-scroll">
         <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closePreview()">&times;</span>
         <div class = "grid grid-cols-1 gap-1 border">
-            <div class="h-40 mt-4 ml-4 md:col-span-2 border" id = "cap">
+            <div class="h-40 mt-4 ml-4 mr-4 md:col-span-2 border" id = "cap">
             </div>
-            <div class="h-40 ml-4 md:col-span-2 border" id = "top">
+            <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "top">
             </div>
-            <div class="h-40 ml-4 md:col-span-2 border" id = "pant">
+            <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "pant">
             </div>
-            <div class="h-40 ml-4 md:col-span-2 border" id = "sock">
+            <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "sock">
             </div>
-            <div class="h-40 mb-4 ml-4 md:col-span-2 border" id = "shoe">
+            <div class="h-40 mb-4 ml-4 mr-4 md:col-span-2 border" id = "shoe">
             </div>
         </div>
         <!-- 主要商品加載圖片 -->
@@ -285,32 +247,32 @@
             @switch($TrialItem->trialProduct->Category->category_type)
                 @case(0)
                     <script>
-                        insertDIV("cap" , "{{$product->id}}");
-                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("cap" , "{{$TrialItem->trialProduct->id}}");
+                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(1)
                     <script>
-                        insertDIV("top" , "{{$product->id}}");
-                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("top" , "{{$TrialItem->trialProduct->id}}");
+                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(2)
                     <script>
-                        insertDIV("pant" , "{{$product->id}}");
-                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("pant" , "{{$TrialItem->trialProduct->id}}");
+                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(3)
                     <script>
-                        insertDIV("sock" , "{{$product->id}}");
-                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("sock" , "{{$TrialItem->trialProduct->id}}");
+                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
                 @case(4)
                     <script>
-                        insertDIV("shoe" , "{{$product->id}}");
-                        insertImage("{{$product->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
+                        insertDIV("shoe" , "{{$TrialItem->trialProduct->id}}");
+                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
                     </script>
                     @break
             @endswitch
