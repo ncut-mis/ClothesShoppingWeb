@@ -92,13 +92,17 @@ class CombinationController extends Controller
      */
     public function edit(Combination $combination)
     {
-        //
+        $data = [
+            'combination'=>$combination,
+        ];
+
+        return view('admin.combination.edit',$data);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCombinationRequest $request)
+    public function update(Request $request,Combination $combination)
     {
         $combination_id = $request['combinationID'];
         $combination = Combination::find($combination_id);

@@ -246,4 +246,4 @@
             </div>
         </div>
     </div>
-</x-admin.app-layout>
+</x-admin.app-layout>  

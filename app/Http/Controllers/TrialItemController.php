@@ -13,9 +13,9 @@ class TrialItemController extends Controller
     public function index()
     {
         $trailItems = TrialItem::Where();
-        
-       
-        
+
+
+
         return view('admin.trialitems.index', ['trailItems' => $results]);
     }
 
@@ -36,6 +36,7 @@ class TrialItemController extends Controller
 
         $TrialTtems = TrialItem::Where('product_id','=',$MainproductID)->get();
 
+
         return view('admin.trialitems.create', ['MainProduct' => $product , 'TrialTtems' => $TrialTtems]);
     }
 
@@ -43,7 +44,31 @@ class TrialItemController extends Controller
 
     public function update(Request $request)
     {
+        // 新增试搭项
+        $this->createTrialItem($productID, $selectedProductID);
         
+
+        // 加入试搭成功消息
+        session()->flash('message', '加入試搭成功');
+        return redirect()->route('admin.product.adminShow', ['product' => $product]);
+    }
+
+    public function edit(Request $request,Product $product)
+    {
+        $data =[
+            'product'=>$product,
+        ];
+
+        return view('admin.trialitems.edit',$data);
+    }
+
+    public function update(Request $request,$id)
+    {
+        $request->validate([
+            ''
+        ]);
+
+        return redirect()->route('trialitem.index');
     }
 
     public function destroy(Request $request)
@@ -67,14 +92,16 @@ class TrialItemController extends Controller
         $trialItems = TrialItem::all();
         foreach($trialItems as $trialItem)
         {
-            if($trialItem->trialProduct->Category->category_type == $categoryType){
+            if($trialItem->trialProduct->Category->category_type == $categoryType)
+            {
                 return true;
             }
-            else{
+            else
+            {
                 return false;
             }
         }
-        
+
     }
 
     private function createTrialItem($productId, $selectedProductId)
