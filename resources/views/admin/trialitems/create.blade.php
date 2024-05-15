@@ -29,6 +29,40 @@
             .catch(error => console.error('Error:', error));
         }
 
+        function handleSearch(event) {
+            event.preventDefault(); // 阻止表单的默认提交行为
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const action = form.action;
+            const csrfToken = form.querySelector('input[name="_token"]').value;
+
+            fetch(action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const selectElement = document.getElementById('product');
+                selectElement.innerHTML = ''; // 清空现有的选项
+
+                if (data && Array.isArray(data)) {
+                    data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.text = item.name;
+                        selectElement.appendChild(option);
+                    });
+                } else {
+                    console.error('Search failed.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
         // 新增DIV的函數
         function insertDIV(divId , ID){
             var newDiv = document.createElement('div'); // 创建一个新的 div 元素
@@ -52,20 +86,39 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+                <div class="p-6 text-gray-900">                 
                     <h1 class = "text-2xl font-bold">試搭</h1>
-
+                
                     <div class = "flex flex-row">
                         <div class = basis-1/2>
                             <div class = "mt-4">
-                                <label for = "type" class = "text-xl font-bold">搜尋商品</label>
-                                <select id = "type" name = "type" class = "rounded-lg" onchange="handleTypeChange()">
-                                    <option value = "0">頭部飾品</option>
-                                    <option value = "1">衣類</option>
-                                    <option value = "2">褲裙</option>
-                                    <option value = "3">襪類</option>
-                                    <option value = "4">鞋類</option>
-                                </select>
+                                <div class = "mb-4">
+                                    <h1>主要商品：{{$MainProduct->name}}</h1>
+                                    <img src="{{ asset('images/' . $MainProduct->firstPhoto->file_address) }}" class = "border w-80 h-80"> 
+                                </div>  
+                                 
+                                <div class = "flex flex-row">
+                                    <div class = "basis-1/3">
+                                        <label for = "type" class = "text-xl font-bold">搜尋商品</label>
+                                        <br>
+                                        <select id = "type" name = "type" class = "rounded-lg" onchange="handleTypeChange()">
+                                            <option value = "0">頭部飾品</option>
+                                            <option value = "1">衣類</option>
+                                            <option value = "2">褲裙</option>
+                                            <option value = "3">襪類</option>
+                                            <option value = "4">鞋類</option>
+                                        </select>
+                                    </div>
+
+                                    <div class = "basis-2/3 mt-8">
+                                        <form method = "POST" action = "{{route('admin.product.TrialProuctSearch')}}" id = "search" name = "search" onsubmit="handleSearch(event)">
+                                            @csrf
+                                            <label for = "keyword" class = "text-white text-xl">搜尋</label>
+                                            <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
+                                            <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class = "mt-8">
                                 <h1 class = "text-red-500">按下Ctrl以多選</h1>
@@ -79,7 +132,7 @@
                                 </form>       
                             </div>
                             <div>
-                                <h1 class = "text-2xl font-bold mt-4 mb-4">追蹤商品清單</h1>
+                                <h1 class = "text-2xl font-bold mt-4 mb-4">試搭商品清單</h1>
                                 <hr>
                                 @foreach($TrialTtems as $TrialTtem)
                                 <div class = "flex flex-row mt-4">
@@ -97,6 +150,9 @@
                                 </div>
                                 <hr>
                                 @endforeach
+                                <div class = "relative pb-12">
+                                    <a href = "{{route('admin.combination.create',['product' => $MainProduct])}}" class = "absolute right-0 w-40 h-10 bg-blue-500 rounded-lg text-white flex items-center justify-center mt-4 mb-4">加入搭配組合</a>
+                                </div>
                             </div>
                         </div>
 
@@ -114,6 +170,7 @@
                                 </div>
                             </div>
 
+                            <!-- 主商品 -->
                             @switch($MainProduct->Category->category_type)
                                 @case(0)
                                     <script>

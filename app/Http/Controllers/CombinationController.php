@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Combination;
 use App\Models\combinations_detail;
 use App\Http\Requests\StoreCombinationRequest;
@@ -10,6 +11,9 @@ use App\Http\Requests\UpdateCombinationRequest;
 use App\Models\Product;
 use App\Models\ProductPhoto;
 use App\Models\stock;
+use App\Models\TrialItem;
+use App\Models\specification;
+
 
 class CombinationController extends Controller
 {
@@ -21,41 +25,52 @@ class CombinationController extends Controller
         
     }
 
-    public function admin_index()
-    {
-        $combinations = Combination::all();
-        return view('admin.combination.index', ['combinations' =>$combinations]);
-    }
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Product $product)
     {
-        return view('admin.combination.create');
+        $trialItems = TrialItem::where('product_id','=',$product->id)->get();
+        return view('admin.combination.create',['MainProduct' => $product ,'trialItems' => $trialItems]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCombinationRequest $request)
+    public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'price' => 'required|integer',
-            'description' => 'required|string|max:255',
-            'category_id' => 'required|integer',
-        ]);
+        $MainProduct = Product::find($request['MainProductID']);
+        $trialItems = TrialItem::where('product_id','=',$MainProduct->id)->get();
+        $price = $MainProduct->price;
+        foreach($trialItems as $trialItem)
+        {
+            $price += $trialItem->trialProduct->price;
+        }
 
         $combination = new Combination();
-        $combination->name = $validated['name'];
-        $combination->price = $validated['price'];
-        $combination->description = $validated['description'];
-        $combination->category_id = $validated['category_id'];
+        $combination->staff_id = Auth::guard('admin')->user()->id;
+        $combination->name = $request['CombinationName'];
+        $combination->price = $price;
+        $combination->product_id = $request['MainProductID'];
 
         $combination->save();
-        return redirect()->route('combination.index')
-                         ->with('success','新增成功');
 
+        foreach($trialItems as $trialItem)
+        {
+            $combinations_detail = new combinations_detail();
+            $combinations_detail->combination_id = $combination->id;
+            $combinations_detail->product_id = $trialItem->trialProduct->id;
+            $combinations_detail->save();
+
+            $trialItem->delete();
+        }       
+
+        $combinations = Combination::Where('product_id', '=', $MainProduct->id)->paginate(10);
+        $stocks = stock::Where('product_id', '=', $MainProduct->id)->get();
+        $specifications = specification::Where('product_id','=',$MainProduct->id)->get();
+
+        session()->flash('message', '新增搭配組合成功');
+        return view('admin.product.show', ['product' => $MainProduct , 'combinations' => $combinations , 'TrialItems' => $trialItems , 'stocks' => $stocks , 'specifications' => $specifications]);
     }
 
     /**

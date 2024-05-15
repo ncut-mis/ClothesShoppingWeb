@@ -34,11 +34,34 @@
                 <div class="p-6 text-gray-900 flex flex-row">
                     <div class = "basis-1/2">
                         <h1 class = "text-3xl font-bold">{{$product->name}}</h1>
-                        <div class = "photo mt-4">
-                            <img src="{{ asset('images/' . $product->firstPhoto->file_address) }}" class = "w-80 h-80 border">
+                        <div class="relative border basis-1/2 mt-4" x-data="{ activePhoto: 0, photos: [
+                                @foreach($product->ProductPhoto as $index => $photo)
+                                    '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
+                                @endforeach
+                            ] }">
+
+                            <!-- 图片轮播显示 -->
+                            <template x-for="(photo, index) in photos" :key="index">
+                                <img :src="photo" 
+                                    x-show="activePhoto === index" 
+                                    class="w-full h-auto block rounded" 
+                                    style="display: none;" />
+                            </template>
+
+                            <!-- 轮播控制按钮 -->
+                            <div class="flex justify-center mt-4">
+                                <button class="mx-1 text-xl bg-gray-300 rounded w-5"            
+                                        @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
+                                    &lt;
+                                </button>
+                                <button class="mx-1 text-xl bg-gray-300 rounded w-5"
+                                        @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
+                                    &gt;
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class = "basis-1/2">
+                    <div class = "basis-1/2 ml-4">
                         <h1 class = "text-3xl font-bold">商品明細</h1>
                         <h1 class = "text-xl font-bold mt-8 inline-block">庫存：</h1> <button id="stockcheck" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">查看庫存</button>  
                         <br>

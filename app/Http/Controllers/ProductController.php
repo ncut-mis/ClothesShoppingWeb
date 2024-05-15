@@ -199,12 +199,21 @@ class ProductController extends Controller
             return view('admin.product.index', compact('categories','products'));
         }
     }
+
     public function type_search($categoryType)
     {
         $products = Product::whereHas('Category', function($query) use ($categoryType) {
             $query->where('category_type', '=', $categoryType);
         })->get();
         
+        return response()->json($products);
+    }
+
+    public function TrialProuct_search(Request $request)
+    {
+        $exists = Product::Where('name', '=', $request['keyword'])->exists();
+        $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->get();
+
         return response()->json($products);
     }
 }

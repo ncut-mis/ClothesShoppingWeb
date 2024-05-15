@@ -107,9 +107,9 @@ Route::middleware('auth')->group(function () {
 //搭配組合
 Route::middleware('auth')->group(function (){
     Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
-    Route::get('/admin/combination/create',[CombinationController::class,'create'])->name('combination.create');
+    
     Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
-    Route::post('/admin/combination',[CombinationController::class,'store'])->name('combination.store');
+    
     Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
     Route::patch('/admin/combination/{combination}',[CombinationController::class,'update'])->name('combination.update');
     Route::delete('/admin/combination/destroy',[CombinationController::class,'destroy'])->name('combination.destroy');
@@ -163,6 +163,9 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/AdminCreate',[AdminController::class, 'create'])->name('admin.create');
     Route::post('/Admin',[AdminController::class, 'store'])->name('admin.store');
     Route::get('/ProductTypeSearch/{categoryType}',[ProductController::class, 'type_search'])->name('product.typesearch');
+    Route::post('/TrialProuctSearch',[ProductController::class, 'TrialProuct_search'])->name('product.TrialProuctSearch');
+    Route::get('/Combination/create/{product}',[CombinationController::class,'create'])->name('combination.create');
+    Route::post('/combination',[CombinationController::class,'store'])->name('combination.store');
 });
 
 //商品

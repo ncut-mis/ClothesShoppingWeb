@@ -19,38 +19,90 @@
     });
 </script>
 
+<style>
+    /* 隱藏下拉選單 */
+    .dropdown-content {
+            display: none;
+    }
+
+    /* 顯示下拉選單當 hover 時 */
+    .dropdown:hover .dropdown-content,
+        .dropdown:focus-within .dropdown-content {
+            display: block;
+        }
+</style>
+
 @extends($layout)
 
 @section('content')
-    <div class="bg-orange-500 pt-4 pb-4 flex justify-between">
+    <div class="bg-orange-500 pt-4 flex justify-between">
         <!--顯示服裝類別導覽鍵-->
-        <div class="relative">
-            <x-nav-link :href="route('/home')" class="text-lg">
-                所有商品
-            </x-nav-link>
-            @foreach ($categories as $category)
-                <x-nav-link :href="route('Categorys.show' , ['category' => $category])"  class="text-lg">
-                    {{ $category->name }}
-                </x-nav-link>
-            @endforeach
+        <div class="relative flex flex-row">
+            <a href="{{route('/home')}}" class="text-lg text-white hover:text-gray-500 ml-4 mt-2">所有商品</a>
+            
+            <div class="relative dropdown ml-4 mt-2">
+                <a href="#" class="text-lg text-white hover:text-gray-500">頭部飾品</a>
+                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
+                    @foreach ($categories as $category)
+                        @if($category->category_type == 0)
+                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+            
+            <div class="relative dropdown ml-4 mt-2">
+                <a href="#" class="text-lg text-white hover:text-gray-500">衣類</a>
+                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
+                    @foreach ($categories as $category)
+                        @if($category->category_type == 1)
+                        <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+            
+            <div class="relative dropdown ml-4 mt-2">
+                <a href="#" class="text-lg text-white hover:text-gray-500">褲裙</a>
+                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
+                    @foreach ($categories as $category)
+                        @if($category->category_type == 2)
+                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+            
+            <div class="relative dropdown ml-4 mt-2">
+                <a href="#" class="text-lg text-white hover:text-gray-500">襪類</a>
+                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
+                    @foreach ($categories as $category)
+                        @if($category->category_type == 3)
+                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
+            
+            <div class="relative dropdown ml-4 mt-2">
+                <a href="#" class="text-lg text-white hover:text-gray-500">鞋類</a>
+                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
+                    @foreach ($categories as $category)
+                        @if($category->category_type == 4)
+                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
+                        @endif
+                    @endforeach
+                </div>
+            </div>
         </div>
 
-        <div class = "absolute right-0 flex">
-            <!--顯示分頁連結-->
-            <div class="flex-1 mr-4">
-                {{ $categories->links('vendor.pagination.simple-tailwind2') }}
-            </div>
-
-            <!--顯示搜尋欄-->
-            <div class="flex mr-4 flex-none">
-                <form method="GET" action = "{{route('Products.search')}}">
-                    @csrf
-                    <label for = "keyword" class = "text-white text-xl">搜尋</label>
-                    <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
-                    <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
-                </form>
-            </div>
-        </div>       
+        <!--顯示搜尋欄-->
+        <form method="GET" action = "{{route('Products.search')}}">
+            @csrf
+            <label for = "keyword" class = "text-white text-xl">搜尋</label>
+            <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
+            <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
+        </form>
     </div>
     @include('layouts.partials.category_items')
 @endsection
