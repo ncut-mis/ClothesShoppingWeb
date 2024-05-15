@@ -62,14 +62,6 @@ class TrialItemController extends Controller
         return view('admin.trialitems.edit',$data);
     }
 
-    public function update(Request $request,$id)
-    {
-        $request->validate([
-            ''
-        ]);
-
-        return redirect()->route('trialitem.index');
-    }
 
     public function destroy(Request $request)
     {

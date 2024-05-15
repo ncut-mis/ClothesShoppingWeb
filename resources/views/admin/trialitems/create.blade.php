@@ -151,7 +151,7 @@
                                 <hr>
                                 @endforeach
                                 <div class = "relative pb-12">
-                                    <a href = "{{route('admin.combination.create',['product' => $MainProduct])}}" class = "absolute right-0 w-40 h-10 bg-blue-500 rounded-lg text-white flex items-center justify-center mt-4 mb-4">加入搭配組合</a>
+                                    <a href = "{{route('admin.combination.create',['product' => $MainProduct])}}" class = "absolute right-4 w-40 h-10 bg-blue-500 rounded-lg text-white flex items-center justify-center mt-4 mb-4">加入搭配組合</a>
                                 </div>
                             </div>
                         </div>

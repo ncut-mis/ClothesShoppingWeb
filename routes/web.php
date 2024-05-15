@@ -153,11 +153,11 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     //類別
     Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
     Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
-    Route::get('/Category/create',[CategoryController::class,'create'])->name('admin.category.create');
-    Route::post('/Category',[CategoryController::class,'store'])->name('admin.category.store');
-    Route::get('/Category/{categoryID}',[CategoryController::class,'edit'])->name('admin.category.edit');
-    Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('admin.category.update');
-    Route::delete('/Category',[CategoryController::class,'destroy'])->name('admin.category.destroy');
+    Route::get('/Category/create',[CategoryController::class,'create'])->name('category.create');
+    Route::post('/Category',[CategoryController::class,'store'])->name('category.store');
+    Route::get('/Category/{categoryID}',[CategoryController::class,'edit'])->name('category.edit');
+    Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('category.update');
+    Route::delete('/Category',[CategoryController::class,'destroy'])->name('category.destroy');
     //搜尋
     Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('product.adminSearch');
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
