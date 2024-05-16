@@ -161,6 +161,23 @@ class OrderController extends Controller
         return redirect(route('order.index' , ['status' => $order->status]));  
     }
 
+    public function comment(Request $request)
+    {
+        $comment = $request['comment'];
+        $OrderID = $request['OrderID'];
+        $order = Order::find($OrderID);
+
+        if ($order !== null) {
+            $order->comment = $comment;
+            $order->save();
+            session()->flash('message', '新增評論成功');
+        } else {
+            session()->flash('message', '新增評論失敗');
+        }
+    
+        $order_detials = order_detial::Where('order_id','=',$OrderID)->get();
+        return view('order.show', ['order' => $order , 'order_detials' => $order_detials]);
+    }
     /**
      * Remove the specified resource from storage.
      */

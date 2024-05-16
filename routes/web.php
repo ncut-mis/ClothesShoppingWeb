@@ -102,6 +102,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
     Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
     Route::patch('/OrderUpdate', [OrderController::class, 'update'])->name('order.update');
+    Route::patch('/OrderComment', [OrderController::class, 'comment'])->name('order.comment');
 });
 
 //搭配組合
