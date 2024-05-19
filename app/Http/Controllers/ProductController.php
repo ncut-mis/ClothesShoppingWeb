@@ -109,7 +109,7 @@ class ProductController extends Controller
             ->whereHas('details', function ($query) use ($product) {
                 $query->where('product_id', $product->id);
             })
-            ->where('status', 3)
+            ->where('status', 4)
             ->get();
 
         if (Auth::check()) {

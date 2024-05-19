@@ -28,7 +28,7 @@
                         <hr>
 
                         <!--顯示訂單明細-->
-                        @foreach($order->order_detials as $detial)
+                        @foreach($order->details as $detial)
                             <div class = "flex flex-row pb-4 mt-4 ml-4">
                                 <div class = "basis-1/4">
                                     <h1>{{$detial->product->name}}</h1>
@@ -72,21 +72,24 @@
 
                         switch($order->status){
                             case 0 :
-                                $status = "已成立";
+                                $status = "待確認";
                                 break;
                             case 1 :
-                                $status = "已出貨";
+                                $status = "已確認";
                                 break;
                             case 2 :
-                                $status = "已到貨";
+                                $status = "已出貨";
                                 break;
                             case 3 :
-                                $status = "已完成";
+                                $status = "已到貨";
                                 break;
                             case 4 :
-                                $status = "申請取消";
+                                $status = "已完成";
                                 break;
                             case 5 :
+                                $status = "申請取消";
+                                break;
+                            case 6 :
                                 $status = "已取消";
                                 break;
                         }
@@ -108,8 +111,8 @@
         </div>
     </div>
 
-    <!-- 如果該訂單尚未被評論，則顯示撰寫評論表單 -->
-    @if($order->comment == "")
+    <!-- 如果已完成訂單尚未被評論，則顯示撰寫評論表單 -->
+    @if($order->comment == "" && $order->status == 4)
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
