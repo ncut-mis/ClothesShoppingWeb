@@ -186,7 +186,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1 class = "text-3xl font-bold mb-4">訂單評論</h1>
-                    
+                    @foreach($orders as $order)
+                        <div class = "mt-4 mb-4">
+                            <h1 class = "text-lg font-bold">{{$order->user->name}}</h1>
+                            <h1>{{$order->comment}}</h1>
+                        </div>
+                        <hr>
+                    @endforeach
                 </div>
             </div>
         </div>

@@ -5,18 +5,32 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\order_detial;
+use App\Models\User;
 
 class Order extends Model
 {
     use HasFactory;
 
-    public function order_detials()
+    protected $fillable = [
+        'user_id',
+        'amount',
+        'paymentmethodid',
+        'status',
+        'address',
+        'phone',
+        'trains_time',
+        'comment',
+        'remit',
+        'staff_id',
+    ];
+
+    public function details()
     {
         return $this->hasMany(order_detial::class);
     }
 
-    public function firstProduct()
+    public function user()
     {
-        return $this->hasOne(order_detial::class)->oldestOfMany();
+        return $this->belongsTo(User::class);
     }
 }

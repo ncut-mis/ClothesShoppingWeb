@@ -105,7 +105,10 @@ class ProductController extends Controller
         //image可修改成取亂數隨機顯示商品圖片，也可取出所有圖片，也可在Model去定義圖片顯示方法
         $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
         $combinations = Combination::Where('product_id', '=', $product->id)->paginate(2);
-        $orders = Order::all();
+        $orders = Order::with('details')->whereHas('details', function ($query) use ($product) {
+            $query->where('product_id', $product->id);
+        })->get();
+
         if (Auth::check()) {
             // 用戶已登入，使用 auth layout
             return view('product.show', ['product' => $product , 'combinations' => $combinations , 'orders'=> $orders , 'layout' => 'layouts.app']);
