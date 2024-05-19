@@ -173,6 +173,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::delete('/Specification',[SpecificationController::class, 'destroy'])->name('specification.destroy');
     Route::get('/AdminCreate',[AdminController::class, 'create'])->name('admin.create');
     Route::post('/Admin',[AdminController::class, 'store'])->name('admin.store');
+    Route::delete('/Admin',[AdminController::class, 'destroy'])->name('admin.destroy');
     Route::get('/ProductTypeSearch/{categoryType}',[ProductController::class, 'type_search'])->name('product.typesearch');
     Route::post('/TrialProuctSearch',[ProductController::class, 'TrialProuct_search'])->name('product.TrialProuctSearch');
     Route::get('/Combination/create/{product}',[CombinationController::class,'create'])->name('combination.create');

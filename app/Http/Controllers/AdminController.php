@@ -20,20 +20,44 @@ class AdminController extends Controller
 
     public function store(Request $request){
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'FirstName' => ['required', 'string', 'max:255'],
+            'LastName' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:admins'],
             'password' => ['required', Rules\Password::defaults()],
-        ]);
+        ], $this->messages());
     
         $admin = new admin(); 
-        $admin->name = $request->name;
+        $admin->FirstName = $request->FirstName;
+        $admin->LastName = $request->LastName;
+        $admin->title = $request->title;
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
         
         $admin->save();
 
         session()->flash('message', '新增人員成功');
-        $admins = admin::all();
-        return view('admin.adminlist.index',['admins' => $admins]);
+        return redirect(route('admin.adminlist.index'));
     }
+
+    public function destroy(Request $request)
+    {
+        $adminID = $request['adminID'];
+        $admin = admin::find($adminID);
+        $admin->delete();
+
+        session()->flash('message', '刪除成功');
+        return redirect(route('admin.adminlist.index'));
+    }
+
+    protected function messages()
+{
+    return [
+        'FirstName.required' => '請填寫名字。',
+        'LastName.required' => '請填寫姓氏。',
+        'email.required' => '請填寫電子郵件。',
+        'email.email' => '請輸入有效的電子郵件地址。',
+        'email.unique' => '該電子郵件已被使用。',
+        'password.required' => '請填寫密碼。',
+    ];
+}
 }

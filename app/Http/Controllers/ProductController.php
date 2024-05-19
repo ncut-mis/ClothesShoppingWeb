@@ -9,6 +9,7 @@ use App\Models\Combination;
 use App\Models\Category;
 use App\Models\specification;
 use App\Models\stock;
+use App\Models\Order;
 use App\Models\TrialItem;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreProductRequest;
@@ -104,12 +105,13 @@ class ProductController extends Controller
         //image可修改成取亂數隨機顯示商品圖片，也可取出所有圖片，也可在Model去定義圖片顯示方法
         $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
         $combinations = Combination::Where('product_id', '=', $product->id)->paginate(2);
+        $orders = Order::all();
         if (Auth::check()) {
             // 用戶已登入，使用 auth layout
-            return view('product.show', ['product' => $product , 'combinations' => $combinations , 'layout' => 'layouts.app']);
+            return view('product.show', ['product' => $product , 'combinations' => $combinations , 'orders'=> $orders , 'layout' => 'layouts.app']);
         } else {
             // 用戶未登入，使用 guest layout
-            return view('product.show', ['product' => $product , 'combinations' => $combinations , 'layout' => 'layouts.guest']);
+            return view('product.show', ['product' => $product , 'combinations' => $combinations , 'orders'=> $orders , 'layout' => 'layouts.guest']);
         }
     }
 
