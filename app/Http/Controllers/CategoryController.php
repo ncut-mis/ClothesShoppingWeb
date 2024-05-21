@@ -55,8 +55,7 @@ class CategoryController extends Controller
     {
         $products = Product::Where('category_id', '=', $category->id)->paginate(8);
 
-        $categories = Category::paginate(10, ['*'], 'categoryPage')
-                          ->withQueryString();
+        $categories = Category::all();
 
         // 返回一个视图，只包含服装数据列表
         if (Auth::check()) {

@@ -40,8 +40,7 @@ use App\Models\stock;
 //訪客首頁
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
-        $categories = Category::paginate(10, ['*'], 'categoryPage')
-                              ->withQueryString();
+        $categories = Category::all();
         $products = Product::paginate(8); // 示例中随机取5件服装
         $layout = 'layouts.guest';
 
@@ -57,8 +56,7 @@ Route::get('/dashboard', function () {
 
 //會員首頁
 Route::get('/home', function () {
-     $categories = Category::paginate(10, ['*'], 'categoryPage')
-                          ->withQueryString();
+     $categories = Category::all();
      $products = Product::with('firstPhoto')->paginate(8);
      $layout = 'layouts.app';
 
@@ -149,7 +147,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
     //訂單
-    Route::get('/Order', [OrderController::class, 'admin_index'])->name('order.adminIndex');
+    Route::get('/Orderlist/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
     Route::get('/Order/{order}', [OrderController::class, 'admin_show'])->name('order.adminShow');
     //類別
     Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');

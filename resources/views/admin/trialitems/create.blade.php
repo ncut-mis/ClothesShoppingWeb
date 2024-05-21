@@ -98,7 +98,7 @@
                                 </div>  
                                  
                                 <div class = "flex flex-row">
-                                    <div class = "basis-1/3">
+                                    <div class = "basis-1/5">
                                         <label for = "type" class = "text-xl font-bold">搜尋商品</label>
                                         <br>
                                         <select id = "type" name = "type" class = "rounded-lg" onchange="handleTypeChange()">
@@ -110,11 +110,11 @@
                                         </select>
                                     </div>
 
-                                    <div class = "basis-2/3 mt-8">
+                                    <div class = "basis-4/5 mt-7">
                                         <form method = "POST" action = "{{route('admin.product.TrialProuctSearch')}}" id = "search" name = "search" onsubmit="handleSearch(event)">
                                             @csrf
                                             <label for = "keyword" class = "text-white text-xl">搜尋</label>
-                                            <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
+                                            <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4" placeholder="請輸入關鍵字">
                                             <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
                                         </form>
                                     </div>
@@ -171,7 +171,7 @@
                             </div>
 
                             <!-- 主商品 -->
-                            @switch($MainProduct->Category->category_type)
+                            @switch($MainProduct->Category->image_position)
                                 @case(0)
                                     <script>
                                         insertDIV("cap" , "{{$MainProduct->id}}");
@@ -206,7 +206,7 @@
                             
                             @if(isset($TrialTtems))
                                 @foreach($TrialTtems as $TrialTtem)
-                                    @switch($TrialTtem->trialProduct->Category->category_type)
+                                    @switch($TrialTtem->trialProduct->Category->image_position)
                                         @case(0)
                                             <script>
                                                 insertDIV("cap" , "{{$TrialTtem->trialProduct->id}}");

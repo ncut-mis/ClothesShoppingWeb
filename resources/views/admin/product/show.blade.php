@@ -76,6 +76,20 @@
         </div>
     </div>    
 
+    <!-- 商品詳細 -->
+    <div class="py-4">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 ">
+                    <h1 class = "text-3xl font-bold">商品描述</h1>
+                    <div class = "description bg-white mt-4 rounded-lg">
+                        <p>{!! nl2br(e($product->description)) !!} </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+
     <!-- 操作區域 -->
     <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -83,8 +97,6 @@
                 <div class="p-6 text-gray-900 ">
                     <h1 class = "text-3xl font-bold mb-4">操作區域</h1>
                     <hr>
-                  
-                    <button onclick="location.href='/admin/TrialItem/{{$product->id}}';" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">試搭</button>
                     <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">修改商品</button>    
                     <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">刪除商品</button>    
                     @if($product->	is_shelf == 0)
@@ -104,7 +116,8 @@
                 <div class="p-6 text-gray-900 ">
                     <div class = "flex flex-row">
                         <div class = "basis-1/3 flex items-center">
-                            <h1 class = "text-3xl font-bold mb-4">搭配清單</h1>
+                            <h1 class = "text-3xl font-bold mb-4 inline-block">搭配清單</h1>
+                            <button onclick="location.href='/admin/TrialItem/{{$product->id}}';" class="ml-auto mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">試搭</button>
                         </div>
                         <div class = "basis-1/3">
                         </div>
@@ -165,22 +178,10 @@
         </div>
     </div> 
 
-    <!-- 商品詳細 -->
-    <div class="py-4">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 ">
-                    <h1 class = "text-3xl font-bold">商品描述</h1>
-                    <div class = "description bg-white mt-4 rounded-lg">
-                        <p>{!! nl2br(e($product->description)) !!} </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> 
+    
 
     <!-- 庫存清單 -->
-    <div id="stocklist" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/4 h-80 overflow-y-scroll">
+    <div id="stocklist" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/2 h-80 overflow-y-scroll">
         <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closeStocklist()">&times;</span>
         <h1 class = "text-3xl font-bold">庫存管理</h1>
         <div class = "flex flex-row w-80 mt-4">
@@ -216,92 +217,6 @@
         @endforeach
     </div>
 
-    <!-- 試搭預覽 -->
-    <div id="Preview" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden w-1/2 overflow-y-scroll">
-        <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closePreview()">&times;</span>
-        <div class = "grid grid-cols-1 gap-1 border">
-            <div class="h-40 mt-4 ml-4 mr-4 md:col-span-2 border" id = "cap">
-            </div>
-            <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "top">
-            </div>
-            <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "pant">
-            </div>
-            <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "sock">
-            </div>
-            <div class="h-40 mb-4 ml-4 mr-4 md:col-span-2 border" id = "shoe">
-            </div>
-        </div>
-        <!-- 主要商品加載圖片 -->
-        @switch($product->Category->category_type)
-            @case(0)
-                <script>
-                    insertDIV("cap" , "{{$product->id}}");
-                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
-                </script>
-                @break
-            @case(1)
-                <script>
-                    insertDIV("top" , "{{$product->id}}");
-                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
-                </script>
-                @break
-            @case(2)
-                <script>
-                    insertDIV("pant" , "{{$product->id}}");
-                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
-                </script>
-                @break
-            @case(3)
-                <script>
-                    insertDIV("sock" , "{{$product->id}}");
-                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
-                </script>
-                @break
-            @case(4)
-                <script>
-                    insertDIV("shoe" , "{{$product->id}}");
-                    insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
-                </script>
-                @break
-        @endswitch
-
-        @foreach($TrialItems as $TrialItem)     
-            <!-- 搭配商品加載圖片 -->       
-            @switch($TrialItem->trialProduct->Category->category_type)
-                @case(0)
-                    <script>
-                        insertDIV("cap" , "{{$TrialItem->trialProduct->id}}");
-                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
-                    </script>
-                    @break
-                @case(1)
-                    <script>
-                        insertDIV("top" , "{{$TrialItem->trialProduct->id}}");
-                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
-                    </script>
-                    @break
-                @case(2)
-                    <script>
-                        insertDIV("pant" , "{{$TrialItem->trialProduct->id}}");
-                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
-                    </script>
-                    @break
-                @case(3)
-                    <script>
-                        insertDIV("sock" , "{{$TrialItem->trialProduct->id}}");
-                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
-                    </script>
-                    @break
-                @case(4)
-                    <script>
-                        insertDIV("shoe" , "{{$TrialItem->trialProduct->id}}");
-                        insertImage("{{$TrialItem->trialProduct->id}}", "{{ asset('images/' . $TrialItem->trialProduct->firstPhoto->file_address) }}");
-                    </script>
-                    @break
-            @endswitch
-        @endforeach
-    </div>
-
     <div id="AddSpecification" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden overflow-y-scroll">
         <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closeAddSpecification()">&times;</span>
         <form action = "{{route('admin.specification.store')}}" method = "POST">
@@ -324,33 +239,34 @@
     </div>
 
     <script>
+        function closeAddSpecification() {
+            document.getElementById('AddSpecification').classList.add('hidden');
+        }
         function closeStocklist() {
             document.getElementById('stocklist').classList.add('hidden');
         }
 
-        document.getElementById('stockcheck').addEventListener('click', function() {
-            document.getElementById('stocklist').classList.remove('hidden');
-            
+        document.addEventListener('DOMContentLoaded', function() {
+            const stockCheckBtn = document.getElementById('stockcheck');
+            if (stockCheckBtn) {
+                stockCheckBtn.addEventListener('click', function() {
+                    document.getElementById('stocklist').classList.remove('hidden');
+                });
+            }
+
+            const previewBtn = document.getElementById('PreviewBtn');
+            if (previewBtn) {
+                previewBtn.addEventListener('click', function() {
+                    document.getElementById('Preview').classList.remove('hidden');
+                });
+            }
+
+            const addSpecificationBtn = document.getElementById('AddSpecificationBtn');
+            if (addSpecificationBtn) {
+                addSpecificationBtn.addEventListener('click', function() {
+                    document.getElementById('AddSpecification').classList.remove('hidden');
+                });
+            }
         });
-
-        function closePreview() {
-            document.getElementById('Preview').classList.add('hidden');
-        }
-
-        document.getElementById('PreviewBtn').addEventListener('click', function() {
-            document.getElementById('Preview').classList.remove('hidden');
-            
-        });
-
-        function closeAddSpecification() {
-            document.getElementById('AddSpecification').classList.add('hidden');
-        }
-
-        document.getElementById('AddSpecificationBtn').addEventListener('click', function() {
-            document.getElementById('AddSpecification').classList.remove('hidden');
-            
-        });
-
-       
     </script>
 </x-admin.app-layout>

@@ -40,62 +40,25 @@
         <div class="relative flex flex-row">
             <a href="{{route('/home')}}" class="text-lg text-white hover:text-gray-500 ml-4 mt-2">所有商品</a>
             
-            <div class="relative dropdown ml-4 mt-2">
-                <a href="#" class="text-lg text-white hover:text-gray-500">頭部飾品</a>
-                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
-                    @foreach ($categories as $category)
-                        @if($category->category_type == 0)
-                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-            
-            <div class="relative dropdown ml-4 mt-2">
-                <a href="#" class="text-lg text-white hover:text-gray-500">衣類</a>
-                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
-                    @foreach ($categories as $category)
-                        @if($category->category_type == 1)
-                        <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-            
-            <div class="relative dropdown ml-4 mt-2">
-                <a href="#" class="text-lg text-white hover:text-gray-500">褲裙</a>
-                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
-                    @foreach ($categories as $category)
-                        @if($category->category_type == 2)
-                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-            
-            <div class="relative dropdown ml-4 mt-2">
-                <a href="#" class="text-lg text-white hover:text-gray-500">襪類</a>
-                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
-                    @foreach ($categories as $category)
-                        @if($category->category_type == 3)
-                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-            
-            <div class="relative dropdown ml-4 mt-2">
-                <a href="#" class="text-lg text-white hover:text-gray-500">鞋類</a>
-                <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
-                    @foreach ($categories as $category)
-                        @if($category->category_type == 4)
-                            <a href="{{route('Categorys.show' , ['category' => $category])}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-        </div>
+            <!-- 先將大類別列出來 -->
+            @foreach ($categories as $FirstCategory)
+                <!-- 檢查是否為大類別 -->
+                @if ($FirstCategory->category_type == -1)
+                    <div class="relative dropdown ml-4 mt-2">
+                        <a href="#" class="text-lg text-white hover:text-gray-500">{{ $FirstCategory->name }}</a>
+                        <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
+                            @foreach ($categories as $category)
+                                <!-- 檢查是否為該大類別的子類別 -->
+                                @if ($category->category_type == ($FirstCategory->id - 1))
+                                    <a href="{{ route('Categorys.show', ['category' => $category]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+            @endforeach
 
+        </div>
         <!--顯示搜尋欄-->
         <form method="GET" action = "{{route('Products.search')}}">
             @csrf

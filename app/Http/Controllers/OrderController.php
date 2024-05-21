@@ -50,9 +50,9 @@ class OrderController extends Controller
         return view('Order.index',['orders' => $orders , 'Status' => $statusName]);
     }
 
-    public function admin_index()
+    public function admin_index($status)
     {
-        $items = Order::Where('status','=',0)->orderBy('created_at', 'desc')->get();
+        $items = Order::Where('status','=',$status)->orderBy('created_at', 'desc')->get();
                  
         return view('admin.order.index', ['items' => $items]);
     }
