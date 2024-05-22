@@ -11,7 +11,7 @@
                     <x-nav-link :href="route('admin.product.adminIndex')" :active="request()->routeIs('admin.home')">
                         {{ __('商品管理') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.order.adminIndex')" :active="request()->routeIs('admin.home')">
+                    <x-nav-link :href="route('admin.order.adminIndex',['status' => 0])" :active="request()->routeIs('admin.home')">
                         {{ __('訂單管理') }}
                     </x-nav-link>
                     <x-nav-link :href="route('admin.category.adminIndex')" :active="request()->routeIs('admin.home')">
@@ -28,7 +28,7 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::guard('admin')->user()->name }}</div>
+                            <div>{{ Auth::guard('admin')->user()->LastName }}</div>
 
                             <div class="ml-1">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">

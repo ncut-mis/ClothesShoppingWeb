@@ -41,7 +41,7 @@
 
                                 <!--加載主要商品-->
                                 
-                                @switch($product->Category->category_type)
+                                @switch($product->Category->image_position)
                                     @case(0)
                                         <script>
                                             insertDIV("cap" , "{{$product->id}}");
@@ -76,7 +76,7 @@
 
                                 <!--加載搭配商品-->
                                 @foreach($items as $item)
-                                    @switch($item->product->Category->category_type)
+                                    @switch($item->product->Category->image_position)
                                         @case(0)
                                             <script>
                                                 insertDIV("cap" , "{{$item->product->id}}");

@@ -12,11 +12,7 @@ class TrialItemController extends Controller
 {
     public function index()
     {
-        $trailItems = TrialItem::Where();
-
-
-
-        return view('admin.trialitems.index', ['trailItems' => $results]);
+        
     }
 
     public function create($productID)
@@ -45,12 +41,12 @@ class TrialItemController extends Controller
     public function update(Request $request)
     {
         // 新增试搭项
-        $this->createTrialItem($productID, $selectedProductID);
+        // $this->createTrialItem($productID, $selectedProductID);
         
 
         // 加入试搭成功消息
-        session()->flash('message', '加入試搭成功');
-        return redirect()->route('admin.product.adminShow', ['product' => $product]);
+        // session()->flash('message', '加入試搭成功');
+        // return redirect()->route('admin.product.adminShow', ['product' => $product]);
     }
 
     public function edit(Request $request,Product $product)
@@ -101,7 +97,7 @@ class TrialItemController extends Controller
         $trialItem = new TrialItem();
         $trialItem->product_id = $productId;
         $trialItem->trial_product_id = $selectedProductId;
-        $trialItem->save();
+        $trialItem->save();            
     }
     
 }

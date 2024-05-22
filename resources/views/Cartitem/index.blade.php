@@ -37,62 +37,39 @@
                                         <h1 class = "ml-4">{{$item->product->name}}</h1>
                                     </div>
                                 </a>
-                                <div  class = "basis-1/6 flex items-center pb-4 text-red-500">{{$item->product->price}}</div >
-                                <div  class = "basis-1/6 flex items-center pb-4">{{$item->size}}</div >
-                                <div  class = "basis-1/6 flex items-center pb-4">{{$item->color}}</div >
-                                <div  class = "basis-1/6 flex items-center pb-4">{{$item->quantity}}</div >
+
+                                <h1 class = "basis-1/6 mt-2 text-red-500">{{$item->product->price}}</h1 >
+
+                                <div  class = "basis-1/6">
+                                    <form method = "POST" action = "{{route('cartitem.update')}}" id = "sizeChange">
+                                        @csrf
+                                        @method('patch')
+                                        <input type = "hidden" name = "CartID" value = "{{$itemID}}">
+                                        <select id = "size" name = "size" onchange="submitsizeChangeForm()" class = "rounded">
+                                            @foreach($product->specification as $specification)
+                                                @if($specification->specification_type === 'size')
+                                                    <option value="{{$specification->name}}" {{ $item->size == $specification->name ? 'selected' : '' }}>{{$specification->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div >
+
+                                <h1 class = "basis-1/6 mt-2">{{$item->color}}</h1 >
+
+                                <div  class = "basis-1/6">
+                                    <form method="POST" action="{{route('cartitem.update')}}" id = "quantityChange">
+                                        @csrf  
+                                        @method('patch')
+                                        <input type = "hidden" name = "CartID" value = "{{$itemID}}">
+                                        <input type = "number" name = "quantity" min = "1" max = "50" value = "{{$item->quantity}}" onchange="submitquantityChangeForm()" class = "rounded">
+                                    </form>
+                                </div >
 
                                 <!--操作按鈕區塊-->
-                                <div class = "basis-1/6 flex flex-row items-center">
-                                    <!--修改尺寸區塊-->
-                                    <div class = "basis-1/3 mb-4">
-                                        <button id="updateSize-{{$item->id}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改尺寸</button>
-                                        <!--顯示修改尺寸用的小視窗-->
-                                        <div id="popupSize-{{$item->id}}" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-                                            <span class="absolute top-1 right-2 cursor-pointer" onclick="closePopup('popupSize-{{$item->id}}')">&times;</span>
-                                            <form method = "POST" action = "{{route('cartitem.update')}}">
-                                                @csrf
-                                                @method('patch')
-                                                <input type = "hidden" name = "CartID" value = "{{$itemID}}">
-                                                <div class = "mt-4">
-                                                    <label for = "size">請選擇尺寸</label>
-                                                    <select id = "size" name = "size">
-                                                        <option value = "XS">XS</option>
-                                                        <option value = "S">S</option>
-                                                        <option value = "M">M</option>
-                                                        <option value = "L">L</option>
-                                                        <option value = "XL">XL</option>
-                                                        <option value = "2XL">2XL</option>
-                                                    </select>
-                                                </div>
-                                                <div class = "flex mt-4">
-                                                    <input type = "submit" value = "修改尺寸" class = "ml-auto bg-blue-500 hover:bg-blue-800 rounded-lg text-white w-20 h-10 top-1 right-2 cursor-pointer">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <!--修改數量區塊-->
-                                    <div class = "basis-1/3 mb-4">
-                                        <button id="updateQuantity-{{$item->id}}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded ">修改數量</button>
-                                        <!--顯示修改數量用的小視窗-->
-                                        <div id="popupQuantity-{{$item->id}}" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden">
-                                            <span class="absolute top-1 right-2 right-0 cursor-pointer" onclick="closePopup('popupQuantity-{{$item->id}}')">&times;</span>
-                                            <form method="POST" action="{{route('cartitem.update')}}">
-                                                @csrf  
-                                                @method('patch')
-                                                <label for = "quantity">請選擇數量</label>
-                                                <input type = "hidden" name = "CartID" value = "{{$itemID}}">
-                                                <input type = "number" name = "quantity" min = "1" max = "50" value = "{{$item->quantity}}">
-                                                <div class = "flex mt-4">
-                                                    <input type = "submit" value = "修改數量" class = "ml-auto bg-blue-500 hover:bg-blue-800 rounded-lg text-white w-20 h-10 top-1 right-2 cursor-pointer">
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                            
+                                <div class = "basis-1/6">                           
                                     <!--移出購物車區塊-->
-                                    <form method = "POST" action = "{{route('cartitem.destroy')}}" class = "basis-1/3 mb-4">
+                                    <form method = "POST" action = "{{route('cartitem.destroy')}}" class = "mb-4">
                                         @csrf
                                         @method('DELETE')
                                         <input type = "hidden" name = "CartID" value = "{{$item->id}}">
@@ -117,19 +94,11 @@
 </x-app-layout>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    @foreach ($items as $item)
-            document.getElementById('updateQuantity-{{ $item->id }}').addEventListener('click', function() {
-                document.getElementById('popupQuantity-{{ $item->id }}').classList.remove('hidden');
-        });
+    function submitsizeChangeForm() {
+        document.getElementById("sizeChange").submit();
+    }
 
-        document.getElementById('updateSize-{{ $item->id }}').addEventListener('click', function() {
-            document.getElementById('popupSize-{{ $item->id }}').classList.remove('hidden');
-        });
-    @endforeach
-    });
-
-    function closePopup(popupId) {
-        document.getElementById(popupId).classList.add('hidden');
+    function submitquantityChangeForm() {
+        document.getElementById("quantityChange").submit();
     }
 </script>

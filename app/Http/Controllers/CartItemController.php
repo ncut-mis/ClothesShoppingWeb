@@ -90,7 +90,7 @@ class CartItemController extends Controller
             ]);
             
             session()->flash('message', '修改數量成功');
-            return redirect(route('cartitem.index'));
+            return back();
          }
 
          if($request->has('size')){
@@ -100,7 +100,7 @@ class CartItemController extends Controller
             $cart->save();
             
             session()->flash('message', '修改尺寸成功');
-            return redirect(route('cartitem.index'));
+            return back();
          }
          
          

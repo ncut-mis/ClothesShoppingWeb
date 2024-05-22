@@ -19,37 +19,40 @@ class OrderController extends Controller
      */
     public function index($status)
     {
-        $orders = Order::Where([
-                               ['user_id','=', Auth::user()->id],
-                               ['status','=',$status]
-                               ])->get();
+        $orders = Order::where([
+            ['user_id', '=', Auth::user()->id],
+            ['status', '=', $status]
+        ])->orderBy('created_at', 'desc')->get();
         
         switch($status){
             case 0 :
-                $statusName = "已成立";
+                $statusName = "待確認";
                 break;
             case 1 :
-                $statusName = "已出貨";
+                $statusName = "已確認";
                 break;
             case 2 :
-                $statusName = "已到貨";
+                $statusName = "已出貨";
                 break;
             case 3 :
-                $statusName = "已完成";
+                $statusName = "已到貨";
                 break;
             case 4 :
-                $statusName = "申請取消";
+                $statusName = "已完成";
                 break;
             case 5 :
+                $statusName = "申請取消";
+                break;
+            case 6 :
                 $statusName = "已取消";
                 break;
         }
         return view('Order.index',['orders' => $orders , 'Status' => $statusName]);
     }
 
-    public function admin_index()
+    public function admin_index($status)
     {
-        $items = Order::Where('status','=',0)->get();
+        $items = Order::Where('status','=',$status)->orderBy('created_at', 'desc')->get();
                  
         return view('admin.order.index', ['items' => $items]);
     }
@@ -114,9 +117,8 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order_detials = order_detial::Where('order_id','=',$order->id)->get();
 
-        return view('order.show', ['order' => $order , 'order_detials' => $order_detials]);
+        return view('order.show', ['order' => $order]);
     }
 
     public function admin_show(Order $order)
@@ -161,6 +163,23 @@ class OrderController extends Controller
         return redirect(route('order.index' , ['status' => $order->status]));  
     }
 
+    public function comment(Request $request)
+    {
+        $comment = $request['comment'];
+        $OrderID = $request['OrderID'];
+        $order = Order::find($OrderID);
+
+        if ($order !== null) {
+            $order->comment = $comment;
+            $order->save();
+            session()->flash('message', '新增評論成功');
+        } else {
+            session()->flash('message', '新增評論失敗');
+        }
+    
+        $order_detials = order_detial::Where('order_id','=',$OrderID)->get();
+        return view('order.show', ['order' => $order , 'order_detials' => $order_detials]);
+    }
     /**
      * Remove the specified resource from storage.
      */

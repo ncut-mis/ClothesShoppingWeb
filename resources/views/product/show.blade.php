@@ -130,15 +130,26 @@
         </div>
     </div>  
         
+    <!--商品描述-->
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <h1 class = "text-3xl font-bold mb-4">商品描述</h1>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <p>{!! nl2br(e($product->description)) !!} </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!--搭配組合顯示區域-->
-    
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <h1 class = "text-3xl font-bold mb-4">建議的搭配組合</h1>
     </div>
            
     @if($combinations->count()>0)
         @foreach($combinations as $combination)                    
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-2">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <a href = "{{route('combination.show',['combination' => $combination])}}"> 
                         <div class="p-6 text-gray-900">
@@ -168,13 +179,19 @@
         </div>
     @endif
   
-    <!--商品描述-->
+    <!--訂單評論-->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <h1 class = "text-3xl font-bold mb-4">商品描述</h1>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <p>{!! nl2br(e($product->description)) !!} </p>
+                    <h1 class = "text-3xl font-bold mb-4">訂單評論</h1>
+                    @foreach($orders as $order)
+                        <div class = "mt-4 mb-4">
+                            <h1 class = "text-lg font-bold">{{$order->user->name}}</h1>
+                            <h1>{{$order->comment}}</h1>
+                        </div>
+                        <hr>
+                    @endforeach
                 </div>
             </div>
         </div>
