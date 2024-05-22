@@ -44,8 +44,8 @@ class CategoryController extends Controller
             'category_type' =>'required'
         ]);
 
-        Category::create($request->all());
-        return redirect()->route('category.adminIndex');
+        $categories = Category::create($request->all());
+        return redirect()->route('category.adminIndex' , compact('categories'));
     }
 
     /**
@@ -82,9 +82,12 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        return view('admin.category.edit');
+
+        $categories = Category::find($id);
+        $category = $categories;
+        return view('admin.category.edit',compact('categories','category'));
     }
 
     /**

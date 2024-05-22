@@ -17,7 +17,7 @@
                             </div>
                             <div class = "basis-1/3 flex flex-row">
                                 <div class = "basis-1/2 mt-4">
-                                    <button id="" class="basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">修改類別</button>
+                                    <a class="btn btn-sm btn-primary basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-200 h-10 rounded-lg" href="{{route('admin.category.edit',$category->id)}}" >修改類別</a>
                                 </div>
                                 <form action = "{{route('admin.category.destroy')}}" method = "POST" class = "basis-1/2 mt-4">
                                     @csrf

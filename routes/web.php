@@ -107,9 +107,9 @@ Route::middleware('auth')->group(function () {
 //搭配組合
 Route::middleware('auth')->group(function (){
     Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
-    
+
     Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
-    
+
     Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
     Route::patch('/admin/combination/{combination}',[CombinationController::class,'update'])->name('combination.update');
     Route::delete('/admin/combination/destroy',[CombinationController::class,'destroy'])->name('combination.destroy');
