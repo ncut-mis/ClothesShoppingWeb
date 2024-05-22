@@ -50,14 +50,14 @@ class AdminController extends Controller
     }
 
     protected function messages()
-{
-    return [
-        'FirstName.required' => '請填寫名字。',
-        'LastName.required' => '請填寫姓氏。',
-        'email.required' => '請填寫電子郵件。',
-        'email.email' => '請輸入有效的電子郵件地址。',
-        'email.unique' => '該電子郵件已被使用。',
-        'password.required' => '請填寫密碼。',
-    ];
-}
+    {
+        return [
+            'FirstName.required' => '請填寫名字。',
+            'LastName.required' => '請填寫姓氏。',
+            'email.required' => '請填寫電子郵件。',
+            'email.email' => '請輸入有效的電子郵件地址。',
+            'email.unique' => '該電子郵件已被使用。',
+            'password.required' => '請填寫密碼。',
+        ];
+    }
 }

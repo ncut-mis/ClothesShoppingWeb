@@ -40,6 +40,7 @@
 
                                 <h1 class = "basis-1/6 mt-2 text-red-500">{{$item->product->price}}</h1 >
 
+                                <!-- 修改尺寸 -->
                                 <div  class = "basis-1/6">
                                     <form method = "POST" action = "{{route('cartitem.update')}}" id = "sizeChange">
                                         @csrf
@@ -57,6 +58,7 @@
 
                                 <h1 class = "basis-1/6 mt-2">{{$item->color}}</h1 >
 
+                                <!-- 修改數量 -->
                                 <div  class = "basis-1/6">
                                     <form method="POST" action="{{route('cartitem.update')}}" id = "quantityChange">
                                         @csrf  
