@@ -115,7 +115,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function (){
     
     // 請放到管理員的group
-    Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
+
 
     Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
     
@@ -196,6 +196,7 @@ Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function
     Route::delete('/Admin',[AdminController::class, 'destroy'])->name('admin.destroy');
 
     // 搭配組合
+    Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
     Route::get('/Combination/create/{product}',[CombinationController::class,'create'])->name('combination.create');
     Route::post('/combination',[CombinationController::class,'store'])->name('combination.store');
 });
