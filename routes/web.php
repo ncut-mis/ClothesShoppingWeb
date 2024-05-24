@@ -115,6 +115,8 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function (){
     
     // 請放到管理員的group
+    Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
+
     Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
     
     Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
