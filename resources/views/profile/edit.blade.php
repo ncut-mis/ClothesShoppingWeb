@@ -1,7 +1,7 @@
 <x-app-layout>
     <div name="header" class = "bg-orange-500 pt-4 pb-4 flex">
         <div class = "basis-1/3">
-            <h2 class="font-semibold text-xl text-white leading-tight text-center">
+            <h2 class="text-lg text-white leading-tight text-center">
                 {{ __('會員中心') }}
             </h2>
         </div>

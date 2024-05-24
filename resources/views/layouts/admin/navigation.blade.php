@@ -39,9 +39,9 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link>
+                        <!-- <x-dropdown-link>
                             {{ __('管理員中心') }}
-                        </x-dropdown-link>
+                        </x-dropdown-link> -->
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('admin.logout') }}">

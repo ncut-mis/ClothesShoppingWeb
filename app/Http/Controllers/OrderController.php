@@ -84,7 +84,14 @@ class OrderController extends Controller
         $order->phone = $request['phone'];
         $order->trains_time = Carbon::now(); //暫定為下訂單時間，平台人員再另行修改
         $order->comment = "";
-        $order->remit = 1; //暫定為已付款
+
+        if($order->paymentmethodid == 0){
+            $order->remit = 0; 
+        }
+        else{
+            $order->remit = 1; 
+        }
+
         $order->staff_id = 1; //暫定為1
         $order->save();
 
@@ -108,6 +115,8 @@ class OrderController extends Controller
             $stock->stock = ($stock->stock)-($order_detial->quantity);
             $stock->save();
         }
+
+        session()->flash('message', '下訂成功'); 
         return redirect(route('order.index',['status' => 0]));
         
     }
@@ -150,6 +159,7 @@ class OrderController extends Controller
 
         if($order->status == 4)
         {
+            $order->remit = 1; 
             session()->flash('message', '取貨成功');           
         }
         if($order->status == 5)

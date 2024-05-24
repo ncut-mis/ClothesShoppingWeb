@@ -43,13 +43,13 @@
             <!-- 先將大類別列出來 -->
             @foreach ($categories as $FirstCategory)
                 <!-- 檢查是否為大類別 -->
-                @if ($FirstCategory->category_type == -1)
-                    <div class="relative dropdown ml-4 mt-2">
+                @if ($FirstCategory->category_id == null)
+                    <div class="relative dropdown ml-8 mt-2">
                         <a href="#" class="text-lg text-white hover:text-gray-500">{{ $FirstCategory->name }}</a>
                         <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
                             @foreach ($categories as $category)
                                 <!-- 檢查是否為該大類別的子類別 -->
-                                @if ($category->category_type == ($FirstCategory->id - 1))
+                                @if ($category->category_id == ($FirstCategory->id - 1) && $category->category_id)
                                     <a href="{{ route('Categorys.show', ['category' => $category]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
                                 @endif
                             @endforeach
@@ -60,10 +60,9 @@
 
         </div>
         <!--顯示搜尋欄-->
-        <form method="GET" action = "{{route('Products.search')}}">
+        <form method="GET" action = "{{route('Products.search')}}" class = "mr-16">
             @csrf
-            <label for = "keyword" class = "text-white text-xl">搜尋</label>
-            <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4">
+            <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4" placeholder="請輸入關鍵字">
             <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
         </form>
     </div>

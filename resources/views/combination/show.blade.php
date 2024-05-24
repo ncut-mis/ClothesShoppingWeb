@@ -13,6 +13,7 @@
             var img = document.createElement("img");
             img.src = imagePath; // 使用变量 imagePath 作为图片地址
             img.alt = "描述文字"; // 替代文本
+            img.classList.add("w-40", "h-40");
 
             // 将创建的 img 元素插入到指定的 div 中
             document.getElementById(divId).appendChild(img);

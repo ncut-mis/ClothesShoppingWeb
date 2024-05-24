@@ -50,7 +50,7 @@
                                         @csrf
                                         @method('patch')
                                         <input type = "hidden" name = "OrderID" value = "{{$order->id}}">
-                                        <input type = "hidden" name = "status" value = "5">
+                                        <input type = "hidden" name = "status" value = "4">
                                         <input type = "submit" value = "完成訂單" class = "bg-blue-500 hover-blue-500 w-40 h-10 text-white font-bold rounded cursor-pointer">
                                     </form>
                                 </div>

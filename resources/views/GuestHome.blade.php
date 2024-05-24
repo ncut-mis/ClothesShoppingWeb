@@ -43,13 +43,13 @@
             <!-- 先將大類別列出來 -->
             @foreach ($categories as $FirstCategory)
                 <!-- 檢查是否為大類別 -->
-                @if ($FirstCategory->category_type == -1)
+                @if ($FirstCategory->category_id == null)
                     <div class="relative dropdown ml-4 mt-2">
                         <a href="#" class="text-lg text-white hover:text-gray-500">{{ $FirstCategory->name }}</a>
                         <div class="absolute left-0 mt-2 w-48 bg-white border rounded shadow-lg dropdown-content">
                             @foreach ($categories as $category)
                                 <!-- 檢查是否為該大類別的子類別 -->
-                                @if ($category->category_type == ($FirstCategory->id - 1))
+                                @if ($category->category_id == ($FirstCategory->id - 1) && $category->category_id)
                                     <a href="{{ route('Categorys.show', ['category' => $category]) }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">{{ $category->name }}</a>
                                 @endif
                             @endforeach

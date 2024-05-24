@@ -66,14 +66,14 @@
 
                                     <div class = "ml-4 mt-4">
                                         <label for = "quantity">數量</label>
-                                        <input type = "number" id="quantity" name = "quantity" min = "1" max = "50" class = "rounded-lg w-20">
+                                        <input type = "number" id="quantity" name = "quantity" min = "1" max = "50" class = "rounded-lg w-40" required>
                                     </div>
                                     <br>
 
                                     <!-- 尺寸選擇 -->
                                     <div class = "mt-4 ml-4">
                                         <label for = "size">尺寸</label>
-                                        <select id = "size" name = "size" class = "rounded-lg w-20">
+                                        <select id = "size" name = "size" class = "rounded-lg w-40" required>
                                             @foreach($product->specification as $specification)
                                                 @if($specification->specification_type === 'size')
                                                     <option value = "{{$specification->name}}">{{$specification->name}}</option>
@@ -86,7 +86,7 @@
                                     <!-- 顏色選擇 -->
                                     <div class = "mt-4 ml-4">
                                     <label for = "color">顏色</label>
-                                        <select id = "color" name = "color" class = "rounded-lg w-20">
+                                        <select id = "color" name = "color" class = "rounded-lg w-40" required>
                                             @foreach($product->specification as $specification)
                                                 @if($specification->specification_type === 'color')
                                                     <option value = "{{$specification->name}}">{{$specification->name}}</option>
@@ -154,7 +154,7 @@
                     <a href = "{{route('combination.show',['combination' => $combination])}}"> 
                         <div class="p-6 text-gray-900">
                             <div class = "text-3xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
-                            <div class = "grid grid-cols-5 mt-4 mb-4">
+                            <div class = "grid grid-cols-6 mt-4 mb-4">
                                 <div class = "photo w-20 h-20">
                                     <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}">
                                 </div>

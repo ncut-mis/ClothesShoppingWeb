@@ -208,7 +208,7 @@
                         @method('patch')
                         <div class = "flex flex-row">
                             <input type = "hidden" name = "stockID" value = "{{$stock->id}}">
-                            <input type="number" name = "quantity" step="1" required class = "basis-1/2 w-20 h-10 inline-block rounded-lg">
+                            <input type="number" name = "quantity" step="1" required class = "basis-1/2 w-20 h-10 inline-block rounded-lg" required>
                             <input type="submit" value = "進貨" class = "basis-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-4 cursor-pointer">
                         </div>
                     </form>

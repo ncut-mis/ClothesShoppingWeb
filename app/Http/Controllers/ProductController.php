@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::Where('is_shelf','=',1)-get();
         return view('product.index', ['products' =>$products]);
     }
 
@@ -213,7 +213,7 @@ class ProductController extends Controller
     public function type_search($categoryType)
     {
         $products = Product::whereHas('Category', function($query) use ($categoryType) {
-            $query->where('category_type', '=', $categoryType);
+            $query->where('category_id', '=', $categoryType);
         })->get();
         
         return response()->json($products);

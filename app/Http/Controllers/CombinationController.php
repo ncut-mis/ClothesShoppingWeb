@@ -82,7 +82,7 @@ class CombinationController extends Controller
         $items = combinations_detail::where('combination_id', $combination->id)
                                   ->join('products', 'combinations_detail.product_id', '=', 'products.id')
                                   ->join('categories', 'products.category_id', '=', 'categories.id')
-                                  ->orderBy('categories.category_type', 'asc')  
+                                  ->orderBy('categories.category_id', 'asc')  
                                   ->get();
         return view('combination.show',compact('combination','product','items'));
     }
