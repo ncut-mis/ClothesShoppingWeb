@@ -32,6 +32,7 @@ class AdminController extends Controller
         $admin->title = $request->title;
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
+        $admin->is_block = 0;
         
         $admin->save();
 

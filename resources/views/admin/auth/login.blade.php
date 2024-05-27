@@ -6,7 +6,7 @@
             <div class="col-md-8">
                 <div class="card">
                     @if(session()->has('message'))
-                        <span>{{ session()->get('message') }}</span>
+                        <span class = "text-red-500">{{ session()->get('message') }}</span>
                     @endif
                     <div class="card-body">
                         <form method="POST" action="{{ route('admin.login') }}">

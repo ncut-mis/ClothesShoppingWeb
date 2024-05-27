@@ -51,6 +51,7 @@ class RegisteredUserController extends Controller
             'birthday' => $request->birthday,
             'address' => $request->address,
             'phone' => $request->phone,
+            'is_block' => 0,
         ]);
 
         event(new Registered($user));

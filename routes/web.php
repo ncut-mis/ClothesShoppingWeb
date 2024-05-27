@@ -74,7 +74,7 @@ Route::get('/home', function () {
      $layout = 'layouts.app';
 
      return view('home', compact('products','categories', 'layout'));
-})->middleware(['auth', 'verified'])->name('/home');
+})->middleware(['auth', 'verified', 'check.blocked'])->name('/home');
 
 
 
@@ -146,7 +146,7 @@ Route::name('admin.')->namespace('Admin')->prefix('admin')->group(function(){
 });
 
 //管理員
-Route::middleware('auth:admin')->name('admin.')->prefix('admin')->group(function(){
+Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('admin')->group(function(){
     Route::get('/home', function () {
         return view('admin.home');
     })->name('home');

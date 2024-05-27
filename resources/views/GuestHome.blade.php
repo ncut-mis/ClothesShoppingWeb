@@ -1,3 +1,9 @@
+@if(session('message'))    
+    <script>
+        alert("{{ session('message') }}");
+    </script>
+@endif
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
     const categoryLinks = document.querySelectorAll('.category-link');
