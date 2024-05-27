@@ -56,8 +56,22 @@
                                     </form>
                                 </div >
 
-                                <h1 class = "basis-1/6 mt-2">{{$item->color}}</h1 >
-
+                                <!-- 修改顏色 -->
+                                <div  class = "basis-1/6">
+                                    <form method = "POST" action = "{{route('cartitem.update')}}" id = "colorChange">
+                                        @csrf
+                                        @method('patch')
+                                        <input type = "hidden" name = "CartID" value = "{{$itemID}}">
+                                        <select id = "color" name = "color" onchange="submitcolorChangeForm()" class = "rounded">
+                                            @foreach($product->specification as $specification)
+                                                @if($specification->specification_type === 'color')
+                                                    <option value="{{$specification->name}}" {{ $item->color == $specification->name ? 'selected' : '' }}>{{$specification->name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </form>
+                                </div >
+                                
                                 <!-- 修改數量 -->
                                 <div  class = "basis-1/6">
                                     <form method="POST" action="{{route('cartitem.update')}}" id = "quantityChange">
@@ -98,6 +112,10 @@
 <script>
     function submitsizeChangeForm() {
         document.getElementById("sizeChange").submit();
+    }
+
+    function submitcolorChangeForm() {
+        document.getElementById("colorChange").submit();
     }
 
     function submitquantityChangeForm() {

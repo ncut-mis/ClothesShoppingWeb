@@ -93,17 +93,25 @@ class CartItemController extends Controller
             return back();
          }
 
+         if($request->has('color')){
+            $color = $request->input('color');
+            $cart->color = $color;
+
+            $cart->save();
+            
+            session()->flash('message', '修改顏色成功');
+            return back();
+         }  
+
          if($request->has('size')){
-            $size = $request['size'];
+            $size = $request->input('size');
             $cart->size = $size;
 
             $cart->save();
             
             session()->flash('message', '修改尺寸成功');
             return back();
-         }
-         
-         
+         }              
     }
 
     /**
