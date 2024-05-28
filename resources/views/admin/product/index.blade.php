@@ -25,7 +25,8 @@
                         <div class = "flex flex-row">
                             <div class = "basis-1/3 flex items-center">
                                 <h1 class = "text-2xl font-bold pb-4">商品列表</h1>
-                                <a href="" class = "ml-4 text-blue-500"><p class = "pb-4">新增商品</p></a>
+                                <a class="btn btn-success btn-sm" href="{{route('admins.products.create')}}">新增</a>
+                                <!-- <a href="" class = "ml-4 text-blue-500"><p class = "pb-4">新增商品</p></a> -->
                             </div>
                             <div class = "basis-1/3 mb-4">
                                 <select id = "category" name = "category" onchange="handleCategoryChange()" class = "rounded-lg">

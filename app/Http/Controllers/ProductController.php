@@ -40,7 +40,12 @@ class ProductController extends Controller
     {
         return view('product.create');
     }
-    
+
+    public function admin_create()
+    {
+        return view('admin.product.create');
+    }
+
     public function photo($productID)
     {
         $product = Product::where('id', $productID)->first();
@@ -111,7 +116,7 @@ class ProductController extends Controller
             ->whereHas('details', function ($query) use ($product) {
                 $query->where('product_id', $product->id);
             })
-            ->where('status', 4) 
+            ->where('status', 4)
             ->get();
 
         if (Auth::check()) {
@@ -215,7 +220,7 @@ class ProductController extends Controller
         $products = Product::whereHas('Category', function($query) use ($categoryType) {
             $query->where('category_id', '=', $categoryType);
         })->get();
-        
+
         return response()->json($products);
     }
 

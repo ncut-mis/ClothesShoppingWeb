@@ -113,12 +113,12 @@ Route::middleware('auth')->group(function () {
 
 
 Route::middleware('auth')->group(function (){
-    
+
     // 請放到管理員的group
 
 
     Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
-    
+
     Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
     Route::patch('/admin/combination/{combination}',[CombinationController::class,'update'])->name('combination.update');
     Route::delete('/admin/combination/destroy',[CombinationController::class,'destroy'])->name('combination.destroy');
@@ -159,6 +159,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::patch('/StockUpdate', [StockController::class, 'update'])->name('stock.update');
     Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');//新增商品頁面
 
     //訂單
     Route::get('/Orderlist/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
@@ -171,7 +172,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::post('/Category',[CategoryController::class,'store'])->name('category.store');
     Route::get('/Category/{categoryID}',[CategoryController::class,'edit'])->name('category.edit');
     Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('category.update');
-    Route::delete('/Category',[CategoryController::class,'destroy'])->name('category.destroy');  
+    Route::delete('/Category',[CategoryController::class,'destroy'])->name('category.destroy');
 
     // 試搭
     Route::get('/TrialItem/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
@@ -183,11 +184,11 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     //試搭商品種類選擇
     Route::get('/ProductTypeSearch/{categoryType}',[ProductController::class, 'type_search'])->name('product.typesearch');
     Route::post('/TrialProuctSearch',[ProductController::class, 'TrialProuct_search'])->name('product.TrialProuctSearch');
-    
+
     //規格管理
     Route::post('/Specification',[SpecificationController::class, 'store'])->name('specification.store');
     Route::delete('/Specification',[SpecificationController::class, 'destroy'])->name('specification.destroy');
-    
+
 
     //人員管理
     Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');
