@@ -36,11 +36,12 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+
+    public function admin_create()
     {
-        return view('product.create');
+        return view('admin.product.create');
     }
-    
+
     public function photo($productID)
     {
         $product = Product::where('id', $productID)->first();
@@ -97,6 +98,32 @@ class ProductController extends Controller
 
     }
 
+    public function admin_store(Request $request)
+    {
+        //資料驗證
+        $this->validate($request,[
+            'name'=>'required',
+            'brand'=>'required',
+            'origin_place'=>'required',
+            'stock'=>'required',
+            'price'=>'required',
+        ]);
+        //取得現在時間
+        $created_at=date('y/n/j');
+        //儲存資料至products
+        Product::create([
+            'name'=>$request->name,
+            'brand'=>$request->brand,
+            'stock'=>$request->stock,
+            'origin_place'=>$request->origin_place,
+            'price'=>$request->price,
+            'created_at'=>$created_at,
+            'updated_at'=>$created_at,
+
+        ]);
+        return redirect()->route('admins.products.index');
+    }
+
     /**
      * Display the specified resource.
      */
@@ -111,7 +138,7 @@ class ProductController extends Controller
             ->whereHas('details', function ($query) use ($product) {
                 $query->where('product_id', $product->id);
             })
-            ->where('status', 4) 
+            ->where('status', 4)
             ->get();
 
         if (Auth::check()) {
@@ -215,7 +242,7 @@ class ProductController extends Controller
         $products = Product::whereHas('Category', function($query) use ($categoryType) {
             $query->where('category_id', '=', $categoryType);
         })->get();
-        
+
         return response()->json($products);
     }
 
