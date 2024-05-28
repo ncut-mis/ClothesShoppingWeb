@@ -7,44 +7,37 @@
         <h1 class="mt-4">新增商品</h1>
 
         <!-- Main Content -->
-        <form action="{{route('admin.product.store')}}" method="post"  enctype="multipart/form-data">
+        <form action="{{route('product.store')}}" method="post"  enctype="multipart/form-data">
             @method('post')
             <!--csrf驗證機制，產生隱藏的input，包含一組驗證密碼-->
             @csrf
-            <div class="pt-4">
-                <div class=" row mb-3">
-                    <div class="col-6">
-                        <label for="exampleFormControlTextarea1" class="form-label">名稱</label>
-                        <input name="name" id="name" type="text" class="form-control">
+            <div class="py-12">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="p-6 text-gray-900">
+                            <form action="{{ route('Products.store') }}" method="POST" enctype="multipart/form-data">
+                                　　　@csrf
+                                <div class="form-group">
+                                    <label for="name">商品名稱</label>
+                                    <input type = "text" name = "name" id = "name">
+                                    <br>
+                                    <label for="price">價格</label>
+                                    <input type = "text" name = "price" id = "price"　class = "ml-4">
+                                    <br>
+                                    <label for="description">商品描述</label>
+                                    <textarea name = "description" id = "description"></textarea>
+                                    <br>
+                                    <label for="image">選擇圖片:</label>
+                                    <input type="file" class="form-control" name="images[]" id="image" multiple>
+                                    <br>
+                                    <label for="category_id">類別編號</label>
+                                    <input type = "text" name = "category_id" id = "category_id">
+                                    <br>
+                                </div>
+                                <input type="submit" class="bg-blue-500" value = "上傳">
+                            </form>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <label for="exampleFormControlTextarea1" class="form-label">品牌</label>
-                        <input name="brand" id="brand" type="text" class="form-control">
-                    </div>
-                    <div class="col-6">
-                        <label for="exampleFormControlTextarea1" class="form-label">產地</label>
-                        <input name="origin_place" id="origin_place" type="text" class="form-control">
-                    </div>
-                    <div class="col-6">
-                        <label for="exampleFormControlTextarea1" class="form-label">數量</label>
-                        <input name="stock" id="stock" type="text" class="form-control">
-                    </div>
-
                 </div>
-                <div class="col-6">
-                    <label for="exampleFormControlTextarea1" class="form-label">價格</label>
-                    <input name="price" id="price" type="text" class="form-control">
-                </div>
             </div>
-
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">介紹</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-
-            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <button class="btn btn-primary btn-sm" type="submit">儲存</button>
-            </div>
-        </form>
-    </div>
 @endsection
