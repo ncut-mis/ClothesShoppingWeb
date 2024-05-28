@@ -9,7 +9,7 @@
        function handleTypeChange() {
             var categoryType = document.getElementById('type').value;
 
-            fetch(`/admin/ProductTypeSearch/${categoryType}`)
+            fetch(`/admin/TrialItem/categorySearch/${categoryType}`)
             .then(response => response.json())
             .then(data => {
                 const selectElement = document.getElementById('product');

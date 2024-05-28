@@ -117,7 +117,7 @@
                     <div class = "flex flex-row">
                         <div class = "basis-1/3 flex items-center">
                             <h1 class = "text-3xl font-bold mb-4 inline-block">搭配清單</h1>
-                            <button onclick="location.href='/admin/TrialItem/{{$product->id}}';" class="ml-auto mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">試搭</button>
+                            <button onclick="location.href='/admin/TrialItem/create/{{$product->id}}';" class="ml-auto mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">試搭</button>
                         </div>
                         <div class = "basis-1/3">
                         </div>

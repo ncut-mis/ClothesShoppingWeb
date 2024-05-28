@@ -24,12 +24,14 @@
                         <div class = "mt-4 mb-4 flex flex-row">
                             <h1 class = "text-xl basis-1/3 mt-2">{{$admin->FirstName}} {{$admin->LastName}}</h1>
                             <h1 class = "text-xl basis-1/3 mt-2">{{$admin->title}}</h1>
-                            <form method = "POST" action = "{{route('admin.admin.destroy')}}" class = "basis-1/3">
-                                @csrf
-                                @method('DELETE')
-                                <input type = "hidden" id = "adminID" name = "adminID" value = "{{$admin->id}}">
-                                <input type = "submit" value = "刪除" class = "w-20 h-10 text-white rounded bg-red-500 hover:bg-red-700 cursor-pointer">
-                            </form>
+                            @if($admin->id != Auth::guard('admin')->user()->id)
+                                <form method = "POST" action = "{{route('admin.admin.destroy')}}" class = "basis-1/3">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type = "hidden" id = "adminID" name = "adminID" value = "{{$admin->id}}">
+                                    <input type = "submit" value = "刪除" class = "w-20 h-10 text-white rounded bg-red-500 hover:bg-red-700 cursor-pointer">
+                                </form>
+                            @endif
                         </div>
                         <hr>
                     @endforeach

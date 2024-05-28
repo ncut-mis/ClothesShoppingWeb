@@ -53,15 +53,10 @@ Route::middleware(['guest'])->group(function () {
     //選擇服裝類別
     Route::get('Categorys/{category}', [CategoryController::class, 'show'])->name('Categorys.show');
     //商品
-    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
-    Route::get('/productSearch', [ProductController::class, 'search'])->name('Products.search');
-    Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
-    Route::post('/product', [ProductController::class, 'store'])->name('product.store');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('Products.show');
-    Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
-    Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
-    Route::delete('/product/{product}', [ProductController::class, 'destroy'])->name('product.destroy');
-
+    Route::get('/product/search', [ProductController::class, 'search'])->name('Products.search');
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store'); //測試用
+    Route::get('/product/{product}', [ProductController::class, 'show'])->name('Products.show');
+    
 //測試用
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -85,27 +80,27 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    //商品
+    //商品新增(測試)
     Route::post('products', [ProductController::class, 'store'])->name('Products.store');
 
     //追蹤清單
-    Route::post('/TrackedItem', [TrackedItemController::class, 'store'])->name('trackeditem.store');
-    Route::get('/TrackedItem', [TrackedItemController::class, 'index'])->name('trackeditem.index');
-    Route::delete('/TrackedItem', [TrackedItemController::class, 'destroy'])->name('trackeditem.destroy');
+    Route::post('/TrackedItem/store', [TrackedItemController::class, 'store'])->name('trackeditem.store');
+    Route::get('/TrackedItem/list', [TrackedItemController::class, 'index'])->name('trackeditem.index');
+    Route::delete('/TrackedItem/delete', [TrackedItemController::class, 'destroy'])->name('trackeditem.destroy');
 
     //購物車
-    Route::post('/CartItem', [CartItemController::class, 'store'])->name('cartitem.store');
-    Route::get('/CartItem', [CartItemController::class, 'index'])->name('cartitem.index');
-    Route::patch('/CartItem', [CartItemController::class, 'update'])->name('cartitem.update');
-    Route::delete('/CartItem', [CartItemController::class, 'destroy'])->name('cartitem.destroy');
+    Route::post('/CartItem/store', [CartItemController::class, 'store'])->name('cartitem.store');
+    Route::get('/CartItem/list', [CartItemController::class, 'index'])->name('cartitem.index');
+    Route::patch('/CartItem/update', [CartItemController::class, 'update'])->name('cartitem.update');
+    Route::delete('/CartItem/delete', [CartItemController::class, 'destroy'])->name('cartitem.destroy');
 
     //訂單
-    Route::get('/Order/{status}', [OrderController::class, 'index'])->name('order.index');
-    Route::get('/OrderShow/{order}', [OrderController::class, 'show'])->name('order.show');
-    Route::get('/OrderCreate', [OrderController::class, 'create'])->name('order.create');
-    Route::post('/OrderStore', [OrderController::class, 'store'])->name('order.store');
-    Route::patch('/OrderUpdate', [OrderController::class, 'update'])->name('order.update');
-    Route::patch('/OrderComment', [OrderController::class, 'comment'])->name('order.comment');
+    Route::get('/Order/list/{status}', [OrderController::class, 'index'])->name('order.index');
+    Route::get('/Order/{order}', [OrderController::class, 'show'])->name('order.show');
+    Route::get('/Order/create/{userId}',[OrderController::class, 'create'])->name('order.create');
+    Route::post('/Order/store', [OrderController::class, 'store'])->name('order.store');
+    Route::patch('/Order/update', [OrderController::class, 'update'])->name('order.update');
+    Route::patch('/Order/comment', [OrderController::class, 'comment'])->name('order.comment');
 
     //搭配組合
     Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
@@ -151,49 +146,53 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
         return view('admin.home');
     })->name('home');
     //商品
-    Route::get('/Product', [ProductController::class, 'admin_index'])->name('product.adminIndex');
-    Route::get('/Product/{product}', [ProductController::class, 'admin_show'])->name('product.adminShow');
-    Route::get('/ProductSearch', [ProductController::class, 'admin_search'])->name('product.adminSearch');
+    Route::get('/product/list', [ProductController::class, 'admin_index'])->name('product.adminIndex');
+    Route::get('/product/{product}', [ProductController::class, 'admin_show'])->name('product.adminShow');
+    Route::get('/Product/Search', [ProductController::class, 'admin_search'])->name('product.adminSearch');
+    Route::patch('/Stock/Update', [StockController::class, 'update'])->name('stock.update');
+    Route::get('/Combination/Search', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
+    Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
+    Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
+    Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy'); 
+
+    //試搭時撈的資料
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
     Route::get('/Photo/{productID}' , [ProductController::class, 'photo'])->name('product.photo');
-    Route::patch('/StockUpdate', [StockController::class, 'update'])->name('stock.update');
-    Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
-    Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
+
+    
 
     //訂單
-    Route::get('/Orderlist/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
+    Route::get('/Order/list/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
     Route::get('/Order/{order}', [OrderController::class, 'admin_show'])->name('order.adminShow');
 
     //類別
-    Route::get('/Category', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
-    Route::get('/CategoryShow/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
+    Route::get('/Category/list', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
+    Route::get('/Category/{categoryID}', [CategoryController::class, 'admin_show'])->name('category.adminShow');
     Route::get('/Category/create',[CategoryController::class,'create'])->name('category.create');
-    Route::post('/Category',[CategoryController::class,'store'])->name('category.store');
+    Route::post('/Category/store',[CategoryController::class,'store'])->name('category.store');
     Route::get('/Category/{categoryID}',[CategoryController::class,'edit'])->name('category.edit');
     Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('category.update');
-    Route::delete('/Category',[CategoryController::class,'destroy'])->name('category.destroy');  
+    Route::delete('/Category/delete',[CategoryController::class,'destroy'])->name('category.destroy');  
 
     // 試搭
-    Route::get('/TrialItem/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
-    Route::get('/TrialItem/{productID}/edit' , [TrialItemController::class,'edit'])->name('trialitem.edit');
-    Route::patch('/TrialItem/{productID}',[TrialItemController::class,'update'])->name('trialitem.update');
+    Route::get('/TrialItem/create/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');
     Route::post('/TrialItem',[TrialItemController::class, 'store'])->name('trialitem.store');
     Route::delete('/TrialItemDelete',[TrialItemController::class, 'destroy'])->name('trialitem.destroy');
-
     //試搭商品種類選擇
-    Route::get('/ProductTypeSearch/{categoryType}',[ProductController::class, 'type_search'])->name('product.typesearch');
-    Route::post('/TrialProuctSearch',[ProductController::class, 'TrialProuct_search'])->name('product.TrialProuctSearch');
+    Route::get('/TrialItem/categorySearch/{categoryType}',[ProductController::class, 'type_search'])->name('product.typesearch');
+    Route::post('/TrialItem/ProuctSearch',[ProductController::class, 'TrialProuct_search'])->name('product.TrialProuctSearch');
     
     //規格管理
-    Route::post('/Specification',[SpecificationController::class, 'store'])->name('specification.store');
-    Route::delete('/Specification',[SpecificationController::class, 'destroy'])->name('specification.destroy');
+    Route::post('/Specification/store',[SpecificationController::class, 'store'])->name('specification.store');
+    Route::delete('/Specification/delete',[SpecificationController::class, 'destroy'])->name('specification.destroy');
     
 
     //人員管理
-    Route::get('/Adminlist',[AdminController::class, 'index'])->name('adminlist.index');
-    Route::get('/AdminCreate',[AdminController::class, 'create'])->name('admin.create');
-    Route::post('/Admin',[AdminController::class, 'store'])->name('admin.store');
-    Route::delete('/Admin',[AdminController::class, 'destroy'])->name('admin.destroy');
+    Route::get('/admin/list',[AdminController::class, 'index'])->name('adminlist.index');
+    Route::get('/admin/create',[AdminController::class, 'create'])->name('admin.create');
+    Route::post('/admin/store',[AdminController::class, 'store'])->name('admin.store');
+    Route::delete('/admin/delete',[AdminController::class, 'destroy'])->name('admin.destroy');
 
     // 搭配組合
     Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');

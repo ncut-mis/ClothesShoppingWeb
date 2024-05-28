@@ -4,6 +4,10 @@
     </script>
 @endif 
 
+@php
+    use Illuminate\Support\Facades\Auth;
+@endphp
+
 <x-app-layout>
     <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -100,7 +104,9 @@
                         <!--結帳區塊-->
                         <div class = "flex">
                             <h1 class = "text-red-500 text-2xl mt-6">NT {{$amount}}</h1>
-                            <button onclick="window.location='{{ route('order.create') }}'" class = "bg-blue-700 hover:bg-blue-900 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-4 mr-4">結帳</button>                       
+                            <a href="{{ route('order.create', ['userId' => Auth::id()]) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg ml-auto mt-4">
+                                <h1 class="text-center mt-2">結帳</h1>
+                            </a>                       
                         </div>
                         
                 </div>
