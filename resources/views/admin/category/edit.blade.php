@@ -13,8 +13,8 @@
                 <input id="name" name="name" type="text" class="form-control" value="{{ old('name',$category->name) }}" placeholder="請輸入修改類別名稱">
             </div>
             <div class="form-group">
-                <label for="category_type" class="form-label">商品類別編號：	</label>
-                <input id="category_type" name="category_type" type="text" class="form-control" value="{{ old('name',$category->category_type) }}" placeholder="請輸入修改類別名稱">
+                <label for="category_id" class="form-label">商品父類別：	</label>
+                <input id="category_id" name="category_id" type="text" class="form-control" value="{{ old('name',$category->category_id) }}" placeholder="請輸入修改父類別">
             </div>
             <div class="form-group">
                 <label for="name" class="form-label">是否上架：</label>

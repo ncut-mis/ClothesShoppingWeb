@@ -22,7 +22,7 @@ class CombinationController extends Controller
      */
     public function index(Combination $combination)
     {
-        
+
     }
 
     /**
@@ -63,7 +63,7 @@ class CombinationController extends Controller
             $combinations_detail->save();
 
             $trialItem->delete();
-        }       
+        }
 
         $combinations = Combination::Where('product_id', '=', $MainProduct->id)->paginate(10);
         $stocks = stock::Where('product_id', '=', $MainProduct->id)->get();
@@ -78,13 +78,7 @@ class CombinationController extends Controller
      */
     public function show(Combination $combination)
     {
-        $product = Product::find($combination->product_id);
-        $items = combinations_detail::where('combination_id', $combination->id)
-                                  ->join('products', 'combinations_detail.product_id', '=', 'products.id')
-                                  ->join('categories', 'products.category_id', '=', 'categories.id')
-                                  ->orderBy('categories.category_id', 'asc')  
-                                  ->get();
-        return view('combination.show',compact('combination','product','items'));
+        return view('admin.combination.show',['combination'=>$combination]);
     }
 
     /**
@@ -125,7 +119,7 @@ class CombinationController extends Controller
      */
     public function destroy(Request $request)
     {
-        $combination_id = $request['CartID'];
+        $combination_id = $request['combination_ID'];
         $cart = Combination::find($combination_id);
         $cart->delete();
         session()->flash('message', '刪除成功');

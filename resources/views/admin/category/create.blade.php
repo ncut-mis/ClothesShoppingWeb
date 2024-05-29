@@ -14,8 +14,24 @@
                             <input id="name" name="name" type="text" class="form-control" value="{{ old('name') }}" placeholder="請輸入類別名稱">
                         </div>
                         <div class="form-group">
-                            <label for="name" class="form-label">部位</label>
-                            <input id="category_type" name="category_type" type="text" class="form-control" value="{{ old('category_type') }}" placeholder="請輸入部位代號">
+                            <label for="name" class="form-label">父類別</label>
+{{--                            <input id="category_id" name="category_id" type="text" class="form-control" value="{{ old('category_id') }}" placeholder="請輸入部位代號">--}}
+                            <select id = "category_id" name = "category_id" class = "rounded">
+                                @foreach($categories as $categorie)
+                                    <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="form-label">顯示位置</label>
+{{--                            <input id="image_position" name="image_position" type="text" class="form-control" value="{{ old('image_position') }}" placeholder="請輸入位置">--}}
+                            <select id = "image_position" name = "image_position" class = "rounded">
+                                <option value="0">頭</option>
+                                <option value="1">上半身</option>
+                                <option value="2">褲裙</option>
+                                <option value="3">襪</option>
+                                <option value="4">鞋</option>
+                            </select>
                         </div>
                         <input type="hidden" name="status" value=1>
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">

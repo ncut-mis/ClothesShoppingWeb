@@ -56,7 +56,7 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/product/search', [ProductController::class, 'search'])->name('Products.search');
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store'); //測試用
     Route::get('/product/{product}/show', [ProductController::class, 'show'])->name('Products.show');
-    
+
 //測試用
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -155,7 +155,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::post('/product/store',[ProductController::class,'admin_storestore'])->name('product.adminStore');//儲存商品
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
-    Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy'); 
+    Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy');
 
     //試搭時撈的資料
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
@@ -163,7 +163,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
 
     //Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     //Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
-    
+
 
     //訂單
     Route::get('/Order/list/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
@@ -176,7 +176,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::post('/Category/store',[CategoryController::class,'store'])->name('category.store');
     Route::get('/Category/edit/{categoryID}',[CategoryController::class,'edit'])->name('category.edit');
     Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('category.update');
-    Route::delete('/Category/delete',[CategoryController::class,'destroy'])->name('category.destroy');  
+    Route::delete('/Category/delete',[CategoryController::class,'destroy'])->name('category.destroy');
 
 
     // 試搭
@@ -186,11 +186,11 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     //試搭商品種類選擇
     Route::get('/TrialItem/categorySearch/{categoryType}',[ProductController::class, 'type_search'])->name('product.typesearch');
     Route::post('/TrialItem/ProuctSearch',[ProductController::class, 'TrialProuct_search'])->name('product.TrialProuctSearch');
-    
+
     //規格管理
     Route::post('/Specification/store',[SpecificationController::class, 'store'])->name('specification.store');
     Route::delete('/Specification/delete',[SpecificationController::class, 'destroy'])->name('specification.destroy');
-    
+
     //人員管理
     Route::get('/admin/list',[AdminController::class, 'index'])->name('adminlist.index');
     Route::get('/admin/create',[AdminController::class, 'create'])->name('admin.create');
@@ -198,9 +198,12 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::delete('/admin/delete',[AdminController::class, 'destroy'])->name('admin.destroy');
 
     // 搭配組合
-    Route::get('/combination/{combination}',[CombinationController::class,'show'])->name('combination.show');
+    Route::get('/combination/{combination}/show',[CombinationController::class,'show'])->name('combination.show');
     Route::get('/Combination/create/{product}',[CombinationController::class,'create'])->name('combination.create');
     Route::post('/combination',[CombinationController::class,'store'])->name('combination.store');
+    Route::get('/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
+    Route::patch('/combination/update',[CombinationController::class,'update'])->name('combination.update');
+    Route::delete('/combination/delete',[CombinationController::class,'destroy'])->name('combination.destroy');
 });
 
 
