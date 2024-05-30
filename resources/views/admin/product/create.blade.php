@@ -10,17 +10,26 @@
                             <label for="name">商品名稱</label>
                             <input type = "text" name = "name" id = "name">
                             <br>
-                            <label for="price">價格</label>
+                            <label for="name">商品顏色</label>
+                            <input type = "text" name = "name" id = "name">
+                            <br>
+                            <label for="name">商品尺寸</label>
+                            <input type = "text" name = "name" id = "name">
+                            <br>
+                            <label for="name">商品庫存</label>
+                            <input type = "text" name = "name" id = "name">
+                            <br>
+                            <label for="category_id">商品類別</label>
+                            <input type = "text" name = "category_id" id = "category_id">
+                            <br>
+                            <label for="price">商品價格</label>
                             <input type = "text" name = "price" id = "price"　class = "ml-4">
                             <br>
                             <label for="description">商品描述</label>
                             <textarea name = "description" id = "description"></textarea>
                             <br>
-                            <label for="image">選擇圖片:</label>
+                            <label for="image">選擇圖片</label>
                             <input type="file" class="form-control" name="images[]" id="image" multiple>
-                            <br>
-                            <label for="category_id">類別編號</label>
-                            <input type = "text" name = "category_id" id = "category_id">
                             <br>
                         </div>
                         <input type="submit" class="bg-blue-500" value = "上傳">
