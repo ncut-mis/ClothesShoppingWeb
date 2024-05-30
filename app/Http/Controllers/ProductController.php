@@ -100,28 +100,43 @@ class ProductController extends Controller
 
     public function admin_store(Request $request)
     {
-        //資料驗證
-        $this->validate($request,[
-            'name'=>'required',
-            'brand'=>'required',
-            'origin_place'=>'required',
-            'stock'=>'required',
-            'price'=>'required',
+        //global $data;
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|integer',
+            'description' => 'required|string|max:255',
+            'category_id' => 'required|integer',
         ]);
-        //取得現在時間
-        $created_at=date('y/n/j');
-        //儲存資料至products
-        Product::create([
-            'name'=>$request->name,
-            'brand'=>$request->brand,
-            'stock'=>$request->stock,
-            'origin_place'=>$request->origin_place,
-            'price'=>$request->price,
-            'created_at'=>$created_at,
-            'updated_at'=>$created_at,
 
-        ]);
-        return redirect()->route('admins.products.index');
+        //$newProduct = Product::create($data);
+        //return redirect(route('product.index'));
+
+        $product = new Product();
+        $product->name = $validated['name'];
+        $product->stock = 0;
+        $product->price = $validated['price'];
+        $product->description = $validated['description'];
+        $product->is_shelf = 1;
+        $product->category_id = $validated['category_id'];
+
+        $product->save();
+
+
+        foreach ($request->file('images') as $image){
+            $filename = $image->getClientOriginalName(); //待優化，有潛在問題
+            $image->move(public_path('images'), $filename);
+
+            $productphoto = new ProductPhoto();
+            $productphoto->product_id = $product->id;
+            $productphoto->file_address = $filename;
+            $productphoto->save();
+        }
+        //$imageName = time() . '.' . $request->image->extension();
+        //$request->image->move(public_path('images'), $imageName);
+
+
+
+        return back()->with('success', 'You have successfully upload image.')->with('image', $filename);
     }
 
     /**

@@ -170,7 +170,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
 
     //Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     //Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
-    
+
     //訂單
     Route::get('/Order/list/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
     Route::get('/Order/{order}/show', [OrderController::class, 'admin_show'])->name('order.adminShow');
