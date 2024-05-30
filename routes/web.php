@@ -204,7 +204,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::delete('/admin/delete',[AdminController::class, 'destroy'])->name('admin.destroy');
 
     // 搭配組合
-    Route::get('/combination/{combination}/show',[CombinationController::class,'show'])->name('combination.show');
+    Route::get('/combination/{combination}/show',[CombinationController::class,'admin_show'])->name('combination.adminshow');
     Route::get('/Combination/create/{product}',[CombinationController::class,'create'])->name('combination.create');
     Route::post('/combination',[CombinationController::class,'store'])->name('combination.store');
     Route::get('/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');

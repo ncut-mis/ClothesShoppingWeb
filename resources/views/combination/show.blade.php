@@ -42,41 +42,41 @@
 
                                 <!--加載主要商品-->
                                 
-                                @switch($product->Category->image_position)
+                                @switch($combination->product->Category->image_position)
                                     @case(0)
                                         <script>
-                                            insertDIV("cap" , "{{$product->id}}");
-                                            insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                                            insertDIV("cap" , "{{$combination->product->id}}");
+                                            insertImage("{{$combination->product->id}}", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
                                         </script>
                                         @break
                                     @case(1)
                                         <script>
-                                            insertDIV("top" , "{{$product->id}}");
-                                            insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                                            insertDIV("top" , "{{$combination->product->id}}");
+                                            insertImage("{{$combination->product->id}}", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
                                         </script>
                                         @break
                                     @case(2)
                                         <script>
-                                            insertDIV("pant" , "{{$product->id}}");
-                                            insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                                            insertDIV("pant" , "{{$combination->product->id}}");
+                                            insertImage("{{$combination->product->id}}", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
                                         </script>
                                         @break
                                     @case(3)
                                         <script>
-                                            insertDIV("sock" , "{{$product->id}}");
-                                            insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                                            insertDIV("sock" , "{{$combination->product->id}}");
+                                            insertImage("{{$combination->product->id}}", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
                                         </script>
                                         @break
                                     @case(4)
                                         <script>
-                                            insertDIV("shoe" , "{{$product->id}}");
-                                            insertImage("{{$product->id}}", "{{ asset('images/' . $product->firstPhoto->file_address) }}");
+                                            insertDIV("shoe" , "{{$combination->product->id}}");
+                                            insertImage("{{$combination->product->id}}", "{{ asset('images/' . $combination->product->firstPhoto->file_address) }}");
                                         </script>
                                         @break
                                     @endswitch
 
                                 <!--加載搭配商品-->
-                                @foreach($items as $item)
+                                @foreach($combination->combinations_detail as $item)
                                     @switch($item->product->Category->image_position)
                                         @case(0)
                                             <script>
@@ -140,7 +140,7 @@
 
                                             <label for = "colorMain">顏色</label>
                                             <select id = "colorMain" name = "colors[{{$combination->product->id}}]" class = "mt-4 rounded">
-                                                @foreach($product->specification as $specification)
+                                                @foreach($combination->product->specification as $specification)
                                                     @if($specification->specification_type === 'color')
                                                         <option value = "{{$specification->name}}">{{$specification->name}}</option>
                                                     @endif
@@ -152,7 +152,7 @@
 
 
                                     <!--搭配商品選擇尺寸選單-->
-                                    @foreach($items as $item)
+                                    @foreach($combination->combinations_detail as $item)
                                         <div class = "mt-4 mb-4 flex flex-row">
                                             <div class = "basis-1/3">                                            
                                                 <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}" class = "w-40 h-40 border ml-4">

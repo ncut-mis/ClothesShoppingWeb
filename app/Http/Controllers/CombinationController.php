@@ -78,6 +78,11 @@ class CombinationController extends Controller
      */
     public function show(Combination $combination)
     {
+        return view('combination.show',['combination'=>$combination]);
+    }
+
+    public function admin_show(Combination $combination)
+    {
         return view('admin.combination.show',['combination'=>$combination]);
     }
 
