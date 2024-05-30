@@ -60,10 +60,9 @@ class OrderController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($userId)
     {
-        $user_id = Auth()->user()->id;
-        $cartItem = CartItem::where('user_id', '=', $user_id)->get();
+        $cartItem = CartItem::where('user_id', '=', $userId)->get();
         return view('Order.create',['CartItems'=>$cartItem]);
     }
 
@@ -126,7 +125,6 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-
         return view('order.show', ['order' => $order]);
     }
 

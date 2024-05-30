@@ -32,10 +32,9 @@ class AdminController extends Controller
         $admin->title = $request->title;
         $admin->email = $request->email;
         $admin->password = Hash::make($request->password);
-        $admin->is_block = 0;
-        
+        $admin->is_blocked = 0;
         $admin->save();
-
+        
         session()->flash('message', '新增人員成功');
         return redirect(route('admin.adminlist.index'));
     }

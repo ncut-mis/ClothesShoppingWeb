@@ -31,7 +31,8 @@ class CategoryController extends Controller
 
     public function create()
     {
-        return view('admin.category.create');
+        $categories = Category::where('category_id' , '=' , null)->get();
+        return view('admin.category.create',['categories' => $categories]);
     }
 
     /**
@@ -39,13 +40,15 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'name' => 'required|max:25',
-            'category_type' =>'required'
-        ]);
+        $category = new Category();
 
-        $categories = Category::create($request->all());
-        return redirect()->route('category.adminIndex' , compact('categories'));
+        $category->name = $request['name'];
+        $category->category_id  = $request['category_id'];
+        $category->image_position = $request['image_position'];
+
+        $category->save();
+
+        return redirect()->route('admin.category.adminIndex');
     }
 
     /**
@@ -106,9 +109,11 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy(Request $request)
     {
+        $categoryID = $request['Category_ID'];
+        $category = Category::find($categoryID);
         $category->delete();
-        return view('admin.category.index');
+        return redirect()->route('admin.category.adminIndex');
     }
 }
