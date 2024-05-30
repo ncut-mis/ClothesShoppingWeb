@@ -26,6 +26,14 @@
             <input type="text" name="name" placeholder="Name" value="{{$product->name}}"/>
         </div>
         <div>
+            <label>商品顏色</label>
+            <input type="text" name="name" placeholder="Name" value="{{$product->color}}"/>
+        </div>
+        <div>
+            <label>商品尺寸</label>
+            <input type="text" name="name" placeholder="Name" value="{{$product->size}}"/>
+        </div>
+        <div>
             <label>商品庫存</label>
             <input type="text" name="stock" placeholder="Stock" value="{{$product->stock}}"/>
         </div>

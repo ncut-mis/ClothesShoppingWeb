@@ -160,7 +160,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/Combination', [CombinationController::class, 'admin_index'])->name('combination.adminIndex');
     Route::get('/CombinationSearch', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
     Route::get('/products/create', [ProductController::class, 'admin_create'])->name('product.adminCreate');//新增商品頁面
-    Route::post('/products/store',[ProductController::class,'admin_storestore'])->name('product.adminStore');//儲存商品
+    Route::post('/products/store',[ProductController::class,'admin_store'])->name('product.adminStore');//儲存商品
 
     //訂單
     Route::get('/Orderlist/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');

@@ -34,7 +34,7 @@
                                         <option value = "{{$category->id}}">{{$category->name}}</option>
                                     @endforeach
                                 </select>
-                                <a href="{{ route('admin.product.adminIndex' , ) }}" class = "ml-4 text-blue-500">重設</a>
+                                <a href="{{ route('admin.product.adminIndex') }}" class = "ml-4 text-blue-500">重設</a>
                             </div>
                             <div class = "basis-1/3">
                                 <form method="GET" action = "{{route('admin.product.adminSearch')}}">
