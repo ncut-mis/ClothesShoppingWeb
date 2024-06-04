@@ -212,7 +212,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $exists = Product::Where('name', '=', $request['keyword'])->exists();
+        $exists = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->exists();
         $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
         $categories = Category::paginate(10, ['*'], 'categoryPage')
                           ->withQueryString();

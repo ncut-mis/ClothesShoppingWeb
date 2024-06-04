@@ -13,7 +13,7 @@
 
         // 将创建的 img 元素插入到指定的 div 中
         document.getElementById(divId).appendChild(img);
-    }  
+    }
 </script>
 
 @extends($layout)
@@ -36,15 +36,15 @@
 
                                     <!-- 图片轮播显示 -->
                                     <template x-for="(photo, index) in photos" :key="index">
-                                        <img :src="photo" 
-                                            x-show="activePhoto === index" 
-                                            class="w-full h-auto block rounded" 
+                                        <img :src="photo"
+                                            x-show="activePhoto === index"
+                                            class="w-full h-auto block rounded"
                                             style="display: none;" />
                                     </template>
 
                                     <!-- 轮播控制按钮 -->
                                     <div class="flex justify-center mt-4">
-                                        <button class="mx-1 text-xl bg-gray-300 rounded w-5"            
+                                        <button class="mx-1 text-xl bg-gray-300 rounded w-5"
                                                 @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
                                             &lt;
                                         </button>
@@ -79,7 +79,7 @@
                                                     <option value = "{{$specification->name}}">{{$specification->name}}</option>
                                                 @endif
                                             @endforeach
-                                        </select>                           
+                                        </select>
                                     </div>
                                     <br>
 
@@ -100,9 +100,9 @@
                                     <input type = "hidden" name = "ProductID" value = "{{$product->id}}">
                                 </form>
                             </div>
-                            
+
                         </div>
-                        
+
                         <!--操作區塊-->
                         <div class = "flex justify-end gap-2 pl-8 pt-8">
                             @if(\App\Models\Product::Track_isExist($product->id))
@@ -128,8 +128,8 @@
                 </div>
             </div>
         </div>
-    </div>  
-        
+    </div>
+
     <!--商品描述-->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -146,12 +146,12 @@
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <h1 class = "text-3xl font-bold mb-4">建議的搭配組合</h1>
     </div>
-           
+
     @if($combinations->count()>0)
-        @foreach($combinations as $combination)                    
+        @foreach($combinations as $combination)
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-2">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <a href = "{{route('combination.show',['combination' => $combination])}}"> 
+                    <a href = "{{route('combination.show',['combination' => $combination])}}">
                         <div class="p-6 text-gray-900">
                             <div class = "text-3xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
                             <div class = "grid grid-cols-6 mt-4 mb-4">
@@ -167,7 +167,7 @@
                         </div>
                     </a>
                 </div>
-            </div>           
+            </div>
         @endforeach
     @else
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -178,13 +178,13 @@
             </div>
         </div>
     @endif
-  
+
     <!--訂單評論-->
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h1 class = "text-3xl font-bold mb-4">訂單評論</h1>
+                    <h1 class = "text-3xl font-bold mb-4">評論</h1>
                     @foreach($orders as $order)
                         <div class = "mt-4 mb-4">
                             <h1 class = "text-lg font-bold">{{$order->user->name}}</h1>
@@ -212,7 +212,7 @@
 
         document.getElementById('Preview').addEventListener('click', function() {
             document.getElementById('popup3').classList.remove('hidden');
-        });  
+        });
 
         function submitForm() {
             document.getElementById('cartitem').submit();

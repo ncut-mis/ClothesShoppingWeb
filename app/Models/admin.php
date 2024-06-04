@@ -13,7 +13,7 @@ class admin extends Authenticatable
     protected $guard = 'admin';
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','is_blocked',
     ];
 
     protected $hidden = [

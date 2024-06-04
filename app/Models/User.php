@@ -26,6 +26,7 @@ class User extends Authenticatable
         'address',
         'birthday',
         'phone',
+        'is_blocked',
     ];
 
     /**
