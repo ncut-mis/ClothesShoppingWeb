@@ -19,6 +19,22 @@
                                 <div class = "basis-1/2 mt-4">
                                     <a class="btn btn-sm btn-primary basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-200 h-10 rounded-lg" href="{{route('admin.category.edit',$category->id)}}" >修改類別</a>
                                 </div>
+                                <div class = "basis-1/2 mt-4">
+{{--                                    若已上架--}}
+                                    @if($category->status == 1)
+                                        <form action="{{route('admins.category.stop',$category->id)}}" method="POST" style="display: inline-block">
+                                            @method('patch')
+                                            @csrf
+                                            <button class="btn btn-sm btn-warning" type="submit">下架</button>
+                                        </form>
+                                    @else
+                                        <form action="{{route('admins.category.launch',$category->id)}}" method="POST" style="display: inline-block">
+                                            @method('patch')
+                                            @csrf
+                                            <button class="btn btn-sm btn-warning" type="submit">下架</button>
+                                        </form>
+                                    @endif
+                                </div>
                                 <form action = "{{route('admin.category.destroy')}}" method = "POST" class = "basis-1/2 mt-4">
                                     @csrf
                                     @method('DELETE')

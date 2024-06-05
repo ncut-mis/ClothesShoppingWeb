@@ -183,7 +183,8 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/Category/edit/{categoryID}',[CategoryController::class,'edit'])->name('category.edit');
     Route::patch('/Category/{categoryID}',[CategoryController::class,'update'])->name('category.update');
     Route::delete('/Category/delete',[CategoryController::class,'destroy'])->name('category.destroy');
-
+    Route::patch('/Category/{categoryID}/launch',[CategoryController::class,'launch'])->name('category.launch');
+    Route::patch('/Category/{categoryID}/stop',[CategoryController::class,'stop'])->name('category.stop');
 
     // 試搭
     Route::get('/TrialItem/create/{productID}',[TrialItemController::class, 'create'])->name('trialitem.create');

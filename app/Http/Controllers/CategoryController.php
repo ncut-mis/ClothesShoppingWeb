@@ -117,4 +117,26 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('admin.category.adminIndex');
     }
+
+    //下架類別
+    public function stop(Request $request)
+    {
+        $categoryID = $request['Category_ID'];
+        $category = Category::find($categoryID);
+        $category->update(['status'=>0]);
+
+        return redirect()->route('admin.category.adminIndex');
+    }
+
+    //上架類別
+    public function launch(Request $request)
+    {
+        $categoryID = $request['Category_ID'];
+        $category = Category::find($categoryID);
+        $category->update(['status'=>1]);
+
+        return redirect()->route('admin.category.adminIndex');
+    }
+
+
 }
