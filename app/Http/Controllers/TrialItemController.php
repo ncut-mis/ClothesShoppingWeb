@@ -28,7 +28,11 @@ class TrialItemController extends Controller
         $MainproductID = $request['MainProductID'];  // 主商品ID
         $product = Product::find($MainproductID);
 
-        $this->createTrialItem($MainproductID, $request->input('product'));
+        // 若成功新增回傳true，否則為false
+        if(!$this->createTrialItem($MainproductID, $request->input('product')))
+        {
+            session()->flash('message', '新增失敗，已存在相同的試搭商品');
+        }
 
         $TrialTtems = TrialItem::Where('product_id','=',$MainproductID)->get();
 
@@ -96,8 +100,15 @@ class TrialItemController extends Controller
     {
         $trialItem = new TrialItem();
         $trialItem->product_id = $productId;
+
+        // 判斷試搭商品是否重複
+        $is_exist = TrialItem::Where('trial_product_id' , '=' , $selectedProductId)->exists();
+        if($is_exist){
+            return false;
+        }
         $trialItem->trial_product_id = $selectedProductId;
-        $trialItem->save();            
+        $trialItem->save();   
+        return true;         
     }
     
 }

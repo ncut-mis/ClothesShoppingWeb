@@ -174,6 +174,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     //訂單
     Route::get('/Order/list/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
     Route::get('/Order/{order}/show', [OrderController::class, 'admin_show'])->name('order.adminShow');
+    Route::patch('/Order/update', [OrderController::class, 'admin_update'])->name('order.adminUpdate');
 
     //類別
     Route::get('/Category/list', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
@@ -206,7 +207,6 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
 
     // 搭配組合
     Route::get('/combination/{combination}/show',[CombinationController::class,'admin_show'])->name('combination.adminshow');
-    Route::get('/Combination/create/{product}',[CombinationController::class,'create'])->name('combination.create');
     Route::post('/combination',[CombinationController::class,'store'])->name('combination.store');
     Route::get('/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
     Route::patch('/combination/update',[CombinationController::class,'update'])->name('combination.update');

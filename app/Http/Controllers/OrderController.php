@@ -23,7 +23,7 @@ class OrderController extends Controller
             ['user_id', '=', Auth::user()->id],
             ['status', '=', $status]
         ])->orderBy('created_at', 'desc')->get();
-        
+
         switch($status){
             case 0 :
                 $statusName = "待確認";
@@ -53,7 +53,7 @@ class OrderController extends Controller
     public function admin_index($status)
     {
         $items = Order::Where('status','=',$status)->orderBy('created_at', 'desc')->get();
-                 
+
         return view('admin.order.index', ['items' => $items]);
     }
 
@@ -71,10 +71,10 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        
-        
+
+
         $order = new Order();
-        
+
         $order->user_id = Auth()->user()->id;
         $order->amount = $request['amount'];
         $order->paymentmethodid = $request['choose'];
@@ -85,10 +85,10 @@ class OrderController extends Controller
         $order->comment = "";
 
         if($order->paymentmethodid == 0){
-            $order->remit = 0; 
+            $order->remit = 0;
         }
         else{
-            $order->remit = 1; 
+            $order->remit = 1;
         }
 
         $order->staff_id = 1; //暫定為1
@@ -115,9 +115,9 @@ class OrderController extends Controller
             $stock->save();
         }
 
-        session()->flash('message', '下訂成功'); 
+        session()->flash('message', '下訂成功');
         return redirect(route('order.index',['status' => 0]));
-        
+
     }
 
     /**
@@ -157,18 +157,46 @@ class OrderController extends Controller
 
         if($order->status == 4)
         {
-            $order->remit = 1; 
-            session()->flash('message', '取貨成功');           
+            $order->remit = 1;
+            session()->flash('message', '取貨成功');
         }
         if($order->status == 5)
         {
-            session()->flash('message', '已完成訂單');           
+            session()->flash('message', '已完成訂單');
         }
         if($order->status == 6)
         {
             session()->flash('message', '取消成功');
-        }      
-        return redirect(route('order.index' , ['status' => $order->status]));  
+        }
+        return redirect(route('order.index' , ['status' => $order->status]));
+    }
+
+    public function admin_update(Request $request)
+    {
+        $orderID = $request['OrderID'];
+        $status = $request['status'];
+        $order = Order::find($orderID);
+        $order->status = $status;
+
+        $order->save();
+
+        if($order->status == 1)
+        {
+            session()->flash('message', '訂單確認成功');
+        }
+        if($order->status == 2)
+        {
+            session()->flash('message', '出貨成功');
+        }
+        if($order->status == 3)
+        {
+            session()->flash('message', '已將訂單修改為已到貨');
+        }
+        if($order->status == 6)
+        {
+            session()->flash('message', '取消申請核准成功');
+        }
+        return redirect(route('admin.order.adminIndex' , ['status' => $order->status]));
     }
 
     public function comment(Request $request)
@@ -184,7 +212,7 @@ class OrderController extends Controller
         } else {
             session()->flash('message', '新增評論失敗');
         }
-    
+
         $order_detials = order_detial::Where('order_id','=',$OrderID)->get();
         return view('order.show', ['order' => $order , 'order_detials' => $order_detials]);
     }
