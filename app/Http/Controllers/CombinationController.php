@@ -52,6 +52,7 @@ class CombinationController extends Controller
         $combination->name = $request['CombinationName'];
         $combination->price = $price;
         $combination->product_id = $request['MainProductID'];
+        $combination->is_shelf = 1;
 
         $combination->save();
 

@@ -45,6 +45,7 @@ class CategoryController extends Controller
         $category->name = $request['name'];
         $category->category_id  = $request['category_id'];
         $category->image_position = $request['image_position'];
+        $category->is_shelf = 1;
 
         $category->save();
 
