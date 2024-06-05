@@ -151,9 +151,13 @@
                                 </div>
                                 <hr>
                                 @endforeach
-                                <div class = "relative pb-12">
-                                    <a href = "{{route('admin.combination.create',['product' => $MainProduct])}}" class = "absolute right-4 w-40 h-10 bg-blue-500 rounded-lg text-white flex items-center justify-center mt-4 mb-4">加入搭配組合</a>
-                                </div>
+                                <form method = "POST" action = "{{route('admin.combination.store')}}" class = "mt-4">
+                                    @csrf
+                                    <label for = "CombinationName" class = "text-xl">組合名稱</label>
+                                    <input type = "text" id = "CombinationName" name = "CombinationName" class = "rounded ml-4"></input>
+                                    <input type = "hidden" id = "MainProductID" name = "MainProductID" value = "{{$MainProduct->id}}"></input>
+                                    <input type = "submit" value = "加到搭配清單" class = "ml-4 text-white bg-blue-500 hover:bg-blue-700 rounded-lg w-40 h-10 cursor-pointer">
+                                </form>
                             </div>
                         </div>
 
