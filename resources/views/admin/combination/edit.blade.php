@@ -25,7 +25,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h1 class = "text-2xl font-bold ml-4">搭配組合明細</h1>
+                    <h1 class = "text-2xl font-bold ml-4">修改搭配組合</h1>
                     <div class = "flex flex-row">
                         <div class = "basis-1/2 mt-4 mb-4 grid grid-cols-1">
                             <div class="border h-40 ml-4 md:col-span-2" id = "cap">
@@ -110,10 +110,19 @@
                                 @endswitch
                             @endforeach
                         </div>
-                        <div class = "basis-1/2">
-                            <h1>組合名稱：{{$combination->name}}</h1>
-                            <h1>價格：{{$combination->price}}</h1>
 
+                        <div class = "basis-1/2">
+                            <form  method="POST" action="{{route('admin.combination.adminUpdate')}}">
+                                @csrf
+                                @method('patch')
+                                <input type = "hidden" id = "combinationID" name = "combinationID" value = "{{$combination->id}}">
+                                <label for = "combinationName">組合名稱</label>
+                                <input type = "text" id = "combinationName" name = "combinationName" value = "{{$combination->name}}">
+                                <br>
+                                <label for = "combinationName">價格</label>
+                                <input type = "text" id = "combinationPrice" name = "combinationPrice" value = "{{$combination->price}}" class = "mt-4">
+                                <input type="submit" value="修改" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                            </form>
                             <hr>
                             <h1>組合內的商品</h1>
                             <h1>主商品：{{$combination->product->name}}</h1>

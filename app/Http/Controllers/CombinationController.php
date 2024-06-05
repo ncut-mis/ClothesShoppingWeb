@@ -102,34 +102,39 @@ class CombinationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,Combination $combination)
+    public function admin_update(Request $request)
     {
         $combination_id = $request['combinationID'];
         $combination = Combination::find($combination_id);
 
-        if($request->has('quantity')){
-            $quantity = $request['quantity'];
-            $combination->update([
-                'quantity' => $quantity,
-            ]);
+        $combination->name = $request['combinationName'];
+        $combination->price = $request['combinationPrice'];
+        $combination->save();
 
-            session()->flash('message', '修改數量成功');
-            return redirect(route('combination.index'));
-        }
-
-
+        session()->flash('message', '修改成功');
+        return back();
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function admin_destroy(Request $request)
     {
         $combination_id = $request['combination_ID'];
-        $cart = Combination::find($combination_id);
-        $cart->delete();
+        $combination = Combination::find($combination_id);
+
+        foreach ($combination->combinations_detail as $detail){
+            $detail->delete();
+        }
+
+        $combination->delete();
+
+        $product = Product::find($combination->product_id);
         session()->flash('message', '刪除成功');
-        return redirect(route('combination.index'));
+        return redirect()->route('admin.product.adminShow', ['product' => $product]) ;
     }
 
     public function admin_search(Request $request)

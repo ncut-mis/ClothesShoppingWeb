@@ -112,11 +112,11 @@ Route::middleware('auth')->group(function (){
     // 請放到管理員的group
 
 
-    Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
-
-    Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
-    Route::patch('/admin/combination/{combination}',[CombinationController::class,'update'])->name('combination.update');
-    Route::delete('/admin/combination/destroy',[CombinationController::class,'destroy'])->name('combination.destroy');
+//    Route::get('/admin/combination/search',[CombinationController::class,'search'])->name('combination.search');
+//
+//    Route::get('/admin/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
+//    Route::patch('/admin/combination/{combination}',[CombinationController::class,'update'])->name('combination.update');
+//    Route::delete('/admin/combination/destroy',[CombinationController::class,'destroy'])->name('combination.destroy');
 
 });
 
@@ -209,8 +209,8 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/combination/{combination}/show',[CombinationController::class,'admin_show'])->name('combination.adminshow');
     Route::post('/combination',[CombinationController::class,'store'])->name('combination.store');
     Route::get('/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
-    Route::patch('/combination/update',[CombinationController::class,'update'])->name('combination.update');
-    Route::delete('/combination/delete',[CombinationController::class,'destroy'])->name('combination.destroy');
+    Route::patch('/combination/update',[CombinationController::class,'admin_update'])->name('combination.adminUpdate');
+    Route::delete('/combination/delete',[CombinationController::class,'admin_destroy'])->name('combination.admindestroy');
 });
 
 

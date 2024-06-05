@@ -123,7 +123,8 @@ class CategoryController extends Controller
     {
         $categoryID = $request['Category_ID'];
         $category = Category::find($categoryID);
-        $category->update(['status'=>0]);
+        $category->is_shelf = 0;
+        $category->save();
 
         return redirect()->route('admin.category.adminIndex');
     }
@@ -133,7 +134,8 @@ class CategoryController extends Controller
     {
         $categoryID = $request['Category_ID'];
         $category = Category::find($categoryID);
-        $category->update(['status'=>1]);
+        $category->is_shelf = 1;
+        $category->save();
 
         return redirect()->route('admin.category.adminIndex');
     }

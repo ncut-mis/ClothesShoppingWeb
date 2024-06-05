@@ -25,7 +25,8 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <h1 class = "text-2xl font-bold ml-4">搭配組合明細</h1>
+                    <h1 class = "text-2xl font-bold ml-4 inline-block">搭配組合明細</h1>
+                    <a href="{{route('admin.combination.edit',['combination' => $combination])}}" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 text-blue-500 font-bold w-20 h-10 rounded-lg cursor-pointer">編輯組合</a>
                     <div class = "flex flex-row">
                         <div class = "basis-1/2 mt-4 mb-4 grid grid-cols-1">
                             <div class="border h-40 ml-4 md:col-span-2" id = "cap">

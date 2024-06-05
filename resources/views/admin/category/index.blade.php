@@ -21,14 +21,14 @@
                                 </div>
                                 <div class = "basis-1/2 mt-4">
 {{--                                    若已上架--}}
-                                    @if($category->status == 1)
-                                        <form action="{{route('admins.category.stop',$category->id)}}" method="POST" style="display: inline-block">
+                                    @if($category->is_shelf == 0)
+                                        <form action="{{route('admin.category.stop',$category->id)}}" method="POST" style="display: inline-block">
                                             @method('patch')
                                             @csrf
                                             <button class="btn btn-sm btn-warning" type="submit">下架</button>
                                         </form>
                                     @else
-                                        <form action="{{route('admins.category.launch',$category->id)}}" method="POST" style="display: inline-block">
+                                        <form action="{{route('admin.category.launch',$category->id)}}" method="POST" style="display: inline-block">
                                             @method('patch')
                                             @csrf
                                             <button class="btn btn-sm btn-warning" type="submit">下架</button>

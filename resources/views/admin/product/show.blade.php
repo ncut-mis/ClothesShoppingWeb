@@ -130,8 +130,16 @@
                             <h1 class = "basis-1/2 text-xl mt-4 mb-4 pt-2 inline-block">{{$combination->name}}</h1>
                             <div class = "basis-1/2">
                                 <a href="{{ route('admin.combination.adminshow',['combination' => $combination] ) }}" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">組合明細</a>
-                                <button id="" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">編輯組合</button>
-                                <button id="" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">刪除組合</button>
+                                <a href="{{route('admin.combination.edit',['combination' => $combination])}}" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">編輯組合</a>
+
+
+                                <form action = "{{route('admin.combination.admindestroy')}}" method = "POST" class = "basis-1/2 mt-4">
+                                    @csrf
+                                    @method('DELETE')
+                                    <input type = "hidden" name = "combination_ID" value = "{{ $combination->id }}">
+                                    <input type = "submit" value = "刪除組合" class = "mb-4 text-white bg-red-500 hover:bg-red-800 w-20 h-10 rounded-lg cursor-pointer">
+                                </form>
+
                             </div>
                         </div>
                         <hr>
