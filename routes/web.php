@@ -174,6 +174,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     //訂單
     Route::get('/Order/list/{status}', [OrderController::class, 'admin_index'])->name('order.adminIndex');
     Route::get('/Order/{order}/show', [OrderController::class, 'admin_show'])->name('order.adminShow');
+    Route::patch('/Order/update', [OrderController::class, 'admin_update'])->name('order.adminUpdate');
 
     //類別
     Route::get('/Category/list', [CategoryController::class, 'admin_index'])->name('category.adminIndex');
