@@ -255,7 +255,7 @@ class ProductController extends Controller
     public function type_search($categoryType)
     {
         $products = Product::whereHas('Category', function($query) use ($categoryType) {
-            $query->where('category_id', '=', $categoryType);
+            $query->where('category_id', '=', $categoryType+1);
         })->get();
 
         return response()->json($products);

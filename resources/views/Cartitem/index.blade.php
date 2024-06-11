@@ -28,7 +28,7 @@
                         @endphp
 
                         <!--顯示購物車清單-->
-                        @foreach($items as $item)
+                        @forelse($items as $item)
                             @php
                                 $itemID = $item->id;
                                 $amount += ($item->quantity)*($item->product->price);
@@ -97,8 +97,10 @@
                                     </form>                                
                                 </div>
                             </div>
-                            <hr>                       
-                        @endforeach
+                            <hr>     
+                        @empty
+                            <h1 class = "mt-4 text-gray-500">購物車為空</h1>                  
+                        @endforelse
                         {{$items->links()}}
 
                         <!--結帳區塊-->

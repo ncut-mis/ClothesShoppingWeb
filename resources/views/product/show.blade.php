@@ -23,12 +23,12 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3">
-                        <div class = "product pl-8 pr-8 w-full">
-                            <div class = "w-full flex flex-row">
+                <div class="p-6 text-gray-900 h-1/2">
+                    <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3 h-full">
+                        <div class = "product pl-8 pr-8 w-full h-3/4">
+                            <div class = "w-full flex flex-row h-full">
                                 <!-- 圖片顯示區域 -->
-                                <div class="relative basis-2/3" x-data="{ activePhoto: 0, photos: [
+                                <div class="relative basis-2/3 border" x-data="{ activePhoto: 0, photos: [
                                         @foreach($product->ProductPhoto as $index => $photo)
                                             '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
                                         @endforeach
@@ -38,12 +38,12 @@
                                     <template x-for="(photo, index) in photos" :key="index">
                                         <img :src="photo"
                                             x-show="activePhoto === index"
-                                            class="w-full h-auto block rounded"
+                                            class="mx-auto w-auto h-full block rounded"
                                             style="display: none;" />
                                     </template>
 
                                     <!-- 轮播控制按钮 -->
-                                    <div class="flex justify-center mt-4">
+                                    <div class="flex justify-center mt-4 mb-4">
                                         <button class="mx-1 text-xl bg-gray-300 rounded w-5"
                                                 @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
                                             &lt;
@@ -56,9 +56,9 @@
                                 </div>
 
                                 <!--選擇規格區塊-->
-                                <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "mt-8 basis-1/3 ml-8" onSubmit = "return Check_exist(this);">
+                                <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "basis-1/3 ml-8 h-full" onSubmit = "return Check_exist(this);">
                                     <!-- 顯示商品名稱 -->
-                                    <h1 class = "text-4xl pt-4 pl-4 pb-4">  {{$product->name}} </h1>
+                                    <h1 class = "text-4xl pl-4 pb-4">  {{$product->name}} </h1>
                                     <!-- 顯示商品單價 -->
                                     <h1 class = "text-3xl text-red-500 pl-4 mt-4 font-extrabold">NT {{ $product->price }}</h1>
                                     @csrf
@@ -104,7 +104,7 @@
                         </div>
 
                         <!--操作區塊-->
-                        <div class = "flex justify-end gap-2 pl-8 pt-8">
+                        <div class = "flex justify-end gap-2 pl-8 pt-8 h-1/4">
                             @if(\App\Models\Product::Track_isExist($product->id))
                                 <form method="POST" action="{{route('trackeditem.destroy')}}" class = "pb-4">
                                     @csrf
@@ -147,37 +147,35 @@
         <h1 class = "text-3xl font-bold mb-4">建議的搭配組合</h1>
     </div>
 
-    @if($combinations->count()>0)
-        @foreach($combinations as $combination)
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-2">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <a href = "{{route('combination.show',['combination' => $combination])}}">
-                        <div class="p-6 text-gray-900">
-                            <div class = "text-3xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
-                            <div class = "grid grid-cols-6 mt-4 mb-4">
-                                <div class = "photo w-20 h-20">
-                                    <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}">
-                                </div>
-                                @foreach($combination->combinations_detail as $item)
-                                    <div class = "photo w-20 h-20">
-                                        <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }}">
-                                    </div>
-                                @endforeach
+    @forelse($combinations as $combination)
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 py-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <a href = "{{route('combination.show',['combination' => $combination])}}">
+                    <div class="p-6 text-gray-900">
+                        <div class = "text-3xl pt-4 pl-4 pb-4">{{$combination->name}}</div>
+                        <div class = "grid grid-cols-6 mt-4 mb-4 ml-4">
+                            <div class = "photo w-20 h-20">
+                                <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}" class = "h-full">
                             </div>
+                            @foreach($combination->combinations_detail as $item)
+                                <div class = "photo w-20 h-20">
+                                    <img src="{{ asset('images/' . $item->product->firstPhoto->file_address) }} " class = "h-full">
+                                </div>
+                            @endforeach
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             </div>
-        @endforeach
-    @else
+        </div>
+    @empty
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <div class = "text-4xl pt-4 pl-4 pb-4">此商品暫無搭配組合</div>
+                    <div class = "pt-4 pl-4 pb-4 text-gray-500">此商品暫無搭配組合</div>
                 </div>
             </div>
         </div>
-    @endif
+    @endforelse                            
 
     <!--訂單評論-->
     <div class="py-12">
@@ -185,13 +183,15 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1 class = "text-3xl font-bold mb-4">評論</h1>
-                    @foreach($orders as $order)
+                    @forelse($orders as $order)
                         <div class = "mt-4 mb-4">
                             <h1 class = "text-lg font-bold">{{$order->user->name}}</h1>
                             <h1>{{$order->comment}}</h1>
                         </div>
                         <hr>
-                    @endforeach
+                    @empty
+                        <h1 class = "text-gray-500">此商品暫無評論</h1>
+                    @endforelse
                 </div>
             </div>
         </div>

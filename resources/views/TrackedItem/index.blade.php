@@ -16,7 +16,7 @@
                         </div>
                         <hr>
                             
-                        @foreach($items as $item)
+                        @forelse($items as $item)
                             @php
                                 $product = \App\Models\Product::find($item->product_id);
                                 $productName = $product->name;
@@ -38,7 +38,9 @@
                                 </div>
                             </div>
                             <hr>
-                        @endforeach
+                        @empty
+                            <h1 class = "mt-4 text-gray-500">尚未有追蹤的商品</h1>
+                        @endforelse
                         {{$items->links()}}
                 </div>
             </div>

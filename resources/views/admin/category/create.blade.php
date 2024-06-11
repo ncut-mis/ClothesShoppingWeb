@@ -15,7 +15,6 @@
                         </div>
                         <div class="form-group">
                             <label for="name" class="form-label">父類別</label>
-{{--                            <input id="category_id" name="category_id" type="text" class="form-control" value="{{ old('category_id') }}" placeholder="請輸入部位代號">--}}
                             <select id = "category_id" name = "category_id" class = "rounded">
                                 @foreach($categories as $categorie)
                                     <option value="{{$categorie->id}}">{{$categorie->name}}</option>
@@ -24,7 +23,6 @@
                         </div>
                         <div class="form-group">
                             <label for="name" class="form-label">顯示位置</label>
-{{--                            <input id="image_position" name="image_position" type="text" class="form-control" value="{{ old('image_position') }}" placeholder="請輸入位置">--}}
                             <select id = "image_position" name = "image_position" class = "rounded">
                                 <option value="0">頭</option>
                                 <option value="1">上半身</option>

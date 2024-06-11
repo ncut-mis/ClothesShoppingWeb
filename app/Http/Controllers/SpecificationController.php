@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\specification;
 use App\Models\stock;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class SpecificationController extends Controller
 {
     public function store(Request $request)
     {
+        //新增規格作業
         $productID = $request['product_id'];
         $specification = new specification();
         $specification->product_id = $productID;
@@ -17,8 +19,11 @@ class SpecificationController extends Controller
         $specification->name = $request['name'];
         $specification->save();
 
+        //將該商品的所有規格都抓出來
         $specs = specification::Where('product_id' , '=' , $productID)->get();
+        //新增庫存作業
         foreach($specs as $spec){
+            //抓出不同類別的規格(如果新增的是顏色，就抓尺寸的)
             if($spec->specification_type != $specification->specification_type){
                 $stock = new stock();
                 $stock->product_id = $productID;
@@ -34,9 +39,10 @@ class SpecificationController extends Controller
                 $stock->save();
             }
         }
+
+        $product = Product::find($productID);
         session()->flash('message', '新增成功');
-        $referer = $request->headers->get('referer');     
-        return redirect()->to($referer);
+        return redirect(route('admin.product.adminShow' , ['product' => $product]));
     }
 
     public function destroy(Request $request)
@@ -51,13 +57,13 @@ class SpecificationController extends Controller
                         ->orWhere('color', '=', $specificationName)
                         ->get();
         foreach($stocks as $stock){
-            if($stock->product_id = $productID){
+            if($stock->product_id == $productID){
                 $stock->delete();
             }
         }
-        session()->flash('message', '刪除成功');
-        $referer = $request->headers->get('referer');
         
-        return redirect()->to($referer);
+        $product = Product::find($productID);
+        session()->flash('message', '刪除成功');      
+        return redirect(route('admin.product.adminShow' , ['product' => $product]));
     }
 }

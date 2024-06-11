@@ -22,7 +22,7 @@
                     </div>
                     <hr>      
                     <!--顯示所有訂單-->          
-                    @foreach($orders as $order)
+                    @forelse($orders as $order)
                         <h1 class = "text-xl font-semibold mt-4 mb-4">訂單編號：{{$order->id}}</h1>
                         <h1 class = "mt-4 mb-4 text-lg text-red-500">NT ${{$order->amount}}</h1>
                         <a href = "{{route('order.show',['order' => $order])}}" class = "text-blue-500 mt-4 mb-4">
@@ -60,7 +60,9 @@
                             @case(6)
                         @endswitch
                         <hr>
-                    @endforeach              
+                    @empty
+                        <h1 class = "mt-5 text-gray-500">尚未有訂單</h1>
+                    @endforelse              
                 </div>
             </div>
         </div>

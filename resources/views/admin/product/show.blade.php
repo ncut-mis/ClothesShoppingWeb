@@ -31,8 +31,8 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 flex flex-row">
-                    <div class = "basis-1/2">
+                <div class="p-6 text-gray-900 flex flex-row h-1/2">
+                    <div class = "basis-1/2 h-full">
                         <h1 class = "text-3xl font-bold">{{$product->name}}</h1>
                         <div class="relative border basis-1/2 mt-4" x-data="{ activePhoto: 0, photos: [
                                 @foreach($product->ProductPhoto as $index => $photo)
@@ -44,12 +44,12 @@
                             <template x-for="(photo, index) in photos" :key="index">
                                 <img :src="photo"
                                     x-show="activePhoto === index"
-                                    class="w-full h-auto block rounded"
+                                    class="mx-auto w-auto h-full block rounded"
                                     style="display: none;" />
                             </template>
 
                             <!-- 轮播控制按钮 -->
-                            <div class="flex justify-center mt-4">
+                            <div class="flex justify-center mt-4 mb-4">
                                 <button class="mx-1 text-xl bg-gray-300 rounded w-5"
                                         @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
                                     &lt;
@@ -69,7 +69,7 @@
                         <br>
                         <h1 class = "text-xl font-bold mt-4 inline-block">上架狀態：</h1> <p class = "text-xl inline-block">{{$shelf_status}}</p>
                         <br>
-{{--                        <h1 class = "text-xl font-bold mt-4 inline-block">服裝類別：</h1> <p class = "text-xl inline-block">{{$product->Category->name}}</p>--}}
+                        <h1 class = "text-xl font-bold mt-4 inline-block">服裝類別：</h1> <p class = "text-xl inline-block">{{$product->Category->name}}</p>
                     </div>
                 </div>
             </div>
@@ -128,12 +128,14 @@
                     @forelse($combinations as $combination)
                         <div class = "flex flex-row">
                             <h1 class = "basis-1/2 text-xl mt-4 mb-4 pt-2 inline-block">{{$combination->name}}</h1>
-                            <div class = "basis-1/2">
-                                <a href="{{ route('admin.combination.adminshow',['combination' => $combination] ) }}" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">組合明細</a>
-                                <a href="{{route('admin.combination.edit',['combination' => $combination])}}" class="basis-1/2 ml-auto mt-4 mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">編輯組合</a>
-
-
-                                <form action = "{{route('admin.combination.admindestroy')}}" method = "POST" class = "basis-1/2 mt-4">
+                            <div class = "basis-1/2 flex flex-row">
+                                <div class = "basis-1/3">
+                                    <a href="{{ route('admin.combination.adminshow',['combination' => $combination] ) }}" class="block mt-4 w-20 h-10 bg-blue-500 hover:bg-blue-700 text-white text-center rounded-lg cursor-pointer"><p class = "pt-2">組合明細</p></a>
+                                </div>
+                                <div class = "basis-1/3">
+                                    <a href="{{route('admin.combination.edit',['combination' => $combination])}}" class="block mt-4 w-20 h-10 bg-blue-500 hover:bg-blue-700 text-white text-center rounded-lg cursor-pointer"><p class = "pt-2">編輯組合</p></a>
+                                </div>   
+                                <form action = "{{route('admin.combination.admindestroy')}}" method = "POST" class = "basis-1/3 mt-4">
                                     @csrf
                                     @method('DELETE')
                                     <input type = "hidden" name = "combination_ID" value = "{{ $combination->id }}">
@@ -161,7 +163,7 @@
                         <button id="AddSpecificationBtn" class="ml-auto mr-8 mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">新增規格</button>
                     </div>
                     <hr>
-                    @foreach($specifications as $specification)
+                    @forelse($specifications as $specification)
                         <div class = "flex flex-row mt-4 mb-4">
                             <div class = "basis-1/3">
                                 <h1 class = "text-xl">{{$specification->specification_type}}</h1>
@@ -180,7 +182,9 @@
                             </div>
                         </div>
                         <hr>
-                    @endforeach
+                    @empty
+                        <p class = "text-red-500 mt-4">查無商品規格</p>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -199,7 +203,7 @@
             <h1 class = "basis-1/4 text-xl">操作</h1>
         </div>
         <hr>
-        @foreach($stocks as $stock)
+        @forelse($stocks as $stock)
             <div class = "flex flex-row w-80 mt-4">
                 <div class = "basis-1/4 flex items-center w-20 h-10">
                     <h1 class = "text-xl">{{$stock->size}}</h1>
@@ -222,9 +226,12 @@
                     </form>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <p class = "text-red-500 mt-4">查無庫存資料</p>
+        @endforelse
     </div>
 
+    <!-- 新增規格表單 -->
     <div id="AddSpecification" class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 border border-black shadow-lg rounded-md hidden overflow-y-scroll">
         <span class="absolute top-1 right-2 cursor-pointer w-5 h-5 text-2xl" onclick="closeAddSpecification()">&times;</span>
         <form action = "{{route('admin.specification.store')}}" method = "POST">

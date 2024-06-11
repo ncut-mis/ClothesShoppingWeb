@@ -16,26 +16,25 @@
                             <div class = "basis-1/3">
                             </div>
                             <div class = "basis-1/3 flex flex-row">
-                                <div class = "basis-1/2 mt-4">
-                                    <a class="btn btn-sm btn-primary basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-200 h-10 rounded-lg" href="{{route('admin.category.edit',$category->id)}}" >修改類別</a>
+                                <div class = "basis-1/3 mt-4">
+                                    <a class="block basis-1/2 ml-auto mr-8 bg-blue-500 hover:bg-blue-700 text-center text-white font-bold w-200 h-10 rounded-lg" href="{{route('admin.category.edit',$category->id)}}" ><p class = "pt-2">修改類別</p></a>
                                 </div>
-                                <div class = "basis-1/2 mt-4">
-{{--                                    若已上架--}}
+                                <div class = "basis-1/3 mt-4">
                                     @if($category->is_shelf == 0)
                                         <form action="{{route('admin.category.stop',$category->id)}}" method="POST" style="display: inline-block">
                                             @method('patch')
                                             @csrf
-                                            <button class="btn btn-sm btn-warning" type="submit">下架</button>
+                                            <input type = "submit" class="mb-4 text-white bg-blue-500 hover:bg-blue-800 w-20 h-10 rounded-lg cursor-pointer" value = "上架">
                                         </form>
                                     @else
                                         <form action="{{route('admin.category.launch',$category->id)}}" method="POST" style="display: inline-block">
                                             @method('patch')
                                             @csrf
-                                            <button class="btn btn-sm btn-warning" type="submit">下架</button>
+                                            <input type = "submit" class="mb-4 text-white bg-blue-500 hover:bg-blue-800 w-20 h-10 rounded-lg cursor-pointer" value = "下架">
                                         </form>
                                     @endif
                                 </div>
-                                <form action = "{{route('admin.category.destroy')}}" method = "POST" class = "basis-1/2 mt-4">
+                                <form action = "{{route('admin.category.destroy')}}" method = "POST" class = "basis-1/3 mt-4">
                                     @csrf
                                     @method('DELETE')
                                     <input type = "hidden" name = "Category_ID" value = "{{ $category->id }}">
