@@ -44,7 +44,7 @@
                             <template x-for="(photo, index) in photos" :key="index">
                                 <img :src="photo"
                                     x-show="activePhoto === index"
-                                    class="mx-auto w-auto h-full block rounded"
+                                    class="mx-auto w-full max-h-96 object-contain block rounded"
                                     style="display: none;" />
                             </template>
 

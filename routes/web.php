@@ -65,7 +65,7 @@ Route::get('/dashboard', function () {
 //會員首頁
 Route::get('/home', function () {
      $categories = Category::all();
-     $products = Product::with('firstPhoto')->paginate(8);
+     $products = Product::with('firstPhoto')->paginate(16);
      $layout = 'layouts.app';
 
      return view('home', compact('products','categories', 'layout'));

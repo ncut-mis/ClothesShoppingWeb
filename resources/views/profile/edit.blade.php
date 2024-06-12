@@ -1,15 +1,9 @@
 <x-app-layout>
-    <div name="header" class = "bg-orange-500 pt-4 pb-4 flex">
-        <div class = "basis-1/3">
-            <h2 class="text-lg text-white leading-tight text-center">
-                {{ __('會員中心') }}
-            </h2>
-        </div>
-        <div class = "basis-1/3"></div>
-        <div class = "basis-1/3"></div>
+    <div name="header" class = "bg-gray-100 pt-4 pb-4 flex">
+        <h1 class = "mx-auto mt-4 text-2xl font-bold">會員中心</h1>
     </div>
 
-    <div class="py-12">
+    <div class="py-4">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl">

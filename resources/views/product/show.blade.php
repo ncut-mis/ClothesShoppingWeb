@@ -23,37 +23,37 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 h-1/2">
-                    <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3 h-full">
-                        <div class = "product pl-8 pr-8 w-full h-3/4">
-                            <div class = "w-full flex flex-row h-full">
+                <div class="p-6 text-gray-900">
+                    <div class = "bg-white w-full mt-4 ml-4 rounded-lg basis-1/3">
+                        <div class = "product pl-8 pr-8 w-full">
+                            <div class = "w-full flex flex-row">
                                 <!-- 圖片顯示區域 -->
                                 <div class="relative basis-2/3 border" x-data="{ activePhoto: 0, photos: [
                                         @foreach($product->ProductPhoto as $index => $photo)
                                             '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
                                         @endforeach
                                     ] }">
+                                        <!-- 图片轮播显示 -->
+                                        <template x-for="(photo, index) in photos" :key="index">
+                                            <img :src="photo" 
+                                                x-show="activePhoto === index"
+                                                class="mx-auto w-full max-h-96 object-contain block rounded"
+                                                style="display: none;" />
+                                        </template>
 
-                                    <!-- 图片轮播显示 -->
-                                    <template x-for="(photo, index) in photos" :key="index">
-                                        <img :src="photo"
-                                            x-show="activePhoto === index"
-                                            class="mx-auto w-auto h-full block rounded"
-                                            style="display: none;" />
-                                    </template>
-
-                                    <!-- 轮播控制按钮 -->
-                                    <div class="flex justify-center mt-4 mb-4">
-                                        <button class="mx-1 text-xl bg-gray-300 rounded w-5"
-                                                @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
-                                            &lt;
-                                        </button>
-                                        <button class="mx-1 text-xl bg-gray-300 rounded w-5"
-                                                @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
-                                            &gt;
-                                        </button>
+                                        <!-- 轮播控制按钮 -->
+                                        <div class="flex justify-center mt-4 mb-4">
+                                            <button class="mx-1 text-xl bg-gray-300 rounded w-5" 
+                                                    @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
+                                                &lt;
+                                            </button>
+                                            <button class="mx-1 text-xl bg-gray-300 rounded w-5" 
+                                                    @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
+                                                &gt;
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+
 
                                 <!--選擇規格區塊-->
                                 <form method="POST" action="{{route('cartitem.store')}}" id = "cartitem" class = "basis-1/3 ml-8 h-full" onSubmit = "return Check_exist(this);">
@@ -104,7 +104,7 @@
                         </div>
 
                         <!--操作區塊-->
-                        <div class = "flex justify-end gap-2 pl-8 pt-8 h-1/4">
+                        <div class = "flex justify-end gap-2 pl-8 pt-8">
                             @if(\App\Models\Product::Track_isExist($product->id))
                                 <form method="POST" action="{{route('trackeditem.destroy')}}" class = "pb-4">
                                     @csrf
