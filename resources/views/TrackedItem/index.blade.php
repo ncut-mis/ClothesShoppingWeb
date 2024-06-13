@@ -41,7 +41,11 @@
                         @empty
                             <h1 class = "mt-4 text-gray-500">尚未有追蹤的商品</h1>
                         @endforelse
-                        {{$items->links()}}
+
+                        <!--顯示分頁連結-->
+                        <div class = "flex mt-4">
+                            <div class = "mx-auto">{{ $items->links('vendor.pagination.simple-tailwind') }}</div>
+                        </div>
                 </div>
             </div>
         </div>

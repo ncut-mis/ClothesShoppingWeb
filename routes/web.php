@@ -41,7 +41,7 @@ use App\Models\stock;
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         $categories = Category::all();
-        $products = Product::paginate(8); // 示例中随机取5件服装
+        $products = Product::paginate(16); // 示例中随机取5件服装
         $layout = 'layouts.guest';
 
         return view('GuestHome', compact('products','categories', 'layout'));
