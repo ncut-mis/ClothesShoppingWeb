@@ -156,6 +156,8 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::patch('/product/launch',[ProductController::class, 'launch'])->name('product.launch');
+    Route::patch('/product/stop',[ProductController::class, 'stop'])->name('product.stop');
 
     //試搭時撈的資料
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');
