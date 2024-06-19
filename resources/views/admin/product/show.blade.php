@@ -44,7 +44,7 @@
                             <template x-for="(photo, index) in photos" :key="index">
                                 <img :src="photo"
                                     x-show="activePhoto === index"
-                                    class="mx-auto w-auto h-full block rounded"
+                                    class="mx-auto w-full max-h-96 object-contain block rounded"
                                     style="display: none;" />
                             </template>
 
@@ -69,7 +69,7 @@
                         <br>
                         <h1 class = "text-xl font-bold mt-4 inline-block">上架狀態：</h1> <p class = "text-xl inline-block">{{$shelf_status}}</p>
                         <br>
-                        <h1 class = "text-xl font-bold mt-4 inline-block">服裝類別：</h1> <p class = "text-xl inline-block">{{$product->Category->name}}</p>
+                        <h1 class = "text-xl font-bold mt-4 inline-block">服裝類別：{{$product->Category->name}} </h1> <p class = "text-xl inline-block"></p>
                     </div>
                 </div>
             </div>
@@ -100,9 +100,19 @@
                     <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">修改商品</button>
                     <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">刪除商品</button>
                     @if($product->	is_shelf == 0)
-                        <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">上架</button>
+                        <form method = "POST" action = "{{route('admin.product.launch')}}" class = "basis-1/2">
+                            @csrf
+                            @method('patch')
+                            <input type = "hidden" id = "productID" name = "productID" value = "{{$product->id}}">
+                            <input type = "submit" value = "上架" class = "mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                        </form>
                     @else
-                        <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg">下架</button>
+                        <form method = "POST" action = "{{route('admin.product.stop')}}" class = "basis-1/2">
+                            @csrf
+                            @method('patch')
+                            <input type = "hidden" id = "productID" name = "productID" value = "{{$product->id}}">
+                            <input type = "submit" value = "下架" class = "mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                        </form>
                     @endif
                 </div>
             </div>
@@ -134,7 +144,7 @@
                                 </div>
                                 <div class = "basis-1/3">
                                     <a href="{{route('admin.combination.edit',['combination' => $combination])}}" class="block mt-4 w-20 h-10 bg-blue-500 hover:bg-blue-700 text-white text-center rounded-lg cursor-pointer"><p class = "pt-2">編輯組合</p></a>
-                                </div>   
+                                </div>
                                 <form action = "{{route('admin.combination.admindestroy')}}" method = "POST" class = "basis-1/3 mt-4">
                                     @csrf
                                     @method('DELETE')

@@ -268,4 +268,27 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+
+    public function launch(Request $request)
+    {
+        $productID = $request['productID'];
+        $product = Product::find($productID);
+        $product->is_shelf = 1;
+        $product->save();
+
+        session()->flash('message', '上架成功');
+        return back();
+
+    }
+
+    public function stop(Request $request)
+    {
+        $productID = $request['productID'];
+        $product = Product::find($productID);
+        $product->is_shelf = 0;
+        $product->save();
+
+        session()->flash('message', '下架成功');
+        return back();
+    }
 }

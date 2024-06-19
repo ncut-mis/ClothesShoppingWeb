@@ -57,7 +57,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        $products = Product::Where('category_id', '=', $category->id)->paginate(8);
+        $products = Product::Where('category_id', '=', $category->id)->paginate(16);
 
         $categories = Category::all();
 

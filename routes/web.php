@@ -41,7 +41,7 @@ use App\Models\stock;
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         $categories = Category::all();
-        $products = Product::paginate(8); // 示例中随机取5件服装
+        $products = Product::paginate(16); // 示例中随机取5件服装
         $layout = 'layouts.guest';
 
         return view('GuestHome', compact('products','categories', 'layout'));
@@ -65,7 +65,7 @@ Route::get('/dashboard', function () {
 //會員首頁
 Route::get('/home', function () {
      $categories = Category::all();
-     $products = Product::with('firstPhoto')->paginate(8);
+     $products = Product::with('firstPhoto')->paginate(16);
      $layout = 'layouts.app';
 
      return view('home', compact('products','categories', 'layout'));
@@ -156,6 +156,8 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy');
+    Route::patch('/product/launch',[ProductController::class, 'launch'])->name('product.launch');
+    Route::patch('/product/stop',[ProductController::class, 'stop'])->name('product.stop');
 
     //試搭時撈的資料
     Route::get('/AllProduct/{productID}' , [ProductController::class, 'AllData'])->name('product.allData');

@@ -67,7 +67,7 @@
         function insertDIV(divId , ID){
             var newDiv = document.createElement('div'); // 创建一个新的 div 元素
             newDiv.id = ID; // 设置ID
-            newDiv.className = 'inline-block border w-40 h-40';
+            newDiv.className = 'inline-block w-40 h-full';
 
             document.getElementById(divId).appendChild(newDiv);
         }
@@ -94,8 +94,8 @@
                         <div class = basis-1/2>
                             <div class = "mt-4">
                                 <div class = "mb-4">
-                                    <h1>主要商品：{{$MainProduct->name}}</h1>
-                                    <img src="{{ asset('images/' . $MainProduct->firstPhoto->file_address) }}" class = "border w-80 h-80"> 
+                                    <h1 class = "inline">主要商品：<p class = "inline font-bold">{{$MainProduct->name}}</p></h1>
+                                    <img src="{{ asset('images/' . $MainProduct->firstPhoto->file_address) }}" class = "mt-4 border border-black w-80 h-80"> 
                                 </div>  
                                  
                                 <div class = "flex flex-row">
@@ -162,16 +162,16 @@
                         </div>
 
                         <div class = "basis-1/2">
-                            <div class = "grid grid-cols-1 gap-1 border">
-                                <div class="h-40 mt-4 ml-4 mr-4 md:col-span-2 border" id = "cap">
+                            <div class = "grid grid-cols-1 gap-1 border border-black">
+                                <div class="h-40 mt-4 ml-4 mr-4 md:col-span-2 border border-black" id = "cap">
                                 </div>
-                                <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "top">
+                                <div class="h-40 ml-4 mr-4 md:col-span-2 border border-black" id = "top">
                                 </div>
-                                <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "pant">
+                                <div class="h-40 ml-4 mr-4 md:col-span-2 border border-black" id = "pant">
                                 </div>
-                                <div class="h-40 ml-4 mr-4 md:col-span-2 border" id = "sock">
+                                <div class="h-40 ml-4 mr-4 md:col-span-2 border border-black" id = "sock">
                                 </div>
-                                <div class="h-40 mb-4 ml-4 mr-4 md:col-span-2 border" id = "shoe">
+                                <div class="h-40 mb-4 ml-4 mr-4 md:col-span-2 border border-black" id = "shoe">
                                 </div>
                             </div>
 
