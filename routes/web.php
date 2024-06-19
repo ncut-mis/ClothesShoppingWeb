@@ -40,7 +40,7 @@ use App\Models\stock;
 //訪客首頁
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
-        $categories = Category::all();
+        $categories =  Category::where('is_shelf','=',1)->get();
         $products = Product::paginate(16); // 示例中随机取5件服装
         $layout = 'layouts.guest';
 
@@ -64,7 +64,7 @@ Route::get('/dashboard', function () {
 
 //會員首頁
 Route::get('/home', function () {
-     $categories = Category::all();
+     $categories = Category::where('is_shelf','=',1)->get();
      $products = Product::with('firstPhoto')->paginate(16);
      $layout = 'layouts.app';
 
@@ -213,6 +213,8 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/combination/{combination}/edit',[CombinationController::class,'edit'])->name('combination.edit');
     Route::patch('/combination/update',[CombinationController::class,'admin_update'])->name('combination.adminUpdate');
     Route::delete('/combination/delete',[CombinationController::class,'admin_destroy'])->name('combination.admindestroy');
+    Route::patch('/combination/{combinationID}/launch',[CombinationController::class,'launch'])->name('combination.launch');
+    Route::patch('/combination/{combinationID}/stop',[CombinationController::class,'stop'])->name('combination.stop');
 });
 
 

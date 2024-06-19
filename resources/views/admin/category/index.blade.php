@@ -21,13 +21,13 @@
                                 </div>
                                 <div class = "basis-1/3 mt-4">
                                     @if($category->is_shelf == 0)
-                                        <form action="{{route('admin.category.stop',$category->id)}}" method="POST" style="display: inline-block">
+                                        <form action="{{route('admin.category.launch',$category->id)}}" method="POST" style="display: inline-block">
                                             @method('patch')
                                             @csrf
                                             <input type = "submit" class="mb-4 text-white bg-blue-500 hover:bg-blue-800 w-20 h-10 rounded-lg cursor-pointer" value = "上架">
                                         </form>
                                     @else
-                                        <form action="{{route('admin.category.launch',$category->id)}}" method="POST" style="display: inline-block">
+                                        <form action="{{route('admin.category.stop',$category->id)}}" method="POST" style="display: inline-block">
                                             @method('patch')
                                             @csrf
                                             <input type = "submit" class="mb-4 text-white bg-blue-500 hover:bg-blue-800 w-20 h-10 rounded-lg cursor-pointer" value = "下架">

@@ -152,6 +152,21 @@
                                     <input type = "submit" value = "刪除組合" class = "mb-4 text-white bg-red-500 hover:bg-red-800 w-20 h-10 rounded-lg cursor-pointer">
                                 </form>
 
+                                @if($combination->	is_shelf == 0)
+                                    <form method = "POST" action = "{{route('admin.combination.launch',[$combination->id])}}" class = "basis-1/2">
+                                        @csrf
+                                        @method('patch')
+                                        <input type = "hidden" id = "combinationID" name = "combinationID" value = "{{$combination->id}}">
+                                        <input type = "submit" value = "上架" class = "mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                                    </form>
+                                @else
+                                    <form method = "POST" action = "{{route('admin.combination.stop',[$combination->id])}}" class = "basis-1/2">
+                                        @csrf
+                                        @method('patch')
+                                        <input type = "hidden" id = "combinationID" name = "combinationID" value = "{{$combination->id}}">
+                                        <input type = "submit" value = "下架" class = "mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
+                                    </form>
+                                @endif
                             </div>
                         </div>
                         <hr>

@@ -148,4 +148,26 @@ class CombinationController extends Controller
         $stocks = stock::Where('product_id', '=', $product->id)->get();
         return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks]);
     }
+
+    public function stop($combinationID)
+    {
+        $combination = Combination::find($combinationID);
+        $combination->is_shelf = 0;
+        $combination->save();
+
+        return back();
+    }
+
+    //上架類別
+    public function launch($combinationID)
+    {
+        $combination = Combination::find($combinationID);
+        $combination->is_shelf = 1;
+        $combination->save();
+
+        return back();
+    }
+
+
+
 }

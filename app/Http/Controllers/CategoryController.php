@@ -119,9 +119,8 @@ class CategoryController extends Controller
     }
 
     //下架類別
-    public function stop(Request $request)
+    public function stop($categoryID)
     {
-        $categoryID = $request['Category_ID'];
         $category = Category::find($categoryID);
         $category->is_shelf = 0;
         $category->save();
@@ -130,9 +129,8 @@ class CategoryController extends Controller
     }
 
     //上架類別
-    public function launch(Request $request)
+    public function launch($categoryID)
     {
-        $categoryID = $request['Category_ID'];
         $category = Category::find($categoryID);
         $category->is_shelf = 1;
         $category->save();
