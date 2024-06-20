@@ -168,6 +168,15 @@ class CombinationController extends Controller
         return back();
     }
 
+    public function detail_delete(Request $request)
+    {
+        $detailID = $request['detail_id'];
+        $detail = combinations_detail::find($detailID);
+        $detail->delete();
+
+        return back();
+    }
+    
 
 
 }

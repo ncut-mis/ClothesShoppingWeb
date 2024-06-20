@@ -127,9 +127,16 @@
                             <h1>組合內的商品</h1>
                             <h1>主商品：{{$combination->product->name}}</h1>
                             <img src="{{ asset('images/' . $combination->product->firstPhoto->file_address) }}" class = "w-40 h-40 border ml-4">
+                            <hr>
                             @foreach($combination->combinations_detail as $detail)
                                 <h1>{{$detail->product->name}}</h1>
                                 <img src="{{ asset('images/' . $detail->product->firstPhoto->file_address) }}" class = "w-40 h-40 border ml-4">
+                                <form method = "POST" action = "{{route('admin.combination.detail_delete')}}">
+                                    @csrf
+                                    @method('DELETE')    
+                                    <input type = "hidden" id = "detail_id" name = "detail_id" value = "{{$detail->id}}">
+                                    <input type = "submit" value = "刪除" class = "rounded bg-red-500 hover:bg-red-500 w-20 h-10 text-white cursor-pointer">
+                                </form>
                                 <hr>
                             @endforeach
 
