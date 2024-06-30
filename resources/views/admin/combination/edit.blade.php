@@ -1,4 +1,61 @@
 <script>
+    function handleTypeChange() {
+        var categoryType = document.getElementById('type').value;
+
+        fetch(`/admin/TrialItem/categorySearch/${categoryType}`)
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('product');
+            selectElement.innerHTML = '';  // 清空现有的选项
+
+            if (data && Array.isArray(data)) {
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.text = item.name;
+                    selectElement.appendChild(option);
+                });
+            } else {
+                console.error('Search failed.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function handleSearch(event) {
+        event.preventDefault(); // 阻止表单的默认提交行为
+
+        const form = event.target;
+        const formData = new FormData(form);
+        const action = form.action;
+        const csrfToken = form.querySelector('input[name="_token"]').value;
+
+        fetch(action, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            const selectElement = document.getElementById('product');
+            selectElement.innerHTML = ''; // 清空现有的选项
+
+            if (data && Array.isArray(data)) {
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.text = item.name;
+                    selectElement.appendChild(option);
+                });
+            } else {
+                console.error('Search failed.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
     // 新增DIV的函數
     function insertDIV(divId , ID){
         var newDiv = document.createElement('div'); // 创建一个新的 div 元素
@@ -123,6 +180,42 @@
                                 <input type = "text" id = "combinationPrice" name = "combinationPrice" value = "{{$combination->price}}" class = "mt-4">
                                 <input type="submit" value="修改" class = "bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">
                             </form>
+
+                            <div class = "flex flex-row">
+                                <div class = "basis-1/5">
+                                    <label for = "type" class = "text-xl font-bold">搜尋商品</label>
+                                    <br>
+                                    <select id = "type" name = "type" class = "rounded-lg" onchange="handleTypeChange()">
+                                        <option value = "0">頭部飾品</option>
+                                        <option value = "1">衣類</option>
+                                        <option value = "2">褲裙</option>
+                                        <option value = "3">襪類</option>
+                                        <option value = "4">鞋類</option>
+                                    </select>
+                                </div>
+
+                                <div class = "basis-4/5 mt-7">
+                                    <form method = "POST" action = "{{route('admin.product.TrialProuctSearch')}}" id = "search" name = "search" onsubmit="handleSearch(event)">
+                                        @csrf
+                                        <label for = "keyword" class = "text-white text-xl">搜尋</label>
+                                        <input type = "text" id = "keyword" name = "keyword" class = "rounded-lg ml-4" placeholder="請輸入關鍵字">
+                                        <input type="submit" value="搜尋" class = "bg-orange-800 hover:bg-orange-900 text-white rounded-lg w-20 h-10 cursor-pointer">
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class = "mt-8">
+                                <h1 class = "text-red-500">按下Ctrl以多選</h1>
+                                <form method = "POST" action = "{{route('admin.combination.detail_add')}}">
+                                    @csrf
+                                    <select multiple id = "product" name = "product" class = "w-80">
+                                    </select>    
+                                    <input type = "hidden" name = "combinationID" value = "{{ $combination->id }}"> 
+                                    <br>
+                                    <input type = "submit" value = "加入組合" class = "mt-4 bg-blue-500 hover:bg-blue-700 w-20 h-10 cursor-pointer rounded-lg text-white"> 
+                                </form>       
+                            </div>
+
                             <hr>
                             <h1>組合內的商品</h1>
                             <h1>主商品：{{$combination->product->name}}</h1>

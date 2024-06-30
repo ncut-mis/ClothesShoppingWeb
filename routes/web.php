@@ -216,6 +216,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::patch('/combination/{combinationID}/launch',[CombinationController::class,'launch'])->name('combination.launch');
     Route::patch('/combination/{combinationID}/stop',[CombinationController::class,'stop'])->name('combination.stop');
     Route::delete('/combination/detail/delete',[CombinationController::class,'detail_delete'])->name('combination.detail_delete');
+    Route::post('/combination/detail/add',[CombinationController::class,'detail_add'])->name('combination.detail_add');
 });
 
 

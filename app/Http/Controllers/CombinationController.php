@@ -168,6 +168,20 @@ class CombinationController extends Controller
         return back();
     }
 
+    public function detail_add(Request $request)
+    {
+        $combinationID = $request['combinationID'];
+
+        // 若成功新增回傳true，否則為false
+        if(!$this->createTrialItem($combinationID, $request->input('product')))
+        {
+            session()->flash('message', '新增失敗，已存在相同的組合商品');
+        }
+
+        return back();
+        
+    }
+
     public function detail_delete(Request $request)
     {
         $detailID = $request['detail_id'];
@@ -176,7 +190,23 @@ class CombinationController extends Controller
 
         return back();
     }
-    
+
+    private function createTrialItem($combinationID, $selectedProductId)
+    {
+        $detail = new combinations_detail();
+        $detail->combination_id = $combinationID;
+
+        // 判斷試搭商品是否重複
+        $is_exist = combinations_detail::Where('combination_id' , '=' , $combinationID)
+                                        ->Where('product_id','=',$selectedProductId)
+                                        ->exists();
+        if($is_exist){
+            return false;
+        }
+        $detail->product_id = $selectedProductId;
+        $detail->save();   
+        return true;         
+    }
 
 
 }
