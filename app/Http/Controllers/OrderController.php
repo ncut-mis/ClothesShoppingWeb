@@ -223,4 +223,25 @@ class OrderController extends Controller
     {
         //
     }
+
+    /**
+     * Update the status of the specified order.
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'status' => 'required|integer|in:0,1,2,3,4,5,6',
+        ]);
+
+        // Find the order by ID
+        $order = Order::findOrFail($id);
+
+        // Update the order status
+        $order->status = $request->input('status');
+        $order->save();
+
+        // Redirect back with a success message
+        return redirect()->back()->with('success', '訂單狀態已更新');
+    }
 }

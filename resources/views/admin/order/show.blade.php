@@ -73,7 +73,24 @@
                     </div>
                     <h1 class = "text-lg mt-4">買家ID：{{$order->user_id}}</h1>
                     <h1 class = "text-lg mt-4">付款方式：{{$paymentmethodid}}</h1>
+                    
                     <h1 class = "text-lg mt-4">訂單狀態：{{$status}}</h1>
+                    <form method="POST" action="{{route('admin.order.adminUpdate')}}" class="inline">
+                        @csrf
+                        @method('patch')
+                        <input type="hidden" name="OrderID" value="{{$order->id}}">
+                        <select name="status" class="ml-2 p-2 border rounded">
+                            <option value="0" {{ $order->status == 0 ? 'selected' : '' }}>待確認</option>
+                            <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>已確認</option>
+                            <option value="2" {{ $order->status == 2 ? 'selected' : '' }}>已出貨</option>
+                            <option value="3" {{ $order->status == 3 ? 'selected' : '' }}>已到貨</option>
+                            <option value="4" {{ $order->status == 4 ? 'selected' : '' }}>已完成</option>
+                            <option value="5" {{ $order->status == 5 ? 'selected' : '' }}>申請取消</option>
+                            <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>已取消</option>
+                        </select>
+                        <button type="submit" class="ml-2 p-2 bg-blue-500 text-white rounded">更新狀態</button>
+                    </form>
+
                     <h1 class = "text-lg mt-4">買家地址：{{$order->address}}</h1>
                     <h1 class = "text-lg mt-4">買家電話：{{$order->phone}}</h1>
                     <h1 class = "text-lg mt-4">下訂時間：{{$order->created_at}}</h1>
@@ -128,6 +145,7 @@
                         </div>
                     @case(6)
                 @endswitch
+                
             </div>
         </div>
     </div>

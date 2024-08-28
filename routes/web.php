@@ -223,3 +223,5 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
 
 
 require __DIR__ . '/auth.php';
+
+Route::put('/admin/order/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
