@@ -39,10 +39,10 @@
                 @endforeach
             </select>
         </div>
-        <div>
+        {{--<div>
             <label>商品尺寸</label>
             <input type="text" name="size" placeholder="Size" value="{{$product->size}}"/>
-        </div>
+        </div>--}}
         <div>
             <label>商品庫存</label>
             <input type="text" name="stock" placeholder="Stock" value="{{$product->stock}}"/>
