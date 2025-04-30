@@ -103,9 +103,16 @@
                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-24 h-10 text-center rounded cursor-pointer inline-flex items-center justify-center">
                         修改商品
                     </a>
+                    <form action="{{ route('admin.product.destroy', $product->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 w-24 h-10 text-center rounded" onclick="return confirm('確定要刪除商品嗎？')">
+                            刪除商品
+                        </button>
+                    </form>
 
                     {{--<button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">修改商品</button>--}}
-                    <button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">刪除商品</button>
+                    {{--<button id="" class="basis-1/2 ml-auto mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer">刪除商品</button>--}}
                     @if($product->	is_shelf == 0)
                         <form method = "POST" action = "{{route('admin.product.launch')}}" class = "basis-1/2">
                             @csrf
