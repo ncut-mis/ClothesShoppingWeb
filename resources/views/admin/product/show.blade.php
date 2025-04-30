@@ -69,7 +69,9 @@
                         <br>
                         <h1 class = "text-xl font-bold mt-4 inline-block">上架狀態：</h1> <p class = "text-xl inline-block">{{$shelf_status}}</p>
                         <br>
-                        <h1 class = "text-xl font-bold mt-4 inline-block">服裝類別：{{$product->Category->name}} </h1> <p class = "text-xl inline-block"></p>
+                        <h1 class="text-xl font-bold mt-4 inline-block">服裝類別: {{ $product->category->name ?? '未分類' }}
+                        </h1>
+
                     </div>
                 </div>
             </div>

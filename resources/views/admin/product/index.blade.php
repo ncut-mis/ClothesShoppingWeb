@@ -55,7 +55,8 @@
                                         <h1>{{$product->name}}</h1>
                                     </div>
                                     <div class = "basis-1/3 flex items-center">
-                                         <h1>{{$product->Category->name}}</h1>
+                                        <h1>{{ $product->category->name ?? '（無分類）' }}</h1>
+
                                     </div>
                                 </div>
                             </a>

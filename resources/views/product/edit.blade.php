@@ -18,7 +18,7 @@
 {{--            </ul>--}}
 {{--        @endif--}}
     </div>
-    <form method="post" action="{{route('product.update',['product' => $product])}}">
+    <form method="post" action="{{route('admin.product.update',['product' => $product->id])}}">
         @csrf
         @method('put')
         <div>

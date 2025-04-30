@@ -154,7 +154,7 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     Route::get('/product/create', [ProductController::class, 'admin_create'])->name('product.create');//新增商品頁面
     Route::post('/product/store',[ProductController::class,'admin_storestore'])->name('product.adminStore');//儲存商品
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
-    Route::put('/product/{product}/update', [ProductController::class, 'update'])->name('product.update');
+    Route::put('/product/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy');
     Route::patch('/product/launch',[ProductController::class, 'launch'])->name('product.launch');
     Route::patch('/product/stop',[ProductController::class, 'stop'])->name('product.stop');
