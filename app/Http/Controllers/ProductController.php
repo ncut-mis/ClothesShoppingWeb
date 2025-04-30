@@ -184,7 +184,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('product.edit',['product' => $product]);
+        $categories = Category::all(); // 把所有商品類別抓出來
+        return view('product.edit', [
+            'product' => $product,
+            'categories' => $categories
+        ]);
     }
 
     /**

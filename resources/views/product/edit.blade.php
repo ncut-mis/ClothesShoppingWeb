@@ -27,11 +27,21 @@
         </div>
         <div>
             <label>商品顏色</label>
-            <input type="text" name="name" placeholder="Name" value="{{$product->color}}"/>
+            <input type="text" name="color" placeholder="Color" value="{{$product->color}}"/>
+        </div>
+        <div>
+            <label>商品類別</label>
+            <select name="category_id">
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
         </div>
         <div>
             <label>商品尺寸</label>
-            <input type="text" name="name" placeholder="Name" value="{{$product->size}}"/>
+            <input type="text" name="size" placeholder="Size" value="{{$product->size}}"/>
         </div>
         <div>
             <label>商品庫存</label>
