@@ -4,7 +4,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1 class="mt-4 font-bold text-2xl">編輯商品</h1>
-                    <form action="{{route('admin.product.update',['product' => $product->id])}}">
+                    <form action="{{route('product.update',['product' => $product->id])}}">
                         @csrf
                         @method('put')
                         <div class="form-group">

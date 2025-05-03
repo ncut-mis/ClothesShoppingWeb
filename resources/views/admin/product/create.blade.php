@@ -19,8 +19,14 @@
                             <label for="description">商品描述</label>
                             <textarea name = "description" id = "description" class = "mt-4"></textarea>
                             <br>
-                            <label for="image">選擇圖片</label>
-                            <input type="file" class="form-control mt-4" name="images[]"  id="image" multiple>
+                            <label for="image1">選擇圖片</label>
+                            <input type="file" class="form-control mt-2" name="images[]" id="image1">
+                            <br>
+                            <label for="image2" class="mt-3">選擇圖片</label>
+                            <input type="file" class="form-control mt-2" name="images[]" id="image2">
+                            <br>
+                            <label for="image3" class="mt-3">選擇圖片</label>
+                            <input type="file" class="form-control mt-2" name="images[]" id="image3">
                             <br>
                         </div>
                         <input type="submit" class="bg-blue-500" value = "上傳">
