@@ -60,39 +60,47 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const inputs = document.querySelectorAll('.image-input');
+            const input = document.querySelector('.image-input');
             const container = document.getElementById('sortable-photos');
+            let totalImageCount = container.querySelectorAll('.photo-item').length; // 初始圖數（原有圖片）
 
             // 初始化 Sortable 拖曳
             Sortable.create(container, {
                 animation: 150
             });
 
-            // 新選圖片即時預覽並加入 sortable 區域
-            inputs.forEach(input => {
-                input.addEventListener('change', function (event) {
-                    const files = event.target.files;
+            // 當使用者選擇新圖片時
+            input.addEventListener('change', function (event) {
+                const files = event.target.files;
 
-                    Array.from(files).forEach(file => {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const wrapper = document.createElement('div');
-                            wrapper.classList.add('photo-item');
-                            wrapper.style.marginRight = '10px';
+                // 如果加上這次選的檔案，會超過 5 張，就阻止
+                if (totalImageCount + files.length > 5) {
+                    alert("最多只能上傳 5 張圖片（含原有圖片）！");
+                    input.value = ''; // 清空選擇的檔案
+                    return;
+                }
 
-                            const img = document.createElement('img');
-                            img.src = e.target.result;
-                            img.style.width = '100px';
-                            img.style.height = '100px';
-                            img.style.objectFit = 'cover';
-                            img.style.border = '1px solid #ccc';
-                            img.style.borderRadius = '5px';
+                // 正常處理：新增圖片縮圖
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const wrapper = document.createElement('div');
+                        wrapper.classList.add('photo-item');
+                        wrapper.style.marginRight = '10px';
 
-                            wrapper.appendChild(img);
-                            container.appendChild(wrapper);
-                        };
-                        reader.readAsDataURL(file);
-                    });
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.style.width = '100px';
+                        img.style.height = '100px';
+                        img.style.objectFit = 'cover';
+                        img.style.border = '1px solid #ccc';
+                        img.style.borderRadius = '5px';
+
+                        wrapper.appendChild(img);
+                        container.appendChild(wrapper);
+                        totalImageCount++; // 增加總數計數
+                    };
+                    reader.readAsDataURL(file);
                 });
             });
         });
