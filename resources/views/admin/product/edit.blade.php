@@ -29,15 +29,32 @@
                             <label for="description">商品描述</label>
                             <textarea name = "description" id = "description" class = "mt-4" value="{{$product->description}}"></textarea>
                             <br>
-                            <label for="image1">選擇圖片</label>
-                            <input type="file" class="form-control mt-2" name="images[]" id="image1">
-                            <br>
-                            <label for="image2" class="mt-3">選擇圖片</label>
-                            <input type="file" class="form-control mt-2" name="images[]" id="image2">
-                            <br>
-                            <label for="image3" class="mt-3">選擇圖片</label>
-                            <input type="file" class="form-control mt-2" name="images[]" id="image3">
-                            <br>
+                            {{-- 上傳圖片欄位（可以上傳新的） --}}
+                            @for ($i = 0; $i < 3; $i++)
+                                <div class="mb-3">
+                                    <label class="form-label">選擇圖片</label>
+                                    <input type="file" name="photos[]" class="form-control">
+                                </div>
+                            @endfor
+                            {{-- 已有圖片區塊（可拖曳排序） --}}
+                            @if(isset($photos) && count($photos))
+                                <div class="mb-3">
+                                    <label>目前圖片（可拖曳排序）</label>
+                                    <div style="display: flex; gap: 10px;">
+                                        @foreach($photos as $photo)
+                                            <div>
+                                                <img src="{{ asset('images/' . $photo->file_address) }}" width="100">
+                                                <div style="font-size: 12px; color: gray;">
+                                                    {{ asset('images/' . $photo->file_address) }}
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @else
+                                <p style="color: red;">⚠ 沒有抓到圖片資料</p>
+                            @endif
+
                         </div>
                         <input type="submit" class="bg-blue-500" value = "更新">
                     </form>

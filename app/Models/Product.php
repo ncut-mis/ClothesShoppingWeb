@@ -13,6 +13,8 @@ use App\Models\Tracked_item;
 use App\Models\specification;
 use App\Models\stock;
 use App\Models\TrialItem;
+use App\Models\ProductPhoto;
+
 
 class Product extends Model
 {
@@ -43,9 +45,9 @@ class Product extends Model
         return $this->hasMany(Tracked_item::class);
     }
 
-    public function ProductPhoto()
+    public function productPhotos()
     {
-        return $this->hasMany(ProductPhoto::class);
+        return $this->hasMany(ProductPhoto::class)->orderBy('sort_order');
     }
 
     public function firstPhoto()

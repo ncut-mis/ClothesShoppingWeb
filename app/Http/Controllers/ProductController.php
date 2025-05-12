@@ -185,9 +185,11 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all(); // 把所有商品類別抓出來
+        $photos = $product->productPhotos; // ← 呼叫你剛剛那個 function 名稱
         return view('admin.product.edit', [
             'product' => $product,
-            'categories' => $categories
+            'categories' => $categories,
+            'photos' => $photos // ← 傳給 view
         ]);
     }
 
