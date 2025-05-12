@@ -30,12 +30,10 @@
                             <textarea name = "description" id = "description" class = "mt-4" value="{{$product->description}}"></textarea>
                             <br>
                             {{-- 上傳圖片欄位 --}}
-                            @for ($i = 0; $i < 3; $i++)
-                                <div class="mb-3">
-                                    <label class="form-label">選擇圖片</label>
-                                    <input type="file" name="photos[]" class="form-control image-input">
-                                </div>
-                            @endfor
+                            <div class="mb-3">
+                                <label class="form-label">選擇圖片（可複選）</label>
+                                <input type="file" name="photos[]" class="form-control image-input" multiple>
+                            </div>
 
                             {{-- 圖片顯示區域 --}}
                             <div id="sortable-photos" style="display: flex; gap: 10px; flex-wrap: wrap;">
