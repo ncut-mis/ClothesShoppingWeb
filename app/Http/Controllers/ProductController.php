@@ -175,8 +175,17 @@ class ProductController extends Controller
         $TrialItems = TrialItem::Where('product_id', '=', $product->id)->paginate(10);
         $stocks = stock::Where('product_id', '=', $product->id)->get();
         $specifications = specification::Where('product_id','=',$product->id)->get();
+        $photos = ProductPhoto::where('product_id', $product->id)->get(); // ✅ 加這行
 
-        return view('admin.product.show', ['product' => $product , 'combinations' => $combinations , 'stocks' => $stocks , 'TrialItems' => $TrialItems , 'specifications' => $specifications]);
+
+        return view('admin.product.show', [
+            'product' => $product,
+            'combinations' => $combinations,
+            'stocks' => $stocks,
+            'TrialItems' => $TrialItems,
+            'specifications' => $specifications,
+            'photos' => $photos,
+        ]);
     }
 
     /**
@@ -205,9 +214,25 @@ class ProductController extends Controller
             'category_id' => 'required|integer',
         ]);
 
-        $product -> update($validated);
-        return redirect(route('product.index'))->with('success','Product Update Successfully');
+        $product->update($validated);
+
+        // ✅ 新增：讀取排序資料
+        $sortOrderArray = $request->input('sort_order');
+
+        if ($sortOrderArray && is_array($sortOrderArray)) {
+            foreach ($sortOrderArray as $index => $photoId) {
+                // 只處理舊圖片（新圖是 data-id="new_..." 不會是純數字）
+                if (is_numeric($photoId)) {
+                    \App\Models\ProductPhoto::where('id', $photoId)
+                        ->where('product_id', $product->id)
+                        ->update(['sort_order' => $index]);
+                }
+            }
+        }
+
+        return redirect(route('product.index'))->with('success', 'Product Update Successfully');
     }
+
 
     /**
      * Remove the specified resource from storage.

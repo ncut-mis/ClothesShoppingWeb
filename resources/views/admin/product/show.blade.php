@@ -35,10 +35,11 @@
                     <div class = "basis-1/2 h-full">
                         <h1 class = "text-3xl font-bold">{{$product->name}}</h1>
                         <div class="relative border basis-1/2 mt-4" x-data="{ activePhoto: 0, photos: [
-                                @foreach($product->ProductPhoto as $index => $photo)
-                                    '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
+                                @foreach($photos as $index => $photo)
+                                    <img src="{{ asset('images/' . $photo->file_address) }}" alt="商品圖片">
                                 @endforeach
-                            ] }">
+
+                        ] }">
 
                             <!-- 图片轮播显示 -->
                             <template x-for="(photo, index) in photos" :key="index">

@@ -4,7 +4,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <h1 class="mt-4 font-bold text-2xl">編輯商品</h1>
-                    <form action="{{route('admin.product.update',['product' => $product->id])}}">
+                    <form action="{{ route('admin.product.update', ['product' => $product->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="form-group">
@@ -49,6 +49,8 @@
                                 @endif
                                 {{-- 新選圖片會即時加進來 --}}
                             </div>
+                            {{-- ✅ 排序資料會自動產生在這裡 --}}
+                            <div id="image-order-container"></div>
                         </div>
                         <input type="submit" class="bg-blue-500" value = "更新">
                     </form>
@@ -62,31 +64,31 @@
         document.addEventListener('DOMContentLoaded', function () {
             const input = document.querySelector('.image-input');
             const container = document.getElementById('sortable-photos');
-            let totalImageCount = container.querySelectorAll('.photo-item').length; // 初始圖數（原有圖片）
+            const orderContainer = document.getElementById('image-order-container');
+            let totalImageCount = container.querySelectorAll('.photo-item').length;
 
             // 初始化 Sortable 拖曳
             Sortable.create(container, {
-                animation: 150
+                animation: 150,
+                onSort: updateOrderInputs // 拖曳時更新排序資料
             });
 
-            // 當使用者選擇新圖片時
+            // 加入新圖片
             input.addEventListener('change', function (event) {
                 const files = event.target.files;
 
-                // 如果加上這次選的檔案，會超過 5 張，就阻止
                 if (totalImageCount + files.length > 5) {
-                    alert("最多只能上傳 5 張圖片（含原有圖片）！");
-                    input.value = ''; // 清空選擇的檔案
+                    alert("最多只能上傳 5 張圖片！");
+                    input.value = '';
                     return;
                 }
 
-                // 正常處理：新增圖片縮圖
                 Array.from(files).forEach(file => {
                     const reader = new FileReader();
                     reader.onload = function (e) {
                         const wrapper = document.createElement('div');
                         wrapper.classList.add('photo-item');
-                        wrapper.style.marginRight = '10px';
+                        wrapper.setAttribute('data-id', 'new_' + Date.now()); // 為新圖片產生唯一 ID
 
                         const img = document.createElement('img');
                         img.src = e.target.result;
@@ -98,11 +100,31 @@
 
                         wrapper.appendChild(img);
                         container.appendChild(wrapper);
-                        totalImageCount++; // 增加總數計數
+                        totalImageCount++;
+
+                        updateOrderInputs(); // 新增圖片後更新排序欄位
                     };
                     reader.readAsDataURL(file);
                 });
             });
+
+            // 更新隱藏欄位內容
+            function updateOrderInputs() {
+                const photoItems = container.querySelectorAll('.photo-item');
+                orderContainer.innerHTML = ''; // 先清空
+
+                photoItems.forEach((item, index) => {
+                    const id = item.getAttribute('data-id');
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'sort_order[]';
+                    input.value = id;
+                    orderContainer.appendChild(input);
+                });
+            }
+            // 初始化時也要跑一次（處理原本圖片）
+            updateOrderInputs();
         });
     </script>
+
 </x-admin.app-layout>
