@@ -41,14 +41,14 @@
                                 <div class="mb-3">
                                     <label>目前圖片（可拖曳排序）</label>
                                     <div style="display: flex; gap: 10px;">
-                                        @foreach($photos as $photo)
-                                            <div>
-                                                <img src="{{ asset('images/' . $photo->file_address) }}" width="100">
-                                                <div style="font-size: 12px; color: gray;">
-                                                    {{ asset('images/' . $photo->file_address) }}
+                                        <div id="sortable-photos" style="display: flex; gap: 10px;">
+                                            @foreach ($photos as $photo)
+                                                <div class="photo-item" data-id="{{ $photo->id }}">
+                                                    <img src="{{ asset('images/' . $photo->file_address) }}" width="100">
                                                 </div>
-                                            </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>
+
                                     </div>
                                 </div>
                             @else
@@ -62,4 +62,10 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script>
+        new Sortable(document.getElementById('sortable-photos'), {
+            animation: 150
+        });
+    </script>
 </x-admin.app-layout>
