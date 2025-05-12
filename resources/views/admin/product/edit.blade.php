@@ -29,32 +29,28 @@
                             <label for="description">商品描述</label>
                             <textarea name = "description" id = "description" class = "mt-4" value="{{$product->description}}"></textarea>
                             <br>
-                            {{-- 上傳圖片欄位（可以上傳新的） --}}
+                            {{-- 上傳圖片欄位 --}}
                             @for ($i = 0; $i < 3; $i++)
                                 <div class="mb-3">
                                     <label class="form-label">選擇圖片</label>
-                                    <input type="file" name="photos[]" class="form-control">
+                                    <input type="file" name="photos[]" class="form-control image-input">
                                 </div>
                             @endfor
-                            {{-- 已有圖片區塊（可拖曳排序） --}}
-                            @if(isset($photos) && count($photos))
-                                <div class="mb-3">
-                                    <label>目前圖片（可拖曳排序）</label>
-                                    <div style="display: flex; gap: 10px;">
-                                        <div id="sortable-photos" style="display: flex; gap: 10px;">
-                                            @foreach ($photos as $photo)
-                                                <div class="photo-item" data-id="{{ $photo->id }}">
-                                                    <img src="{{ asset('images/' . $photo->file_address) }}" width="100">
-                                                </div>
-                                            @endforeach
+
+                            {{-- 圖片顯示區域 --}}
+                            <div id="sortable-photos" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                {{-- 顯示已上傳圖片 --}}
+                                @if(isset($photos) && count($photos))
+                                    @foreach ($photos as $photo)
+                                        <div class="photo-item" data-id="{{ $photo->id }}">
+                                            <img src="{{ asset('images/' . $photo->file_address) }}" style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px;">
                                         </div>
-
-                                    </div>
-                                </div>
-                            @else
-                                <p style="color: red;">⚠ 沒有抓到圖片資料</p>
-                            @endif
-
+                                    @endforeach
+                                @else
+                                    <p style="color: red;">尚未抓到圖片資料</p>
+                                @endif
+                                {{-- 新選圖片會即時加進來 --}}
+                            </div>
                         </div>
                         <input type="submit" class="bg-blue-500" value = "更新">
                     </form>
@@ -62,10 +58,45 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
     <script>
-        new Sortable(document.getElementById('sortable-photos'), {
-            animation: 150
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputs = document.querySelectorAll('.image-input');
+            const container = document.getElementById('sortable-photos');
+
+            // 初始化 Sortable 拖曳
+            Sortable.create(container, {
+                animation: 150
+            });
+
+            // 新選圖片即時預覽並加入 sortable 區域
+            inputs.forEach(input => {
+                input.addEventListener('change', function (event) {
+                    const files = event.target.files;
+
+                    Array.from(files).forEach(file => {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const wrapper = document.createElement('div');
+                            wrapper.classList.add('photo-item');
+                            wrapper.style.marginRight = '10px';
+
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.width = '100px';
+                            img.style.height = '100px';
+                            img.style.objectFit = 'cover';
+                            img.style.border = '1px solid #ccc';
+                            img.style.borderRadius = '5px';
+
+                            wrapper.appendChild(img);
+                            container.appendChild(wrapper);
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                });
+            });
         });
     </script>
 </x-admin.app-layout>
