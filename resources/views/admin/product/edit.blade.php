@@ -52,7 +52,7 @@
                             {{-- ✅ 排序資料會自動產生在這裡 --}}
                             <div id="image-order-container"></div>
                         </div>
-                        <input type="submit" class="bg-blue-500" value = "更新">
+                        <input type="submit" class="mt-4 mr-8 bg-blue-500 hover:bg-blue-700 text-white font-bold w-20 h-10 rounded-lg cursor-pointer" value = "更新">
                     </form>
                 </div>
             </div>
