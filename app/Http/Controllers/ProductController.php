@@ -22,15 +22,15 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::Where('is_shelf','=',1)-get();
-        return view('product.index', ['products' =>$products]);
+        $products = Product::Where('is_shelf', '=', 1) - get();
+        return view('product.index', ['products' => $products]);
     }
 
     public function admin_index()
     {
         $products = Product::paginate(10);
         $categories = Category::all();
-        return view('admin.product.index', ['products' =>$products , 'categories' => $categories]);
+        return view('admin.product.index', ['products' => $products, 'categories' => $categories]);
     }
 
     /**
@@ -80,7 +80,7 @@ class ProductController extends Controller
         $product->save();
 
 
-        foreach ($request->file('images') as $image){
+        foreach ($request->file('images') as $image) {
             $filename = $image->getClientOriginalName(); //待優化，有潛在問題
             $image->move(public_path('images'), $filename);
 
@@ -95,7 +95,6 @@ class ProductController extends Controller
 
 
         return back()->with('success', 'You have successfully upload image.')->with('image', $filename);
-
     }
 
     public function admin_store(Request $request)
@@ -122,7 +121,7 @@ class ProductController extends Controller
         $product->save();
 
 
-        foreach ($request->file('images') as $image){
+        foreach ($request->file('images') as $image) {
             $filename = $image->getClientOriginalName(); //待優化，有潛在問題
             $image->move(public_path('images'), $filename);
 
@@ -147,7 +146,7 @@ class ProductController extends Controller
         //image可修改成取亂數隨機顯示商品圖片，也可取出所有圖片，也可在Model去定義圖片顯示方法
         $image = ProductPhoto::Where('product_id', '=', $product->id)->first();
         $combinations = Combination::Where('product_id', '=', $product->id)
-            ->where('is_shelf','=',1)
+            ->where('is_shelf', '=', 1)
             ->get();
 
         // 回傳跟目前所在商品有關連的訂單而且已完成的訂單
@@ -160,10 +159,10 @@ class ProductController extends Controller
 
         if (Auth::check()) {
             // 用戶已登入，使用 auth layout
-            return view('product.show', ['product' => $product , 'combinations' => $combinations , 'orders'=> $orders , 'layout' => 'layouts.app']);
+            return view('product.show', ['product' => $product, 'combinations' => $combinations, 'orders' => $orders, 'layout' => 'layouts.app']);
         } else {
             // 用戶未登入，使用 guest layout
-            return view('product.show', ['product' => $product , 'combinations' => $combinations , 'orders'=> $orders , 'layout' => 'layouts.guest']);
+            return view('product.show', ['product' => $product, 'combinations' => $combinations, 'orders' => $orders, 'layout' => 'layouts.guest']);
         }
     }
 
@@ -174,7 +173,7 @@ class ProductController extends Controller
         $combinations = Combination::Where('product_id', '=', $product->id)->paginate(10);
         $TrialItems = TrialItem::Where('product_id', '=', $product->id)->paginate(10);
         $stocks = stock::Where('product_id', '=', $product->id)->get();
-        $specifications = specification::Where('product_id','=',$product->id)->get();
+        $specifications = specification::Where('product_id', '=', $product->id)->get();
         $photos = ProductPhoto::where('product_id', $product->id)->get(); // ✅ 加這行
 
 
@@ -193,15 +192,16 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = Category::all(); // 把所有商品類別抓出來
-        $photos = $product->productPhotos; // ← 呼叫你剛剛那個 function 名稱
+        $categories = Category::all();
+        $photos = $product->productPhotos;
+
         return view('admin.product.edit', [
             'product' => $product,
             'categories' => $categories,
-            'photos' => $photos // ← 傳給 view
+            'photos' => $photos
         ]);
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
@@ -248,25 +248,23 @@ class ProductController extends Controller
         $exists = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->exists();
         $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
         $categories = Category::paginate(10, ['*'], 'categoryPage')
-                          ->withQueryString();
+            ->withQueryString();
         if ($exists) {
-            if (Auth::check()){
+            if (Auth::check()) {
                 $layout = 'layouts.app';
-                return view('home', compact('categories','products','layout'));
-            }
-            else{
+                return view('home', compact('categories', 'products', 'layout'));
+            } else {
                 $layout = 'layouts.guest';
-                return view('GuestHome', compact('categories','products','layout'));
+                return view('GuestHome', compact('categories', 'products', 'layout'));
             }
         } else {
             session()->flash('message', '查無商品');
-            if (Auth::check()){
+            if (Auth::check()) {
                 $layout = 'layouts.app';
-                return view('home', compact('categories','products','layout'));
-            }
-            else{
+                return view('home', compact('categories', 'products', 'layout'));
+            } else {
                 $layout = 'layouts.guest';
-                return view('GuestHome', compact('categories','products','layout'));
+                return view('GuestHome', compact('categories', 'products', 'layout'));
             }
         }
     }
@@ -276,19 +274,19 @@ class ProductController extends Controller
         $exists = Product::Where('name', '=', $request['keyword'])->exists();
         $products = Product::Where('name', 'like', '%' . $request['keyword'] . '%')->paginate(8);
         $categories = Category::paginate(10, ['*'], 'categoryPage')
-                          ->withQueryString();
+            ->withQueryString();
         if ($exists) {
-            return view('admin.product.index', compact('categories','products'));
+            return view('admin.product.index', compact('categories', 'products'));
         } else {
             session()->flash('message', '查無商品');
-            return view('admin.product.index', compact('categories','products'));
+            return view('admin.product.index', compact('categories', 'products'));
         }
     }
 
     public function type_search($categoryType)
     {
-        $products = Product::whereHas('Category', function($query) use ($categoryType) {
-            $query->where('category_id', '=', $categoryType+1);
+        $products = Product::whereHas('Category', function ($query) use ($categoryType) {
+            $query->where('category_id', '=', $categoryType + 1);
         })->get();
 
         return response()->json($products);
@@ -311,7 +309,6 @@ class ProductController extends Controller
 
         session()->flash('message', '上架成功');
         return back();
-
     }
 
     public function stop(Request $request)
