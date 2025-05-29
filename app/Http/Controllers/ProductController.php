@@ -39,7 +39,85 @@ class ProductController extends Controller
 
     public function admin_create()
     {
-        return view('admin.product.create');
+        $categories = Category::all();
+
+        return view('admin.product.create', [
+            'categories' => $categories
+        ]);
+        //return view('admin.product.create');
+    }
+
+    public function admin_storestore(Request $request)
+    {
+        $validated = $request->validate([
+            'name'        => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+            'price'       => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'photos'      => 'nullable|array|max:5',
+            'photos.*'    => 'image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+        ]);
+
+        $product = Product::create([
+            'name'        => $validated['name'],
+            'stock'       => 0,
+            'price'       => $validated['price'],
+            'description' => $validated['description'],
+            'is_shelf'    => 1, // 預設上架
+            'category_id' => $validated['category_id'],
+        ]);
+
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                if ($photo->isValid()) {
+                    $timestamp = now()->format('YmdHisv');
+                    $extension = $photo->getClientOriginalExtension();
+                    $newFileName = $timestamp . '.' . $extension;
+
+                    // 將圖片儲存到 storage/app/public/product_photos/
+                    $destinationPath = public_path('images');
+                    $photo->move($destinationPath, $newFileName);
+
+                    // 建立照片紀錄
+                    \App\Models\ProductPhoto::create([
+                        'product_id'   => $product->id,
+                        'file_address' => $newFileName,
+                    ]);
+                }
+            }
+        }
+        return redirect('/admin/product/list')->with('success', '商品新增成功！');
+    }
+
+    public function adminSearch(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $categoryId = $request->input('category_id');
+
+        $query = Product::with(['firstPhoto', 'Category']);
+
+        // 關鍵字搜尋（針對名稱與描述）
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%")
+                    ->orWhere('description', 'like', "%{$keyword}%");
+            });
+        }
+
+        // 類別篩選（若有選擇）
+        if (!empty($categoryId) && intval($categoryId) !== 0) {
+            $query->where('category_id', $categoryId);
+        }
+
+        $products = $query->paginate(8)->appends([
+            'keyword' => $keyword,
+            'category_id' => $categoryId,
+        ]);
+
+        // 把所有類別抓來讓篩選可以保留原選項
+        $categories = \App\Models\Category::all();
+
+        return view('admin.product.index', compact('products', 'categories'));
     }
 
     public function photo($productID)
@@ -201,7 +279,7 @@ class ProductController extends Controller
             'photos' => $photos
         ]);
     }
-    
+
     /**
      * Update the specified resource in storage.
      */
@@ -223,11 +301,11 @@ class ProductController extends Controller
                     $timestamp = now()->format('YmdHisv'); // 例如 20240526230015999（包含毫秒）
                     $extension = $photo->getClientOriginalExtension(); // 取得副檔名
                     $newFileName = $timestamp . '.' . $extension;
-    
+
                     // 將圖片儲存到 storage/app/public/product_photos/
                     $destinationPath = public_path('images');
                     $photo->move($destinationPath, $newFileName);
-    
+
                     // 寫入資料庫
                     \App\Models\ProductPhoto::create([
                         'product_id'   => $product->id,

@@ -149,11 +149,12 @@ Route::middleware(['auth:admin','check.Adminblocked'])->name('admin.')->prefix('
     //商品
     Route::get('/product/list', [ProductController::class, 'admin_index'])->name('product.adminIndex');
     Route::get('/product/{product}/show', [ProductController::class, 'admin_show'])->name('product.adminShow');
-    Route::get('/product/Search', [ProductController::class, 'admin_search'])->name('product.adminSearch');
+    //Route::get('/product/Search', [ProductController::class, 'admin_search'])->name('product.adminSearch');
     Route::patch('/Stock/Update', [StockController::class, 'update'])->name('stock.update');
     Route::get('/Combination/Search', [CombinationController::class, 'admin_search'])->name('combination.adminSearch');
     Route::get('/product/create', [ProductController::class, 'admin_create'])->name('product.create');//新增商品頁面
-    Route::post('/product/store',[ProductController::class,'admin_storestore'])->name('product.adminStore');//儲存商品
+    Route::post('/product/create',[ProductController::class,'admin_storestore'])->name('product.adminStore');//儲存商品
+    Route::get('/product/search', [ProductController::class, 'adminSearch'])->name('product.adminSearch');
     Route::get('/product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit');
     Route::put('/product/{product}', [ProductController::class, 'update'])->name('product.update');
     Route::delete('/product/{product}/delete', [ProductController::class, 'destroy'])->name('product.destroy');
