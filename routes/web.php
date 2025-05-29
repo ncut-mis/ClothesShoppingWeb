@@ -41,7 +41,8 @@ use App\Models\stock;
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         $categories =  Category::where('is_shelf','=',1)->get();
-        $products = Product::paginate(16); // 示例中随机取5件服装
+        //$products = Product::paginate(16); // 示例中随机取5件服装
+        $products = Product::where('is_shelf', 1)->paginate(16);
         $layout = 'layouts.guest';
 
         return view('GuestHome', compact('products','categories', 'layout'));
@@ -65,7 +66,7 @@ Route::get('/dashboard', function () {
 //會員首頁
 Route::get('/home', function () {
      $categories = Category::where('is_shelf','=',1)->get();
-     $products = Product::with('firstPhoto')->paginate(16);
+     $products = Product::where('is_shelf', 1)->with('firstPhoto')->paginate(16);
      $layout = 'layouts.app';
 
      return view('home', compact('products','categories', 'layout'));
