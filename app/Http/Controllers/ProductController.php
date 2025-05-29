@@ -207,6 +207,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
+        //die('in update');
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|integer',
@@ -216,21 +217,27 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        // ✅ 新增：讀取排序資料
-        $sortOrderArray = $request->input('sort_order');
-
-        if ($sortOrderArray && is_array($sortOrderArray)) {
-            foreach ($sortOrderArray as $index => $photoId) {
-                // 只處理舊圖片（新圖是 data-id="new_..." 不會是純數字）
-                if (is_numeric($photoId)) {
-                    \App\Models\ProductPhoto::where('id', $photoId)
-                        ->where('product_id', $product->id)
-                        ->update(['sort_order' => $index]);
+        if ($request->hasFile('photos')) {
+            foreach ($request->file('photos') as $photo) {
+                if ($photo->isValid()) {
+                    $timestamp = now()->format('YmdHisv'); // 例如 20240526230015999（包含毫秒）
+                    $extension = $photo->getClientOriginalExtension(); // 取得副檔名
+                    $newFileName = $timestamp . '.' . $extension;
+    
+                    // 將圖片儲存到 storage/app/public/product_photos/
+                    $destinationPath = public_path('images');
+                    $photo->move($destinationPath, $newFileName);
+    
+                    // 寫入資料庫
+                    \App\Models\ProductPhoto::create([
+                        'product_id'   => $product->id,
+                        'file_address' => $newFileName, // 儲存相對於 storage 的路徑
+                    ]);
                 }
             }
         }
 
-        return redirect(route('product.index'))->with('success', 'Product Update Successfully');
+        return redirect()->route('admin.product.edit', ['product' => $product->id])->with('success', '商品更新成功');
     }
 
 
@@ -241,6 +248,18 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()->route('product.index')->with('success', 'Product Deleted Successfully');
+    }
+
+    public function photoDestroy($id)
+    {
+        $photo = ProductPhoto::findOrFail($id);
+        $filePath = public_path('images/' . $photo->file_address);
+        if (file_exists($filePath)) {
+            unlink($filePath);
+        }
+        // 刪除資料表紀錄
+        $photo->delete();
+        return response()->json(['status' => 'success']);
     }
 
     public function search(Request $request)
