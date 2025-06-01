@@ -29,13 +29,13 @@
                             <div class = "w-full flex flex-row">
                                 <!-- 圖片顯示區域 -->
                                 <div class="relative basis-2/3 border" x-data="{ activePhoto: 0, photos: [
-                                        @foreach($product->ProductPhoto as $index => $photo)
+                                        @foreach($product->productPhoto as $index => $photo)
                                             '{{ asset('images/' . $photo->file_address) }}'@if(!$loop->last),@endif
                                         @endforeach
                                     ] }">
                                         <!-- 图片轮播显示 -->
                                         <template x-for="(photo, index) in photos" :key="index">
-                                            <img :src="photo" 
+                                            <img :src="photo"
                                                 x-show="activePhoto === index"
                                                 class="mx-auto w-full max-h-96 object-contain block rounded"
                                                 style="display: none;" />
@@ -43,11 +43,11 @@
 
                                         <!-- 轮播控制按钮 -->
                                         <div class="flex justify-center mt-4 mb-4">
-                                            <button class="mx-1 text-xl bg-gray-300 rounded w-5" 
+                                            <button class="mx-1 text-xl bg-gray-300 rounded w-5"
                                                     @click="activePhoto = activePhoto === 0 ? photos.length - 1 : activePhoto - 1">
                                                 &lt;
                                             </button>
-                                            <button class="mx-1 text-xl bg-gray-300 rounded w-5" 
+                                            <button class="mx-1 text-xl bg-gray-300 rounded w-5"
                                                     @click="activePhoto = activePhoto === photos.length - 1 ? 0 : activePhoto + 1">
                                                 &gt;
                                             </button>
@@ -175,7 +175,7 @@
                 </div>
             </div>
         </div>
-    @endforelse                            
+    @endforelse
 
     <!--訂單評論-->
     <div class="py-12">

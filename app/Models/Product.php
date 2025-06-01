@@ -45,7 +45,7 @@ class Product extends Model
         return $this->hasMany(Tracked_item::class);
     }
 
-    public function productPhotos()
+    public function productPhoto()
     {
         return $this->hasMany(ProductPhoto::class)->orderBy('id');
     }
