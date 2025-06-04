@@ -272,7 +272,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
-        $photos = $product->productPhotos;
+        $photos = $product->productPhoto;
 
         return view('admin.product.edit', [
             'product' => $product,
